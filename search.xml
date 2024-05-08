@@ -46,6 +46,8 @@
     <url>/2024/05/08/Spring%E5%AE%B9%E5%99%A8%E5%92%8C%E6%B3%A8%E8%A7%A3/</url>
     <content><![CDATA[<p>参考<a href="https://springdoc.cn/spring/core.html">https://springdoc.cn/spring/core.html</a></p>
 <p>官方文档<a href="https://springdoc.cn/spring/core.htm">https://springdoc.cn/spring/core.htm</a></p>
+<span id="more"></span>
+
 <h2 id="Bean和容器"><a href="#Bean和容器" class="headerlink" title="Bean和容器"></a>Bean和容器</h2><p>在spring中，构成程序的骨干和被容器管理的对象称为Bean。</p>
 <p><code>org.springframework.context.ApplicationContext</code> 接口代表Spring IoC容器，负责实例化、配置和组装bean。</p>
 <p>容器获取Bean的方式有</p>
@@ -69,7 +71,7 @@
 <h3 id="Autowired注解"><a href="#Autowired注解" class="headerlink" title="@Autowired注解"></a><code>@Autowired</code>注解</h3><p>手动获取<code>Bean</code>的方式，用<code>ApplicationContext</code></p>
 <p>使用<code>@Autowired</code>可以自动注入<code>bean</code></p>
 <p>示例：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> AlphaDao alphaDao;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> AlphaService alphaService;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> SimpleDateFormat simpleDateFormat;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testDI</span><span class="params">()</span> &#123;</span><br><span class="line">System.out.println(alphaDao);</span><br><span class="line">System.out.println(alphaService);</span><br><span class="line">System.out.println(simpleDateFormat);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> AlphaDao alphaDao;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> AlphaService alphaService;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> SimpleDateFormat simpleDateFormat;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testDI</span><span class="params">()</span> &#123;</span><br><span class="line">    System.out.println(alphaDao);</span><br><span class="line">    System.out.println(alphaService);</span><br><span class="line">    System.out.println(simpleDateFormat);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="Qualifier注解"><a href="#Qualifier注解" class="headerlink" title="@Qualifier注解"></a><code>@Qualifier</code>注解</h3><p>缩小注入<code>Bean</code>的类型匹配的范围</p>
 <h3 id="RequestMapping注解"><a href="#RequestMapping注解" class="headerlink" title="@RequestMapping注解"></a><code>@RequestMapping</code>注解</h3><p>用于映射HTTP请求方式</p>
