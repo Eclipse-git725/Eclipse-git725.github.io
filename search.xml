@@ -41,4 +41,49 @@
         <tag>日常</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Spring容器和注解</title>
+    <url>/2024/05/08/Spring%E5%AE%B9%E5%99%A8%E5%92%8C%E6%B3%A8%E8%A7%A3/</url>
+    <content><![CDATA[<p>参考<a href="https://springdoc.cn/spring/core.html">https://springdoc.cn/spring/core.html</a></p>
+<p>官方文档<a href="https://springdoc.cn/spring/core.htm">https://springdoc.cn/spring/core.htm</a></p>
+<h2 id="Bean和容器"><a href="#Bean和容器" class="headerlink" title="Bean和容器"></a>Bean和容器</h2><p>在spring中，构成程序的骨干和被容器管理的对象称为Bean。</p>
+<p><code>org.springframework.context.ApplicationContext</code> 接口代表Spring IoC容器，负责实例化、配置和组装bean。</p>
+<p>容器获取Bean的方式有</p>
+<ul>
+<li>通过类型获取<code>AlphaDao alphaDao = applicationContext.getBean(AlphaDao.class);</code></li>
+<li>通过名字获取<code>AlphaDao alphaDao = (AlphaDao) applicationContext.getBean(&quot;alphaHibernate&quot;);</code></li>
+</ul>
+<p>可以通过<code>XML</code>和注解将Bean实例初始化到容器中。</p>
+<h3 id="Primary-注解"><a href="#Primary-注解" class="headerlink" title="@Primary 注解"></a><code>@Primary</code> 注解</h3><p><code>@Primary</code> 表示，当多个Bean是自动注入到一个单值（single value）依赖的候选者时，应该优先考虑一个特定的Bean。如果在候选者中正好有一个主要（primary）Bean存在，它就会成为自动注入的值。</p>
+<h3 id="和生命周期有关的注解"><a href="#和生命周期有关的注解" class="headerlink" title="和生命周期有关的注解"></a>和生命周期有关的注解</h3><p><code>@PostConstruct</code> 在构造函数调用后执行</p>
+<p><code> @PreDestroy</code>  在销毁前执行</p>
+<h3 id="Scope注解"><a href="#Scope注解" class="headerlink" title="@Scope注解"></a><code>@Scope</code>注解</h3><ul>
+<li>能够管理Bean的作用域</li>
+<li>默认情况下是单例  <code>@Scope(&quot;singleton&quot;)</code></li>
+<li>可以变为任何数量的实例  <code>@Scope(&quot;prototype&quot;)</code></li>
+</ul>
+<p>示例：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testBeanManage</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">AlphaService</span> <span class="variable">alphaService</span> <span class="operator">=</span> applicationContext.getBean(AlphaService.class);</span><br><span class="line">	System.out.println(alphaService);</span><br><span class="line"></span><br><span class="line">	alphaService = applicationContext.getBean(AlphaService.class);</span><br><span class="line">	System.out.println(alphaService);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Configuration注解"><a href="#Configuration注解" class="headerlink" title="@Configuration注解"></a><code>@Configuration</code>注解</h3><p>被<code>@Configuration</code>标记的类中的<code>@Bean</code>的方法会被Spring容器统一管理</p>
+<h3 id="Autowired注解"><a href="#Autowired注解" class="headerlink" title="@Autowired注解"></a><code>@Autowired</code>注解</h3><p>手动获取<code>Bean</code>的方式，用<code>ApplicationContext</code></p>
+<p>使用<code>@Autowired</code>可以自动注入<code>bean</code></p>
+<p>示例：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> AlphaDao alphaDao;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> AlphaService alphaService;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> SimpleDateFormat simpleDateFormat;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testDI</span><span class="params">()</span> &#123;</span><br><span class="line">System.out.println(alphaDao);</span><br><span class="line">System.out.println(alphaService);</span><br><span class="line">System.out.println(simpleDateFormat);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Qualifier注解"><a href="#Qualifier注解" class="headerlink" title="@Qualifier注解"></a><code>@Qualifier</code>注解</h3><p>缩小注入<code>Bean</code>的类型匹配的范围</p>
+<h3 id="RequestMapping注解"><a href="#RequestMapping注解" class="headerlink" title="@RequestMapping注解"></a><code>@RequestMapping</code>注解</h3><p>用于映射HTTP请求方式</p>
+<h3 id="ResponseBody注解"><a href="#ResponseBody注解" class="headerlink" title="@ResponseBody注解"></a><code>@ResponseBody</code>注解</h3><p>将方法的返回结果写入<code>HTTP response body</code>中</p>
+<h2 id="Java项目中的三层"><a href="#Java项目中的三层" class="headerlink" title="Java项目中的三层"></a>Java项目中的三层</h2><h3 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a><code>Controller</code></h3><p>”业务控制层“</p>
+<p>处理浏览器的请求，调用业务组件<code>Service</code></p>
+<h3 id="Service"><a href="#Service" class="headerlink" title="Service"></a><code>Service</code></h3><p>”业务服务层“</p>
+<h3 id="Dao"><a href="#Dao" class="headerlink" title="Dao"></a><code>Dao</code></h3><p>”数据库持久层“</p>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3>]]></content>
+      <categories>
+        <category>SSM</category>
+      </categories>
+      <tags>
+        <tag>Spring</tag>
+      </tags>
+  </entry>
 </search>
