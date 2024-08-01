@@ -3,7 +3,8 @@
   <entry>
     <title>SpringBoot项目运行显示端口占用问题</title>
     <url>/2024/05/19/SpringBoot%E9%A1%B9%E7%9B%AE%E8%BF%90%E8%A1%8C%E6%98%BE%E7%A4%BA%E7%AB%AF%E5%8F%A3%E5%8D%A0%E7%94%A8%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<span id="more"></span>
+    <content><![CDATA[<p>记录一个怪问题</p>
+<span id="more"></span>
 
 <h2 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">***************************</span><br><span class="line">APPLICATION FAILED TO START</span><br><span class="line">***************************</span><br><span class="line"></span><br><span class="line">Description:</span><br><span class="line"></span><br><span class="line">Web server failed to start. Port 8080 was already <span class="keyword">in</span> use.</span><br><span class="line"></span><br><span class="line">Action:</span><br><span class="line"></span><br><span class="line">Identify and stop the process that<span class="string">&#x27;s listening on port 8080 or configure this application to listen on another port.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Process finished with exit code 0</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
 
@@ -234,9 +235,9 @@
 
 <p>打开Anaconda Prompt<br>输入：conda create -n pytorch python&#x3D;3.8<br>激活环境：conda activate pytorch</p>
 <h1 id="4-安装pytorch"><a href="#4-安装pytorch" class="headerlink" title="4. 安装pytorch"></a>4. 安装pytorch</h1><p>pytorch官网：<a href="https://pytorch.org/">PyTorch</a><br>根据是否有GPU选择不同的版本：</p>
-<h2 id="有GPU"><a href="#有GPU" class="headerlink" title="有GPU"></a>有GPU</h2><p>![Pasted image 20240731163620](.\assets\Pasted image 20240731163620.png)<br>pip3 install torch torchvision torchaudio –index-url <a href="https://download.pytorch.org/whl/cu118">https://download.pytorch.org/whl/cu118</a></p>
-<h2 id="无GPU"><a href="#无GPU" class="headerlink" title="无GPU"></a>无GPU</h2><p>![Pasted image 20240731163607](.\assets\Pasted image 20240731163607.png)<br>pip3 install torch torchvision torchaudio</p>
-<p>验证pytorch是否安装成功：<br>![Pasted image 20240731164607](.\assets\Pasted image 20240731164607.png)</p>
+<h2 id="有GPU"><a href="#有GPU" class="headerlink" title="有GPU"></a>有GPU</h2><p>![Pasted image 20240731163620](.\学习小土堆pytorch教程记录-环境配置\Pasted image 20240731163620.png)<br>pip3 install torch torchvision torchaudio –index-url <a href="https://download.pytorch.org/whl/cu118">https://download.pytorch.org/whl/cu118</a></p>
+<h2 id="无GPU"><a href="#无GPU" class="headerlink" title="无GPU"></a>无GPU</h2><p>![Pasted image 20240731163607](.\学习小土堆pytorch教程记录-环境配置\Pasted image 20240731163607.png)<br>pip3 install torch torchvision torchaudio</p>
+<p>验证pytorch是否安装成功：<br>![Pasted image 20240731164607](.\学习小土堆pytorch教程记录-环境配置\Pasted image 20240731164607.png)</p>
 <h1 id="5-配置jupyter程序"><a href="#5-配置jupyter程序" class="headerlink" title="5. 配置jupyter程序"></a>5. 配置jupyter程序</h1><p>jupyter是可交互的python编程<br>安装必要的包：conda install nb_conda<br>启动jupyter：jupyter notebook<br>启动后会在浏览器中运行jupyter</p>
 <h1 id="6-vscode配置anaconda环境"><a href="#6-vscode配置anaconda环境" class="headerlink" title="6. vscode配置anaconda环境"></a>6. vscode配置anaconda环境</h1><p><strong>需要安装的插件：</strong> python、coder_runner<br>ctrl+shift+p打开后输入python select interpreter<br>find选择anaconda下的一个python.exe</p>
 ]]></content>
