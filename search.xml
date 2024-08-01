@@ -235,9 +235,9 @@
 
 <p>打开Anaconda Prompt<br>输入：conda create -n pytorch python&#x3D;3.8<br>激活环境：conda activate pytorch</p>
 <h1 id="4-安装pytorch"><a href="#4-安装pytorch" class="headerlink" title="4. 安装pytorch"></a>4. 安装pytorch</h1><p>pytorch官网：<a href="https://pytorch.org/">PyTorch</a><br>根据是否有GPU选择不同的版本：</p>
-<h2 id="有GPU"><a href="#有GPU" class="headerlink" title="有GPU"></a>有GPU</h2><p>![Pasted image 20240731163620](Pasted image 20240731163620.png)<br>pip3 install torch torchvision torchaudio –index-url <a href="https://download.pytorch.org/whl/cu118">https://download.pytorch.org/whl/cu118</a></p>
-<h2 id="无GPU"><a href="#无GPU" class="headerlink" title="无GPU"></a>无GPU</h2><p>![Pasted image 20240731163607](Pasted image 20240731163607.png)<br>pip3 install torch torchvision torchaudio</p>
-<p>验证pytorch是否安装成功：<br>![Pasted image 20240731164607](Pasted image 20240731164607.png)</p>
+<h2 id="有GPU"><a href="#有GPU" class="headerlink" title="有GPU"></a>有GPU</h2><p>![](学习小土堆pytorch教程记录-环境配置&#x2F;Pasted image 20240731163620.png)<br>pip3 install torch torchvision torchaudio –index-url <a href="https://download.pytorch.org/whl/cu118">https://download.pytorch.org/whl/cu118</a></p>
+<h2 id="无GPU"><a href="#无GPU" class="headerlink" title="无GPU"></a>无GPU</h2><p>![](学习小土堆pytorch教程记录-环境配置&#x2F;Pasted image 20240731163607.png)<br>pip3 install torch torchvision torchaudio</p>
+<p>验证pytorch是否安装成功：<br>![](学习小土堆pytorch教程记录-环境配置&#x2F;Pasted image 20240731164607.png)</p>
 <h1 id="5-配置jupyter程序"><a href="#5-配置jupyter程序" class="headerlink" title="5. 配置jupyter程序"></a>5. 配置jupyter程序</h1><p>jupyter是可交互的python编程<br>安装必要的包：conda install nb_conda<br>启动jupyter：jupyter notebook<br>启动后会在浏览器中运行jupyter</p>
 <h1 id="6-vscode配置anaconda环境"><a href="#6-vscode配置anaconda环境" class="headerlink" title="6. vscode配置anaconda环境"></a>6. vscode配置anaconda环境</h1><p><strong>需要安装的插件：</strong> python、coder_runner<br>ctrl+shift+p打开后输入python select interpreter<br>find选择anaconda下的一个python.exe</p>
 ]]></content>
