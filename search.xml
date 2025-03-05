@@ -216,7 +216,7 @@
 <h1 id="3-安装一个环境"><a href="#3-安装一个环境" class="headerlink" title="3. 安装一个环境"></a>3. 安装一个环境</h1><p><strong>更改安装的环境位置：</strong><br>找到.condarc这个文件，加上一个配置，这样就会安装到anaconda的envs下了。更改路径后要给D盘的anaconda文件夹增加权限，所有用户都可读写。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">envs_dirs:</span><br><span class="line">  - D:\anaconda\envs</span><br><span class="line">pkgs_dirs:</span><br><span class="line">  - D:\anaconda\pkgs</span><br></pre></td></tr></table></figure>
 
-<p>打开Anaconda Prompt<br>输入：conda create -n pytorch python&#x3D;3.8<br>激活环境：conda activate pytorch</p>
+<p>打开Anaconda Prompt<br>输入：conda create -n pytorch python&#x3D;3.8<br>激活环境：conda activate pytorch<br>查看有哪些虚拟环境：conda env list<br>退出虚拟环境：conda deactivate<br>删除虚拟环境：conda remove –name env_name –all<br>根据有的配置文件创建环境：conda env create -f environment.yml</p>
 <h1 id="4-安装pytorch"><a href="#4-安装pytorch" class="headerlink" title="4. 安装pytorch"></a>4. 安装pytorch</h1><p>pytorch官网：<a href="https://pytorch.org/">PyTorch</a><br>根据是否有GPU选择不同的版本：</p>
 <h2 id="有GPU"><a href="#有GPU" class="headerlink" title="有GPU"></a>有GPU</h2><p><img src="/2024/07/31/%E5%AD%A6%E4%B9%A0%E5%B0%8F%E5%9C%9F%E5%A0%86pytorch%E6%95%99%E7%A8%8B%E8%AE%B0%E5%BD%95-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/1.png" alt="1"><br>pip3 install torch torchvision torchaudio –index-url <a href="https://download.pytorch.org/whl/cu118">https://download.pytorch.org/whl/cu118</a></p>
 <h2 id="无GPU"><a href="#无GPU" class="headerlink" title="无GPU"></a>无GPU</h2><p><img src="/2024/07/31/%E5%AD%A6%E4%B9%A0%E5%B0%8F%E5%9C%9F%E5%A0%86pytorch%E6%95%99%E7%A8%8B%E8%AE%B0%E5%BD%95-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/2.png" alt="2"><br>pip3 install torch torchvision torchaudio</p>
@@ -357,6 +357,7 @@
     <url>/2024/09/05/%E5%AD%A6%E4%B9%A0%E5%B0%8F%E5%9C%9F%E5%A0%86pytorch%E6%95%99%E7%A8%8B%E8%AE%B0%E5%BD%95-pytorch%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B/</url>
     <content><![CDATA[<p>现有网络模型的使用和修改、网络模型的保存和读取、完整的模型训练套路、使用GPU进行训练、完整的模型验证套路</p>
 <p>算是学完了基础使用吧，但离实际操作还有很远。</p>
+<p>代码的github仓库为：<a href="https://github.com/Eclipse-git725/pytorch">https://github.com/Eclipse-git725/pytorch</a></p>
 <span id="more"></span>
 
 <h1 id="1-现有网络模型的使用和修改"><a href="#1-现有网络模型的使用和修改" class="headerlink" title="1. 现有网络模型的使用和修改"></a>1. 现有网络模型的使用和修改</h1><p>官方文档：<a href="https://pytorch.org/vision/stable/index.html">https://pytorch.org/vision/stable/index.html</a><br>imgenet:<a href="https://pytorch.org/vision/0.9/datasets.html#imagenet">https://pytorch.org/vision/0.9/datasets.html#imagenet</a><br>需要先安装scipy包，<code>pip install scipy</code><br>pretrained为True时，模型是在数据集上已经训练好的</p>
@@ -387,6 +388,104 @@
       </categories>
       <tags>
         <tag>深度学习 pytorch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>仿牛客论坛项目01-首页功能</title>
+    <url>/2025/03/04/%E4%BB%BF%E7%89%9B%E5%AE%A2%E8%AE%BA%E5%9D%9B%E9%A1%B9%E7%9B%AE01-%E9%A6%96%E9%A1%B5%E5%8A%9F%E8%83%BD/</url>
+    <content><![CDATA[<p>仿牛客论坛项目01-首页功能，内容记录</p>
+<span id="more"></span>
+
+<h2 id="1-首页"><a href="#1-首页" class="headerlink" title="1. 首页"></a>1. 首页</h2><p>代码写的顺序：<code>Dao</code>-&gt;<code>Service</code>-&gt;<code>Controller</code></p>
+<h3 id="DAO"><a href="#DAO" class="headerlink" title="DAO"></a><code>DAO</code></h3><p>方法1：需要查询所有的帖子，查询所有的不需要参数；考虑到之后还有功能个人主页上显示自己的博客，因此，方法中要加上<code>userID</code>参数；还有分页功能，方法中还要加上页数的索引<code>offset</code>，以及每页的限制<code>limit</code>。</p>
+<p>方法2：为了实现分页功能，需要查询所有帖子的行数</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Mapper</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">DiscussPostMapper</span> &#123;</span><br><span class="line">    List&lt;DiscussPost&gt; <span class="title function_">selectDiscussPosts</span><span class="params">(<span class="type">int</span> userId, <span class="type">int</span> offset, <span class="type">int</span> limit)</span>;</span><br><span class="line">    <span class="type">int</span> <span class="title function_">selectDiscussPostsRows</span><span class="params">(<span class="meta">@Param(&quot;userId&quot;)</span> <span class="type">int</span> userId)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>对应的配置文件：</p>
+<p>不选择拉黑的帖子，拼接动态SQL</p>
+<p>首先按是否置顶排序，再按创建时间降序排序，最近发布的在上面</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">sql</span> <span class="attr">id</span>=<span class="string">&quot;selectField&quot;</span>&gt;</span></span><br><span class="line">       id, user_id, title, content, type, status, create_time, comment_count, score</span><br><span class="line">   <span class="tag">&lt;/<span class="name">sql</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;selectDiscussPosts&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;DiscussPost&quot;</span>&gt;</span></span><br><span class="line">       select <span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">&quot;selectField&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">       from discuss_post</span><br><span class="line">       where status != 2</span><br><span class="line">       <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;userId != 0&quot;</span>&gt;</span></span><br><span class="line">           and user_id = #&#123;userId&#125;</span><br><span class="line">       <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">       order by type desc, create_time desc</span><br><span class="line">       limit #&#123;offset&#125;, #&#123;limit&#125;</span><br><span class="line">   <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;selectDiscussPostsRows&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;int&quot;</span>&gt;</span></span><br><span class="line">       select count(id)</span><br><span class="line">       from discuss_post</span><br><span class="line">       where status != 2</span><br><span class="line">       <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;userId != 0&quot;</span>&gt;</span></span><br><span class="line">           and user_id = #&#123;userId&#125;</span><br><span class="line">       <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h3><p><code>DiscussPostService</code>调用<code>Dao</code>层中的方法，并将获取到的数据通过<code>userId</code>和<code>username</code>一起返回，因此还需要一个<code>UserService</code></p>
+<h3 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h3><p>静态资源、页面导入</p>
+<p>在该层中调用<code>Service</code>，返回模板的路径</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(value = &quot;/index&quot;, method = RequestMethod.GET)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">getIndexPage</span><span class="params">(Model model, Page page)</span> &#123;</span><br><span class="line">    <span class="comment">// SpringMVC会将Page自动注入到Model，并将请求中的查询参数映射到这个对象上</span></span><br><span class="line">    <span class="comment">// 这样Thymeleaf可以直接使用Page中的数据</span></span><br><span class="line">    <span class="comment">// 服务端可以设置的分页参数</span></span><br><span class="line">    page.setRows(discussPostService.findDiscussPostsRows(<span class="number">0</span>));</span><br><span class="line">    page.setPath(<span class="string">&quot;/index&quot;</span>);</span><br><span class="line"></span><br><span class="line">    List&lt;DiscussPost&gt; list = discussPostService.findDiscussPosts(<span class="number">0</span>, page.getOffset(), page.getLimit());</span><br><span class="line">    List&lt;Map&lt;String, Object&gt;&gt; postList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">if</span>(list != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span>(DiscussPost post : list) &#123;</span><br><span class="line">            <span class="comment">// 将用户名加入列表中</span></span><br><span class="line">            <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> userService.findUserById(post.getUserId());</span><br><span class="line">            Map&lt;String, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">            map.put(<span class="string">&quot;post&quot;</span>, post);</span><br><span class="line">            map.put(<span class="string">&quot;user&quot;</span>, user);</span><br><span class="line">            postList.add(map);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    model.addAttribute(<span class="string">&quot;discussPosts&quot;</span>, postList);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;/index&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-分页功能"><a href="#2-分页功能" class="headerlink" title="2. 分页功能"></a>2. 分页功能</h2><p><strong>分页类需要用到的参数：</strong></p>
+<ol>
+<li><code>current</code> 为当前页码</li>
+<li><code>limit</code> 为每页上限</li>
+<li><code>rows</code> 为数据总数</li>
+<li><code>path</code> 为查询路径（封装在里面，查询时就不用字符串拼接了）</li>
+</ol>
+<p>上述参数有限制条件可以在<code>setter</code>中写，比如当前页数不能为负数。</p>
+<p><strong>分页类需要用到的方法：</strong></p>
+<ol>
+<li><code>getOffset</code> 获取当前页的起始行，在数据库查询时需要用到</li>
+<li><code>getTotal</code> 获取总页码，页面上显示的页码不能超过总页码</li>
+<li><code>getFrom</code>  当页码还要显示前后几个页码，获取这段页码的起始页码</li>
+<li><code>getTo</code> 获取这段页码的结束页码</li>
+</ol>
+<p><code>index</code>页面中分页实现逻辑：</p>
+<ol>
+<li>没有数据时不需要分页</li>
+<li>用遍历显示当前页码，和前两个到后两个的页码</li>
+<li>当前页的按钮状态为激活</li>
+<li>处于第一页时，上一页禁用</li>
+<li>处于最后一页时，下一页禁用</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 分页 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">nav</span> <span class="attr">class</span>=<span class="string">&quot;mt-5&quot;</span> <span class="attr">th:if</span>=<span class="string">&quot;$&#123;page.rows&gt;0&#125;&quot;</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;pagination justify-content-center&quot;</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- /index?current=1 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;page-item&quot;</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;page-link&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;$&#123;page.path&#125;(current=1)&#125;&quot;</span>&gt;</span>首页<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">li</span> <span class="attr">th:class</span>=<span class="string">&quot;|page-item $&#123;page.current==1?&#x27;disabled&#x27;:&#x27;&#x27;&#125;|&quot;</span> &gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;page-link&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;$&#123;page.path&#125;(current=$&#123;page.current-1&#125;)&#125;&quot;</span>&gt;</span>上一页</span><br><span class="line">			    <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">li</span> <span class="attr">th:class</span>=<span class="string">&quot;|page-item $&#123;i==page.current?&#x27;active&#x27;:&#x27;&#x27;&#125;|&quot;</span></span></span><br><span class="line"><span class="tag">				<span class="attr">th:each</span>=<span class="string">&quot;i:$&#123;#numbers.sequence(page.from, page.to)&#125;&quot;</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;page-link&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;$&#123;page.path&#125;(current=$&#123;i&#125;)&#125;&quot;</span> <span class="attr">th:text</span>=<span class="string">&quot;$&#123;i&#125;&quot;</span>&gt;</span>1<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">li</span> <span class="attr">th:class</span>=<span class="string">&quot;|page-item $&#123;page.current==page.total?&#x27;disabled&#x27;:&#x27;&#x27;&#125;|&quot;</span> &gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;page-link&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;$&#123;page.path&#125;(current=$&#123;page.current+1&#125;)&#125;&quot;</span>&gt;</span>下一页<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;page-item&quot;</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;page-link&quot;</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;$&#123;page.path&#125;(current=$&#123;page.total&#125;)&#125;&quot;</span>&gt;</span>末页<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-Thymeleaf语法"><a href="#3-Thymeleaf语法" class="headerlink" title="3. Thymeleaf语法"></a>3. Thymeleaf语法</h2><p><strong><code>thymeleaf</code>作用</strong>：前端页面中使用Thymeleaf表达式来访问<code>Model</code>中的数据</p>
+<p>导入<code>thymeleaf</code>：<code>&lt;html lang=&quot;en&quot; xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;</code></p>
+<p>页面中导入的静态资源有相对路径时，需要使用<code>thymeleaf</code>语法</p>
+<p><code>&lt;link rel=&quot;stylesheet&quot; th:href=&quot;@&#123;css/global.css&#125;&quot; /&gt;</code> 这样写默认去<code>static</code>下寻找</p>
+<p>循环：<code>th:each=&quot;map:$&#123;discussPosts&#125;&quot;</code> map是遍历时的元素</p>
+<p>内容：<code>th:utext=&quot;$&#123;map.post.title&#125;&quot;</code>  <code>utext</code>可以解析转义字符</p>
+<p>判断：<code>th:if=&quot;$&#123;map.post.type==1&#125;&quot;</code></p>
+<p>时间格式化：<code>th:text=&quot;$&#123;#dates.format(map.post.createTime, &#39;yyyy-MM-dd HH:mm:ss&#39;)&#125;&quot;</code></p>
+<h3 id="Thymeleaf符号"><a href="#Thymeleaf符号" class="headerlink" title="Thymeleaf符号"></a><code>Thymeleaf</code>符号</h3><ol>
+<li><p><code>#</code> ：标识Thymeleaf内置的标准表达式对象，如<code>#dates</code>用于日期操作</p>
+</li>
+<li><p><code>$</code> ：用于获取变量的值，并将其插入到模板中，如<code>post.title</code></p>
+</li>
+<li><p><code>@</code> ：用于表示Thymeleaf中的URL表达式</p>
+</li>
+<li><p><code>|</code> ：可以将一个静态的字符串和一个表达式拼接在一起</p>
+<p><code>&lt;li th:class=&quot;|page-item $&#123;page.current==page.total?&#39;disabled&#39;:&#39;&#39;&#125;|&quot; &gt;</code></p>
+</li>
+<li><p><code>th:text</code> ：用于设置标签内文本的值</p>
+</li>
+<li><p><code>th:if</code> ：用于条件判断，根据条件的真假来显示或隐藏标签</p>
+</li>
+<li><p><code>th:each</code>：用于遍历集合或数组，将集合中的每个元素逐个处理</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">th:each</span>=<span class="string">&quot;item : $&#123;items&#125;&quot;</span> <span class="attr">th:text</span>=<span class="string">&quot;$&#123;item&#125;&quot;</span>&gt;</span>Item<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>th:href</code>：用于设置链接的URL</p>
+</li>
+<li><p>&#96;&#96;th:class&#96;：用于设置标签的类名</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:class</span>=<span class="string">&quot;$&#123;condition&#125; ? &#x27;class1&#x27; : &#x27;class2&#x27;&quot;</span>&gt;</span>Content<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">li</span> <span class="attr">th:class</span>=<span class="string">&quot;|page-item $&#123;page.current==page.total?&#x27;disabled&#x27;:&#x27;&#x27;&#125;|&quot;</span> &gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>th:fragment</code>：用于定义一个可重用的模板片段，可以在其他模板被引入并重用</p>
+</li>
+<li><p><code>th:replace</code>：用于在一个模板中引入另一个模板，替换该标签的内容</p>
+<p><code>&lt;div th:replace=&quot;fragments :: myFragment&quot;&gt;&lt;/div&gt;</code>表示</p>
+</li>
+</ol>
+<h3 id="Content"><a href="#Content" class="headerlink" title="Content"></a><code>Content</code></h3><p>在Thymeleaf中，<code>context</code>类主要用于传递变量和数据模型到模板引擎，以便在HTML模板中进行数据渲染。</p>
+<h2 id="4-问题"><a href="#4-问题" class="headerlink" title="4. 问题"></a>4. 问题</h2><ol>
+<li><p>在page类里没有配置total属性，但是有一个getTotal方法，controller类里将page注入给了model，为什么在thymeleaf中可以直接使用page.total，而不用getTotal</p>
+<p>尽管<code>Page</code>类没有直接定义一个名为<code>total</code>的属性，但是存在一个<code>getTotal()</code>方法。根据JavaBean的命名规则，Thymeleaf会认为<code>getTotal()</code>方法是用来获取<code>total</code>属性的值的。因此，Thymeleaf允许直接使用<code>page.total</code>来访问这个属性的值，而不需要显式调用<code>getTotal()</code>方法。</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Java项目</category>
+      </categories>
+      <tags>
+        <tag>Java SpringBoot</tag>
       </tags>
   </entry>
 </search>
