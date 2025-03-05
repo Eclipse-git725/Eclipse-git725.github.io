@@ -488,4 +488,244 @@
         <tag>Java SpringBoot</tag>
       </tags>
   </entry>
+  <entry>
+    <title>仿牛客论坛项目02-注册激活功能</title>
+    <url>/2025/03/05/%E4%BB%BF%E7%89%9B%E5%AE%A2%E8%AE%BA%E5%9D%9B%E9%A1%B9%E7%9B%AE02-%E6%B3%A8%E5%86%8C%E6%BF%80%E6%B4%BB%E5%8A%9F%E8%83%BD/</url>
+    <content><![CDATA[<p>仿牛客论坛项目02-注册激活功能，内容记录</p>
+<span id="more"></span>
+
+<p>1.发送邮件功能</p>
+<h3 id="导入邮件jar包"><a href="#导入邮件jar包" class="headerlink" title="导入邮件jar包"></a>导入邮件jar包</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-mail<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.7.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="配置邮箱参数"><a href="#配置邮箱参数" class="headerlink" title="配置邮箱参数"></a>配置邮箱参数</h3><figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment">#MailProperties</span></span><br><span class="line"><span class="attr">spring.mail.host</span>=<span class="string">smtp.sina.com</span></span><br><span class="line"><span class="attr">spring.mail.port</span>=<span class="string">465</span></span><br><span class="line"><span class="attr">spring.mail.username</span>=<span class="string">newcodergxy@sina.com</span></span><br><span class="line"><span class="comment"># 邮箱授权码</span></span><br><span class="line"><span class="attr">spring.mail.password</span>=<span class="string">xxx</span></span><br><span class="line"><span class="attr">spring.mail.protocol</span>=<span class="string">smtp</span></span><br><span class="line"><span class="attr">spring.mail.properties.mail.smtp.ssl.enable</span>=<span class="string">true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="使用JavaMailSender"><a href="#使用JavaMailSender" class="headerlink" title="使用JavaMailSender"></a>使用JavaMailSender</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendMail</span><span class="params">(String to, String subject, String content)</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">MimeMessage</span> <span class="variable">message</span> <span class="operator">=</span> mailSender.createMimeMessage();</span><br><span class="line">        <span class="type">MimeMessageHelper</span> <span class="variable">helper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MimeMessageHelper</span>(message);</span><br><span class="line">        helper.setFrom(from);</span><br><span class="line">        helper.setTo(to);</span><br><span class="line">        helper.setSubject(subject);</span><br><span class="line">        helper.setText(content, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">        mailSender.send(helper.getMimeMessage());</span><br><span class="line">    &#125; <span class="keyword">catch</span> (MessagingException e) &#123;</span><br><span class="line">        logger.error(<span class="string">&quot;发送邮件失败：&quot;</span> + e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="2-注册功能"><a href="#2-注册功能" class="headerlink" title="2. 注册功能"></a>2. 注册功能</h2><p>写功能时，可以将功能按照在浏览器中的请求，进行拆解</p>
+<p>注册功能有三次请求：</p>
+<ol>
+<li>访问注册页面</li>
+<li>提交注册信息<ul>
+<li>通过表单提交数据</li>
+<li>服务端验证账号是否注册过</li>
+<li>服务端发送激活邮件</li>
+</ul>
+</li>
+<li>激活注册账号<ul>
+<li>点击邮件中的链接，访问服务器中的激活服务</li>
+</ul>
+</li>
+</ol>
+<p>当用户在前端页面上点击注册时，前后端会发生什么：</p>
+<ol>
+<li>用户点击注册按钮，浏览器发送GET请求到<code>/register</code>。</li>
+<li>Spring MVC的<code>DispatcherServlet</code>接收请求，并找到对应的Controller方法。</li>
+<li>Controller方法返回视图名，视图解析器解析视图并渲染<code>register.html</code>页面。</li>
+<li>浏览器显示<code>register.html</code>页面，用户填写表单并提交。</li>
+<li>浏览器发送POST请求到<code>/register</code>，包含用户的注册信息。</li>
+<li>Controller处理POST请求，保存用户信息，并返回响应。</li>
+</ol>
+<h3 id="访问注册页面"><a href="#访问注册页面" class="headerlink" title="访问注册页面"></a>访问注册页面</h3><p>该功能不需要<code>Service</code>层和<code>Dao</code>层，写<code>controller</code>层，前端从<code>index</code>页面点击头部的注册跳转到注册页面</p>
+<p><code>Controller</code>：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(path = &quot;/register&quot;, method = RequestMethod.GET)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">getRegisterPage</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;/site/register&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>前端标签复用：在<code>index</code>页面中修改头部注册的路径，并将index的头部模板复用，在注册页面中引入（<code>thymeleaf</code>语法）</p>
+<h3 id="提交注册信息"><a href="#提交注册信息" class="headerlink" title="提交注册信息"></a>提交注册信息</h3><p><code>Service</code>层：写注册业务，包括：检查数据的合法性，设置<code>User</code>的其他属性，插入用户，发送激活邮件</p>
+<p><code>Controller</code>层：调用<code>Service</code>层，需要接收注册的<code>POST</code>请求</p>
+<p><code>operator-result.html</code>：操作后进行跳转，提示信息和跳转链接需要由<code>Controller</code>层传入</p>
+<p><code>register.html</code>：修改表单，提交数据；注册失败时返回这个页面，页面上要有填入的注册信息以及失败提示。</p>
+<h3 id="激活注册邮件"><a href="#激活注册邮件" class="headerlink" title="激活注册邮件"></a>激活注册邮件</h3><p>改变数据库中的用户状态</p>
+<p><code>Service</code>层：实现激活逻辑，激活时会传给服务器，激活的用户和激活码。</p>
+<p><code>Controller</code>层：调用<code>Service</code>层，激活成功后，给用户提示，并跳转到目标页面；当激活成功时，需要跳转到登陆页面，因此该层还需要写登录页面</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
+<li><p>注册时在前端对属性进行校验了，为什么了在后端<code>Service</code>层还要校验？</p>
+<p>前端校验容易被绕过。用户可以禁用JavaScript、使用浏览器开发者工具修改前端代码等直接向服务器发送请求。所有进入数据库的数据必须在后端经过严格的校验，以防止出现数据异常。</p>
+</li>
+<li><p>自我拷问：说说注册模块</p>
+<ul>
+<li>用户点击首页上的注册按钮，服务端响应注册页面</li>
+<li>用户在注册页面上，需要填写账号、密码、邮箱，最后点击注册页面，服务端接收到该<code>Post</code>请求，验证账号、邮箱的合理性。</li>
+<li>若账号邮箱为空或已注册过，返回相关错误信息，跳转到注册页面</li>
+<li>若账号邮箱没有问题，将密码加上盐进行加密，存入数据库中，跳转到操作结果页面。</li>
+<li>服务端发送激活邮件给用户，用户点击邮件后，服务端判断激活码是否正确，若正确将该用户状态设置为激活，跳转到登录页面。</li>
+</ul>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Java项目</category>
+      </categories>
+      <tags>
+        <tag>Java SpringBoot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>仿牛客论坛项目03-登录功能</title>
+    <url>/2025/03/05/%E4%BB%BF%E7%89%9B%E5%AE%A2%E8%AE%BA%E5%9D%9B%E9%A1%B9%E7%9B%AE03-%E7%99%BB%E5%BD%95%E5%8A%9F%E8%83%BD/</url>
+    <content><![CDATA[<p>仿牛客论坛项目03-登录功能，内容记录。</p>
+<p>会话管理，cookie，session，验证码，hostHolder，拦截器</p>
+<span id="more"></span>
+
+<h2 id="1-会话管理"><a href="#1-会话管理" class="headerlink" title="1. 会话管理"></a>1. 会话管理</h2><h3 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(path = &quot;/cookie/set&quot;, method = RequestMethod.GET)</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">setCookie</span><span class="params">(HttpServletResponse response)</span> &#123;</span><br><span class="line">    <span class="comment">// 创建cookie</span></span><br><span class="line">    <span class="type">Cookie</span> <span class="variable">cookie</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Cookie</span>(<span class="string">&quot;code&quot;</span>, CommunityUtil.generateUUID());</span><br><span class="line">    <span class="comment">// 设置cookie生效路径</span></span><br><span class="line">    cookie.setPath((<span class="string">&quot;/community/alpha&quot;</span>));</span><br><span class="line">    <span class="comment">// 设置cookie生效时间</span></span><br><span class="line">    cookie.setMaxAge(<span class="number">600</span>);</span><br><span class="line">    <span class="comment">// 将cookie放入response响应头中</span></span><br><span class="line">    response.addCookie(cookie);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;set cookie&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><strong>请求映射</strong>：当一个GET请求发送到服务器的”&#x2F;cookie&#x2F;set”路径时，Spring框架会根据<code>@RequestMapping</code>注解找到这个<code>setCookie</code>方法来处理请求。</li>
+<li><strong>创建Cookie</strong>：在<code>setCookie</code>方法内部，首先创建了一个<code>Cookie</code>对象。<code>CommunityUtil.generateUUID()</code>方法（这个类和方法没有在代码中定义，可能是自定义的）被用来生成一个唯一的标识符（UUID），作为Cookie的值。</li>
+<li><strong>设置Cookie属性</strong>：<ul>
+<li><code>cookie.setPath(&quot;/community/alpha&quot;)</code>：设置了Cookie的路径，这意味着Cookie只会在域名下的”&#x2F;community&#x2F;alpha”路径及其子路径中有效。</li>
+<li><code>cookie.setMaxAge(600)</code>：设置了Cookie的最大年龄（以秒为单位）。在这个例子中，Cookie将在600秒（10分钟）后过期。</li>
+</ul>
+</li>
+<li><strong>添加到响应</strong>：通过<code>response.addCookie(cookie)</code>方法，将创建的Cookie添加到HTTP响应中。这样，当响应发送回浏览器时，Cookie也会一起发送。</li>
+<li><strong>响应体</strong>：函数返回了一个字符串”set cookie”，这将作为HTTP响应的响应体发送回客户端。客户端浏览器会显示这个字符串，但更重要的是，浏览器会存储下发的Cookie。</li>
+<li><strong>客户端存储Cookie</strong>：浏览器接收到响应后，会根据响应头中的<code>Set-Cookie</code>指令存储Cookie。由于设置了路径，浏览器只会在访问指定路径时发送这个Cookie。</li>
+<li><strong>浏览器显示结果</strong>：浏览器会向用户显示返回的字符串”set cookie”，表示Cookie设置操作已经完成。</li>
+<li><strong>Cookie的使用</strong>：从这一刻起，只要用户在浏览器中访问了指定路径，浏览器就会自动携带这个Cookie。服务器可以通过检查请求中的Cookie来识别用户或会话。</li>
+</ol>
+<h3 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h3><p>存在服务器中，比Cookie更安全，响应时通过Cookie将session的id传给服务器，浏览器下次请求时会带上session的id。</p>
+<p>缺点是会增加服务端的压力。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(path = &quot;/session/set&quot;, method = RequestMethod.GET)</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">setSession</span><span class="params">(HttpSession session)</span> &#123;</span><br><span class="line">    session.setAttribute(<span class="string">&quot;id&quot;</span>, <span class="number">1</span>);</span><br><span class="line">    session.setAttribute(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;test&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;set session&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>问题：若使用分布式服务器，中间件使用nginx负载均衡服务器，若浏览器发送了两次请求，第二次发送的请求，第二次请求的服务器上没有存这个session了</p>
+<p><img src="/2025/03/05/%E4%BB%BF%E7%89%9B%E5%AE%A2%E8%AE%BA%E5%9D%9B%E9%A1%B9%E7%9B%AE03-%E7%99%BB%E5%BD%95%E5%8A%9F%E8%83%BD/2.png" alt="2"></p>
+<p>解决方法：粘性session （固定的id传给同一个服务器处理，缺点是负载不均衡）、同步session（当一个服务器创建了一个session就会同步给别的服务器，缺点是同步影响服务器性能、服务器之间耦合影响部署）、共享session（单独一台服务器存储session，缺点是这台服务器崩溃后其他服务器也不能用了）</p>
+<p><img src="/2025/03/05/%E4%BB%BF%E7%89%9B%E5%AE%A2%E8%AE%BA%E5%9D%9B%E9%A1%B9%E7%9B%AE03-%E7%99%BB%E5%BD%95%E5%8A%9F%E8%83%BD/3.png" alt="3"></p>
+<p>主流方法：不存session了，尽量存cookie，敏感数据存在数据库（nosql数据库如Redis）中</p>
+<h2 id="2-生成验证码"><a href="#2-生成验证码" class="headerlink" title="2. 生成验证码"></a>2. 生成验证码</h2><p>引入<code>Kaptcha</code>包用于生成验证码</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.penggle<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>kaptcha<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.3.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>逻辑是：用户发送一个请求，服务端生成一个验证码，用session保存文本，将图片响应给浏览器。</p>
+<h2 id="3-登录"><a href="#3-登录" class="headerlink" title="3. 登录"></a>3. 登录</h2><h3 id="刷新验证码"><a href="#刷新验证码" class="headerlink" title="刷新验证码"></a>刷新验证码</h3><p>用JS写，因为用户刷新验证码不需要刷新整个页面，体验更好</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col-sm-4&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">th:src</span>=<span class="string">&quot;@&#123;/kaptcha&#125;&quot;</span> <span class="attr">style</span>=<span class="string">&quot;width:100px;height:40px;&quot;</span> <span class="attr">class</span>=<span class="string">&quot;mr-2&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;javascript:refresh_kaptcha();&quot;</span> <span class="attr">class</span>=<span class="string">&quot;font-size-12 align-bottom&quot;</span>&gt;</span>刷新验证码<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-handlebars"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">    function refresh_kaptcha() &#123;</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">        <span class="comment">&lt;!-- 防止浏览器不更新链接 --&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">        var path = CONTEXT_PATH + &quot;/kaptcha?p&quot; + Math.random();</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">        <span class="comment">&lt;!-- id选择器获取更新验证码的标签 --&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">        $(&quot;kaptcha&quot;).attr(&quot;src&quot;, path);</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">    &#125;</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars"></span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="登录、退出"><a href="#登录、退出" class="headerlink" title="登录、退出"></a>登录、退出</h3><p>实现逻辑：</p>
+<ol>
+<li>获取登录页面</li>
+<li>验证账号、密码、验证码（成功，生成登录凭证给客户端，跳转到首页；失败，跳转到登录页面显示提示信息）</li>
+<li>退出（登录凭证设置为失效，跳转到首页）</li>
+</ol>
+<p>生成登录凭证：</p>
+<ul>
+<li><p><code>Dao</code>层：</p>
+<p>与<code>login_ticket</code>数据库交互，查询、增加、更新，写完后在<code>Test</code>类中进行测试</p>
+</li>
+<li><p><code>Service</code>层：</p>
+<p>  用户登录不成功有多种情况，账号不存在、账号为激活、账号为空、密码为空、密码不正确</p>
+<p>  登录成功后要把生成的<code>ticket</code>传给客户端</p>
+</li>
+<li><p><code>Controller</code>层：</p>
+<p>  需要的参数有表单中提交的参数用户名、账号、验证码、是否记住账号，还需要Session从中获取生成的验证码。登录成功后要把登录凭证<code>ticket</code>传给cookie，因此还需要<code>HttpServletResponse</code>并将cookie保存到响应体<code>reponse</code>。</p>
+<p>  判断是否勾选记住密码，选择对于的登录凭证超时时间。</p>
+</li>
+<li><p><code>login.html</code>页面：</p>
+<ul>
+<li>表单上需要有<code>name</code>属性，提交给服务器才能获取</li>
+<li>账号密码不正确需要回到这个页面上还有账号密码信息，<code>th:value=&quot;$&#123;param.username&#125;&quot;</code>作用是从request参数中取参数</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-显示登录信息"><a href="#4-显示登录信息" class="headerlink" title="4. 显示登录信息"></a>4. 显示登录信息</h2><p>功能：用户登录后，要显示用户的头像以及个人信息，头部显示首页和消息，不显示注册和登录。</p>
+<h3 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h3><p><code>HandlerInterceptor</code>类有三阶段：</p>
+<ol>
+<li><code>preHandle</code>: 在Controller之前执行</li>
+<li><code>postHandle</code>: 在Controller之后执行</li>
+<li><code>afterCompletion</code>: 在TemplateEngine之后执行</li>
+</ol>
+<p>拦截器实现后，需要在<code>WebMvcConfigurer</code>实现类中添加该拦截器，并设置排除对静态资源的拦截，以及需要拦截的页面</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WebMvcConfig</span> <span class="keyword">implements</span> <span class="title class_">WebMvcConfigurer</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AlphaInterceptor alphaInterceptor;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> LoginTicketInterceptor loginTicketInterceptor;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> &#123;</span><br><span class="line">        <span class="comment">// 静态资源可以访问</span></span><br><span class="line">        registry.addInterceptor(alphaInterceptor)</span><br><span class="line">                .excludePathPatterns(<span class="string">&quot;/**/*.css&quot;</span>, <span class="string">&quot;/**/*.js&quot;</span>, <span class="string">&quot;/**/*.png&quot;</span>, <span class="string">&quot;/**/*.jpg&quot;</span>, <span class="string">&quot;/**/*.jpeg&quot;</span>)</span><br><span class="line">                .addPathPatterns(<span class="string">&quot;/register&quot;</span>, <span class="string">&quot;/login&quot;</span>);</span><br><span class="line"></span><br><span class="line">        registry.addInterceptor(loginTicketInterceptor)</span><br><span class="line">                .excludePathPatterns(<span class="string">&quot;/**/*.css&quot;</span>, <span class="string">&quot;/**/*.js&quot;</span>, <span class="string">&quot;/**/*.png&quot;</span>, <span class="string">&quot;/**/*.jpg&quot;</span>, <span class="string">&quot;/**/*.jpeg&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="实现HostHolder对象"><a href="#实现HostHolder对象" class="headerlink" title="实现HostHolder对象"></a>实现<code>HostHolder</code>对象</h3><p>从线程中保存<code>user</code>、获取<code>user</code>，在线程结束时进行清理</p>
+<p>线程在服务器处理完本次浏览器的请求后，线程结束。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HostHolder</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> ThreadLocal&lt;User&gt; users = <span class="keyword">new</span> <span class="title class_">ThreadLocal</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setUser</span><span class="params">(User user)</span> &#123;</span><br><span class="line">        users.set(user);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> User <span class="title function_">getUser</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> users.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span> &#123;</span><br><span class="line">        users.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="利用拦截器显示用户信息"><a href="#利用拦截器显示用户信息" class="headerlink" title="利用拦截器显示用户信息"></a>利用拦截器显示用户信息</h3><ol>
+<li><p>在请求开始时，通过凭证找到用户，将用户存入<code>HostHolder</code>中</p>
+</li>
+<li><p>在模板引擎执行之前，获取用户</p>
+</li>
+<li><p>在模板引擎执行之后，清理数据</p>
+</li>
+<li><p><code>WebMvcConfigurer</code>实现类中添加拦截器</p>
+</li>
+<li><p>修改页面，未登录时看不到消息，没登陆时显示注册、登录（登录后不显示）</p>
+</li>
+</ol>
+<h2 id="5-上传头像（文件）"><a href="#5-上传头像（文件）" class="headerlink" title="5. 上传头像（文件）"></a>5. 上传头像（文件）</h2><p><strong>上传文件：</strong></p>
+<ul>
+<li>必须是 <code>POST</code> 请求</li>
+<li>表单要加上 <code>enctype=&quot;multipart/form-data&quot;</code></li>
+<li>Spring MVC: 提供 <code>MultipartFile</code> 处理上传文件</li>
+</ul>
+<p><strong>开发步骤：</strong></p>
+<ol>
+<li>访问账号设置页面</li>
+<li>处理表单，上传头像，存储图像（本地服务器）</li>
+<li>增加一个请求：获取头像</li>
+</ol>
+<ul>
+<li><code>Service层</code>：增加更新用户头像的方法</li>
+<li><code>Controller层</code>：<br>  <strong>上传流程：</strong> 用户选择并上传文件，后端验证文件格式，生成随机文件名并保存文件到服务器，更新数据库中头像的 URL。<br>  <strong>获取流程：</strong> 用户请求头像文件，后端根据文件名读取服务器上的文件，设置合适的响应类型，并将图片文件传递给客户端。</li>
+</ul>
+<h2 id="6-更改密码（作业，自己写的）"><a href="#6-更改密码（作业，自己写的）" class="headerlink" title="6. 更改密码（作业，自己写的）"></a>6. 更改密码（作业，自己写的）</h2><p><strong>开发步骤：</strong></p>
+<ol>
+<li>访问账号设置页面</li>
+<li>处理表单，更改密码</li>
+</ol>
+<ul>
+<li><code>Service层</code>：增加更新用户密码的方法、校验旧密码是否正确</li>
+<li><ul>
+<li><code>Controller层</code>：<br>获取当前用户的原密码 -&gt;<br>校验用户输入的原密码是否与当前密码一致。如果不一致，添加错误信息并返回错误页面。 -&gt;<br>如果新密码和确认密码为空，添加错误信息。如果新密码和确认密码不一致，添加错误信息。确保新密码至少为 8 个字符长。如果不满足条件，添加错误信息。 -&gt;<br>校验完毕后，更新用户的密码。跳转登录页面。</li>
+</ul>
+</li>
+</ul>
+<h2 id="7-检查登录状态"><a href="#7-检查登录状态" class="headerlink" title="7. 检查登录状态"></a>7. 检查登录状态</h2><p>没登录前，在浏览器里输入一些的页面路径，要用拦截器拦截，不能访问。<br><strong>使用拦截器方法：</strong></p>
+<ul>
+<li>在方法钱标注自定义注解</li>
+<li>拦截所有请求，只处理带有该注解的方法</li>
+</ul>
+<p><strong>自定义注解：</strong></p>
+<ul>
+<li><p>常用元注解：<br>  @Target（声明自定义注解可以作用在哪些类或方法上）<br>  @Retention（声明自定义注解有效时间）<br>  @Document（声明自定义注解在生成文档时是否要带）<br>  @Inherited（指定子类是否要继承父类的注解）<br>  举例：</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.METHOD)</span>  </span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span>  </span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> LoginRequired &#123;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如何读取注解<br>  用到反射<br>  <code>Method.getDeclaredAnnotations()</code><br>  <code>Method.getAnnotation(Class&lt;T&gt; annotationClass)</code></p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span>  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LoginRequiredInterceptor</span> <span class="keyword">implements</span> <span class="title class_">HandlerInterceptor</span> &#123;  </span><br><span class="line">  </span><br><span class="line">    <span class="meta">@Autowired</span>  </span><br><span class="line">    <span class="keyword">private</span> HostHolder hostHolder;  </span><br><span class="line">  </span><br><span class="line">    <span class="meta">@Override</span>  </span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception &#123;  </span><br><span class="line">        <span class="comment">// 判断handle是否是方法  </span></span><br><span class="line">        <span class="keyword">if</span>(handler <span class="keyword">instanceof</span> HandlerMethod) &#123;  </span><br><span class="line">            <span class="type">HandlerMethod</span> <span class="variable">handlerMethod</span> <span class="operator">=</span> (HandlerMethod) handler;  </span><br><span class="line">            <span class="type">Method</span> <span class="variable">method</span> <span class="operator">=</span> handlerMethod.getMethod();  </span><br><span class="line">            <span class="comment">// 判断方法是否有这个注解  </span></span><br><span class="line">            <span class="type">LoginRequired</span> <span class="variable">loginRequired</span> <span class="operator">=</span> method.getAnnotation(LoginRequired.class);  </span><br><span class="line">            <span class="keyword">if</span>(loginRequired != <span class="literal">null</span> &amp;&amp; hostHolder.getUser() == <span class="literal">null</span>) &#123;  </span><br><span class="line">                <span class="comment">// 需要登录但是没登录  </span></span><br><span class="line">                response.sendRedirect(request.getContextPath() + <span class="string">&quot;/login&quot;</span>);  </span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
+<li><p>为什么要把登录凭证保存到cookie</p>
+<p>获取Cookie中的登录凭证，在每次请求时显示登录信息</p>
+<p><img src="/2025/03/05/%E4%BB%BF%E7%89%9B%E5%AE%A2%E8%AE%BA%E5%9D%9B%E9%A1%B9%E7%9B%AE03-%E7%99%BB%E5%BD%95%E5%8A%9F%E8%83%BD/1.png" alt="1"></p>
+</li>
+<li><p>为什么表单上需要有<code>name</code>属性，提交给服务器才能获取</p>
+<ul>
+<li><code>name</code>属性用于标识表单控件，使浏览器在提交表单时能够正确地传递用户输入的数据。</li>
+<li>服务器端依赖这些键值对来解析和处理表单数据。</li>
+<li>如果表单控件没有<code>name</code>属性，控件的值不会被提交，导致服务器无法获取用户的输入数据。</li>
+</ul>
+</li>
+<li><p>根据cookie中的登录凭证获取到用户后，怎么存？</p>
+<p>不能存在session中，因为用户信息是隐私信息。也不能存在类中，因为浏览器有很多请求，一个服务器并发处理多个请求，需要隔离存储。</p>
+<p>使用一个线程本地存储（ThreadLocal），用于存储当前线程的用户信息。在一次请求处理中，它的作用流程如下：</p>
+<ul>
+<li><strong>存储用户信息</strong>： 在请求开始时，从cookie中获取登录凭证，根据凭证查找用户信息，并将用户信息存储在<code>HostHolder</code>中。</li>
+<li><strong>访问用户信息</strong>： 在整个请求处理过程中，业务逻辑可以随时从<code>HostHolder</code>中获取当前用户的信息，而无需再次查找或验证。</li>
+<li><strong>清理用户信息</strong>： 请求处理完毕后，清理<code>HostHolder</code>中的用户信息，防止内存泄漏和数据污染。</li>
+</ul>
+</li>
+<li><p>为什么要使用拦截器来设置<code>HostHolder</code></p>
+<p>使用拦截器是为了在请求特定的阶段执行逻辑操作，拦截器有三个阶段，<code>preHandle</code>、<code>postHandle</code>、<code>afterCompletion</code></p>
+</li>
+</ol>
+<h3 id="说说登录模块"><a href="#说说登录模块" class="headerlink" title="说说登录模块"></a>说说登录模块</h3><p>•	用户点击首页上的 登录按钮，服务端响应 登录页面。	<br>•	用户在 登录页面 上输入 用户名、密码、验证码，然后点击登录按钮，服务端接收到 POST 请求，验证账号和密码的正确性。<br>•	若 验证码错误，返回错误信息，提示 验证码不正确，跳转回登录页面。<br>•	若 账号不存在或密码错误，返回相关错误信息，跳转回登录页面。<br>•	若 账号和密码正确，则：<br>•	生成 登录凭证（ticket），存入数据库，并返回给客户端（Cookie 存储）。<br>•	若用户勾选 “记住我”，设置 较长的过期时间，否则使用默认的短时间登录状态。<br>•	服务端返回 首页，用户登录成功。</p>
+]]></content>
+      <categories>
+        <category>Java项目</category>
+      </categories>
+      <tags>
+        <tag>Java SpringBoot</tag>
+      </tags>
+  </entry>
 </search>
