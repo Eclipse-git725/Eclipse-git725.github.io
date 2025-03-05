@@ -396,7 +396,7 @@
     <content><![CDATA[<p>仿牛客论坛项目01-首页功能，内容记录</p>
 <span id="more"></span>
 
-<h2 id="1-首页"><a href="#1-首页" class="headerlink" title="1. 首页"></a>1. 首页</h2><p>代码写的顺序：<code>Dao</code>-&gt;<code>Service</code>-&gt;<code>Controller</code></p>
+<h2 id="首页"><a href="#首页" class="headerlink" title="首页"></a>首页</h2><p>代码写的顺序：<code>Dao</code>-&gt;<code>Service</code>-&gt;<code>Controller</code></p>
 <h3 id="DAO"><a href="#DAO" class="headerlink" title="DAO"></a><code>DAO</code></h3><p>方法1：需要查询所有的帖子，查询所有的不需要参数；考虑到之后还有功能个人主页上显示自己的博客，因此，方法中要加上<code>userID</code>参数；还有分页功能，方法中还要加上页数的索引<code>offset</code>，以及每页的限制<code>limit</code>。</p>
 <p>方法2：为了实现分页功能，需要查询所有帖子的行数</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Mapper</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">DiscussPostMapper</span> &#123;</span><br><span class="line">    List&lt;DiscussPost&gt; <span class="title function_">selectDiscussPosts</span><span class="params">(<span class="type">int</span> userId, <span class="type">int</span> offset, <span class="type">int</span> limit)</span>;</span><br><span class="line">    <span class="type">int</span> <span class="title function_">selectDiscussPostsRows</span><span class="params">(<span class="meta">@Param(&quot;userId&quot;)</span> <span class="type">int</span> userId)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -411,7 +411,7 @@
 <p>在该层中调用<code>Service</code>，返回模板的路径</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(value = &quot;/index&quot;, method = RequestMethod.GET)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">getIndexPage</span><span class="params">(Model model, Page page)</span> &#123;</span><br><span class="line">    <span class="comment">// SpringMVC会将Page自动注入到Model，并将请求中的查询参数映射到这个对象上</span></span><br><span class="line">    <span class="comment">// 这样Thymeleaf可以直接使用Page中的数据</span></span><br><span class="line">    <span class="comment">// 服务端可以设置的分页参数</span></span><br><span class="line">    page.setRows(discussPostService.findDiscussPostsRows(<span class="number">0</span>));</span><br><span class="line">    page.setPath(<span class="string">&quot;/index&quot;</span>);</span><br><span class="line"></span><br><span class="line">    List&lt;DiscussPost&gt; list = discussPostService.findDiscussPosts(<span class="number">0</span>, page.getOffset(), page.getLimit());</span><br><span class="line">    List&lt;Map&lt;String, Object&gt;&gt; postList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">if</span>(list != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span>(DiscussPost post : list) &#123;</span><br><span class="line">            <span class="comment">// 将用户名加入列表中</span></span><br><span class="line">            <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> userService.findUserById(post.getUserId());</span><br><span class="line">            Map&lt;String, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">            map.put(<span class="string">&quot;post&quot;</span>, post);</span><br><span class="line">            map.put(<span class="string">&quot;user&quot;</span>, user);</span><br><span class="line">            postList.add(map);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    model.addAttribute(<span class="string">&quot;discussPosts&quot;</span>, postList);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;/index&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="2-分页功能"><a href="#2-分页功能" class="headerlink" title="2. 分页功能"></a>2. 分页功能</h2><p><strong>分页类需要用到的参数：</strong></p>
+<h2 id="分页功能"><a href="#分页功能" class="headerlink" title="分页功能"></a>分页功能</h2><p><strong>分页类需要用到的参数：</strong></p>
 <ol>
 <li><code>current</code> 为当前页码</li>
 <li><code>limit</code> 为每页上限</li>
@@ -438,7 +438,7 @@
 
 
 
-<h2 id="3-Thymeleaf语法"><a href="#3-Thymeleaf语法" class="headerlink" title="3. Thymeleaf语法"></a>3. Thymeleaf语法</h2><p><strong><code>thymeleaf</code>作用</strong>：前端页面中使用Thymeleaf表达式来访问<code>Model</code>中的数据</p>
+<h2 id="Thymeleaf语法"><a href="#Thymeleaf语法" class="headerlink" title="Thymeleaf语法"></a>Thymeleaf语法</h2><p><strong><code>thymeleaf</code>作用</strong>：前端页面中使用Thymeleaf表达式来访问<code>Model</code>中的数据</p>
 <p>导入<code>thymeleaf</code>：<code>&lt;html lang=&quot;en&quot; xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;</code></p>
 <p>页面中导入的静态资源有相对路径时，需要使用<code>thymeleaf</code>语法</p>
 <p><code>&lt;link rel=&quot;stylesheet&quot; th:href=&quot;@&#123;css/global.css&#125;&quot; /&gt;</code> 这样写默认去<code>static</code>下寻找</p>
@@ -475,7 +475,7 @@
 </li>
 </ol>
 <h3 id="Content"><a href="#Content" class="headerlink" title="Content"></a><code>Content</code></h3><p>在Thymeleaf中，<code>context</code>类主要用于传递变量和数据模型到模板引擎，以便在HTML模板中进行数据渲染。</p>
-<h2 id="4-问题"><a href="#4-问题" class="headerlink" title="4. 问题"></a>4. 问题</h2><ol>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
 <li><p>在page类里没有配置total属性，但是有一个getTotal方法，controller类里将page注入给了model，为什么在thymeleaf中可以直接使用page.total，而不用getTotal</p>
 <p>尽管<code>Page</code>类没有直接定义一个名为<code>total</code>的属性，但是存在一个<code>getTotal()</code>方法。根据JavaBean的命名规则，Thymeleaf会认为<code>getTotal()</code>方法是用来获取<code>total</code>属性的值的。因此，Thymeleaf允许直接使用<code>page.total</code>来访问这个属性的值，而不需要显式调用<code>getTotal()</code>方法。</p>
 </li>
@@ -494,15 +494,14 @@
     <content><![CDATA[<p>仿牛客论坛项目02-注册激活功能，内容记录</p>
 <span id="more"></span>
 
-<p>1.发送邮件功能</p>
-<h3 id="导入邮件jar包"><a href="#导入邮件jar包" class="headerlink" title="导入邮件jar包"></a>导入邮件jar包</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-mail<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.7.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="发送邮件功能"><a href="#发送邮件功能" class="headerlink" title="发送邮件功能"></a>发送邮件功能</h2><h3 id="导入邮件jar包"><a href="#导入邮件jar包" class="headerlink" title="导入邮件jar包"></a>导入邮件jar包</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-mail<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.7.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="配置邮箱参数"><a href="#配置邮箱参数" class="headerlink" title="配置邮箱参数"></a>配置邮箱参数</h3><figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment">#MailProperties</span></span><br><span class="line"><span class="attr">spring.mail.host</span>=<span class="string">smtp.sina.com</span></span><br><span class="line"><span class="attr">spring.mail.port</span>=<span class="string">465</span></span><br><span class="line"><span class="attr">spring.mail.username</span>=<span class="string">newcodergxy@sina.com</span></span><br><span class="line"><span class="comment"># 邮箱授权码</span></span><br><span class="line"><span class="attr">spring.mail.password</span>=<span class="string">xxx</span></span><br><span class="line"><span class="attr">spring.mail.protocol</span>=<span class="string">smtp</span></span><br><span class="line"><span class="attr">spring.mail.properties.mail.smtp.ssl.enable</span>=<span class="string">true</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="使用JavaMailSender"><a href="#使用JavaMailSender" class="headerlink" title="使用JavaMailSender"></a>使用JavaMailSender</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendMail</span><span class="params">(String to, String subject, String content)</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">MimeMessage</span> <span class="variable">message</span> <span class="operator">=</span> mailSender.createMimeMessage();</span><br><span class="line">        <span class="type">MimeMessageHelper</span> <span class="variable">helper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MimeMessageHelper</span>(message);</span><br><span class="line">        helper.setFrom(from);</span><br><span class="line">        helper.setTo(to);</span><br><span class="line">        helper.setSubject(subject);</span><br><span class="line">        helper.setText(content, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">        mailSender.send(helper.getMimeMessage());</span><br><span class="line">    &#125; <span class="keyword">catch</span> (MessagingException e) &#123;</span><br><span class="line">        logger.error(<span class="string">&quot;发送邮件失败：&quot;</span> + e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-<h2 id="2-注册功能"><a href="#2-注册功能" class="headerlink" title="2. 注册功能"></a>2. 注册功能</h2><p>写功能时，可以将功能按照在浏览器中的请求，进行拆解</p>
+<h2 id="注册功能"><a href="#注册功能" class="headerlink" title="注册功能"></a>注册功能</h2><p>写功能时，可以将功能按照在浏览器中的请求，进行拆解</p>
 <p>注册功能有三次请求：</p>
 <ol>
 <li>访问注册页面</li>
@@ -567,7 +566,7 @@
 <p>会话管理，cookie，session，验证码，hostHolder，拦截器</p>
 <span id="more"></span>
 
-<h2 id="1-会话管理"><a href="#1-会话管理" class="headerlink" title="1. 会话管理"></a>1. 会话管理</h2><h3 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(path = &quot;/cookie/set&quot;, method = RequestMethod.GET)</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">setCookie</span><span class="params">(HttpServletResponse response)</span> &#123;</span><br><span class="line">    <span class="comment">// 创建cookie</span></span><br><span class="line">    <span class="type">Cookie</span> <span class="variable">cookie</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Cookie</span>(<span class="string">&quot;code&quot;</span>, CommunityUtil.generateUUID());</span><br><span class="line">    <span class="comment">// 设置cookie生效路径</span></span><br><span class="line">    cookie.setPath((<span class="string">&quot;/community/alpha&quot;</span>));</span><br><span class="line">    <span class="comment">// 设置cookie生效时间</span></span><br><span class="line">    cookie.setMaxAge(<span class="number">600</span>);</span><br><span class="line">    <span class="comment">// 将cookie放入response响应头中</span></span><br><span class="line">    response.addCookie(cookie);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;set cookie&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="会话管理"><a href="#会话管理" class="headerlink" title="会话管理"></a>会话管理</h2><h3 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(path = &quot;/cookie/set&quot;, method = RequestMethod.GET)</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">setCookie</span><span class="params">(HttpServletResponse response)</span> &#123;</span><br><span class="line">    <span class="comment">// 创建cookie</span></span><br><span class="line">    <span class="type">Cookie</span> <span class="variable">cookie</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Cookie</span>(<span class="string">&quot;code&quot;</span>, CommunityUtil.generateUUID());</span><br><span class="line">    <span class="comment">// 设置cookie生效路径</span></span><br><span class="line">    cookie.setPath((<span class="string">&quot;/community/alpha&quot;</span>));</span><br><span class="line">    <span class="comment">// 设置cookie生效时间</span></span><br><span class="line">    cookie.setMaxAge(<span class="number">600</span>);</span><br><span class="line">    <span class="comment">// 将cookie放入response响应头中</span></span><br><span class="line">    response.addCookie(cookie);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;set cookie&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ol>
 <li><strong>请求映射</strong>：当一个GET请求发送到服务器的”&#x2F;cookie&#x2F;set”路径时，Spring框架会根据<code>@RequestMapping</code>注解找到这个<code>setCookie</code>方法来处理请求。</li>
@@ -592,11 +591,11 @@
 <p>解决方法：粘性session （固定的id传给同一个服务器处理，缺点是负载不均衡）、同步session（当一个服务器创建了一个session就会同步给别的服务器，缺点是同步影响服务器性能、服务器之间耦合影响部署）、共享session（单独一台服务器存储session，缺点是这台服务器崩溃后其他服务器也不能用了）</p>
 <p><img src="/2025/03/05/%E4%BB%BF%E7%89%9B%E5%AE%A2%E8%AE%BA%E5%9D%9B%E9%A1%B9%E7%9B%AE03-%E7%99%BB%E5%BD%95%E5%8A%9F%E8%83%BD/3.png" alt="3"></p>
 <p>主流方法：不存session了，尽量存cookie，敏感数据存在数据库（nosql数据库如Redis）中</p>
-<h2 id="2-生成验证码"><a href="#2-生成验证码" class="headerlink" title="2. 生成验证码"></a>2. 生成验证码</h2><p>引入<code>Kaptcha</code>包用于生成验证码</p>
+<h2 id="生成验证码"><a href="#生成验证码" class="headerlink" title="生成验证码"></a>生成验证码</h2><p>引入<code>Kaptcha</code>包用于生成验证码</p>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.penggle<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>kaptcha<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.3.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>逻辑是：用户发送一个请求，服务端生成一个验证码，用session保存文本，将图片响应给浏览器。</p>
-<h2 id="3-登录"><a href="#3-登录" class="headerlink" title="3. 登录"></a>3. 登录</h2><h3 id="刷新验证码"><a href="#刷新验证码" class="headerlink" title="刷新验证码"></a>刷新验证码</h3><p>用JS写，因为用户刷新验证码不需要刷新整个页面，体验更好</p>
+<h2 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h2><h3 id="刷新验证码"><a href="#刷新验证码" class="headerlink" title="刷新验证码"></a>刷新验证码</h3><p>用JS写，因为用户刷新验证码不需要刷新整个页面，体验更好</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col-sm-4&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">th:src</span>=<span class="string">&quot;@&#123;/kaptcha&#125;&quot;</span> <span class="attr">style</span>=<span class="string">&quot;width:100px;height:40px;&quot;</span> <span class="attr">class</span>=<span class="string">&quot;mr-2&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;javascript:refresh_kaptcha();&quot;</span> <span class="attr">class</span>=<span class="string">&quot;font-size-12 align-bottom&quot;</span>&gt;</span>刷新验证码<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-handlebars"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">    function refresh_kaptcha() &#123;</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">        <span class="comment">&lt;!-- 防止浏览器不更新链接 --&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">        var path = CONTEXT_PATH + &quot;/kaptcha?p&quot; + Math.random();</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">        <span class="comment">&lt;!-- id选择器获取更新验证码的标签 --&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">        $(&quot;kaptcha&quot;).attr(&quot;src&quot;, path);</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">    &#125;</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars"></span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="登录、退出"><a href="#登录、退出" class="headerlink" title="登录、退出"></a>登录、退出</h3><p>实现逻辑：</p>
@@ -625,7 +624,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="4-显示登录信息"><a href="#4-显示登录信息" class="headerlink" title="4. 显示登录信息"></a>4. 显示登录信息</h2><p>功能：用户登录后，要显示用户的头像以及个人信息，头部显示首页和消息，不显示注册和登录。</p>
+<h2 id="显示登录信息"><a href="#显示登录信息" class="headerlink" title="显示登录信息"></a>显示登录信息</h2><p>功能：用户登录后，要显示用户的头像以及个人信息，头部显示首页和消息，不显示注册和登录。</p>
 <h3 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h3><p><code>HandlerInterceptor</code>类有三阶段：</p>
 <ol>
 <li><code>preHandle</code>: 在Controller之前执行</li>
@@ -651,7 +650,7 @@
 <li><p>修改页面，未登录时看不到消息，没登陆时显示注册、登录（登录后不显示）</p>
 </li>
 </ol>
-<h2 id="5-上传头像（文件）"><a href="#5-上传头像（文件）" class="headerlink" title="5. 上传头像（文件）"></a>5. 上传头像（文件）</h2><p><strong>上传文件：</strong></p>
+<h2 id="上传头像（文件）"><a href="#上传头像（文件）" class="headerlink" title="上传头像（文件）"></a>上传头像（文件）</h2><p><strong>上传文件：</strong></p>
 <ul>
 <li>必须是 <code>POST</code> 请求</li>
 <li>表单要加上 <code>enctype=&quot;multipart/form-data&quot;</code></li>
@@ -667,7 +666,7 @@
 <li><code>Service层</code>：增加更新用户头像的方法</li>
 <li><code>Controller层</code>：<br>  <strong>上传流程：</strong> 用户选择并上传文件，后端验证文件格式，生成随机文件名并保存文件到服务器，更新数据库中头像的 URL。<br>  <strong>获取流程：</strong> 用户请求头像文件，后端根据文件名读取服务器上的文件，设置合适的响应类型，并将图片文件传递给客户端。</li>
 </ul>
-<h2 id="6-更改密码（作业，自己写的）"><a href="#6-更改密码（作业，自己写的）" class="headerlink" title="6. 更改密码（作业，自己写的）"></a>6. 更改密码（作业，自己写的）</h2><p><strong>开发步骤：</strong></p>
+<h2 id="更改密码（作业，自己写的）"><a href="#更改密码（作业，自己写的）" class="headerlink" title="更改密码（作业，自己写的）"></a>更改密码（作业，自己写的）</h2><p><strong>开发步骤：</strong></p>
 <ol>
 <li>访问账号设置页面</li>
 <li>处理表单，更改密码</li>
@@ -679,7 +678,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="7-检查登录状态"><a href="#7-检查登录状态" class="headerlink" title="7. 检查登录状态"></a>7. 检查登录状态</h2><p>没登录前，在浏览器里输入一些的页面路径，要用拦截器拦截，不能访问。<br><strong>使用拦截器方法：</strong></p>
+<h2 id="检查登录状态"><a href="#检查登录状态" class="headerlink" title="检查登录状态"></a>检查登录状态</h2><p>没登录前，在浏览器里输入一些的页面路径，要用拦截器拦截，不能访问。<br><strong>使用拦截器方法：</strong></p>
 <ul>
 <li>在方法钱标注自定义注解</li>
 <li>拦截所有请求，只处理带有该注解的方法</li>
