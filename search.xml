@@ -727,4 +727,168 @@
         <tag>Java SpringBoot</tag>
       </tags>
   </entry>
+  <entry>
+    <title>仿牛客论坛项目04-核心社区功能</title>
+    <url>/2025/03/08/%E4%BB%BF%E7%89%9B%E5%AE%A2%E8%AE%BA%E5%9D%9B%E9%A1%B9%E7%9B%AE04-%E6%A0%B8%E5%BF%83%E7%A4%BE%E5%8C%BA%E5%8A%9F%E8%83%BD/</url>
+    <content><![CDATA[<p>仿牛客论坛项目04-核心社区功能，内容记录。</p>
+<p>字典树过滤敏感词、事务管理、统一异常管理、AOP 记录日志</p>
+<span id="more"></span>
+
+<h2 id="过滤敏感词"><a href="#过滤敏感词" class="headerlink" title="过滤敏感词"></a>过滤敏感词</h2><p>使用字典树（Trie树、前缀树）过滤敏感词<br>应用：字符串检索、词频统计、字符串排序</p>
+<p>实现敏感词过滤器方法：</p>
+<ul>
+<li>定义前缀树</li>
+<li>根据敏感词，初始化前缀树</li>
+<li>编写过滤敏感词方法<br><img src="/2025/03/08/%E4%BB%BF%E7%89%9B%E5%AE%A2%E8%AE%BA%E5%9D%9B%E9%A1%B9%E7%9B%AE04-%E6%A0%B8%E5%BF%83%E7%A4%BE%E5%8C%BA%E5%8A%9F%E8%83%BD/1.png" alt="1"></li>
+</ul>
+<p>注意：<br>需要考虑敏感词之间有符号的情况。<br>核心代码实现：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">filter</span><span class="params">(String text)</span> &#123;  </span><br><span class="line">    <span class="type">TrieNode</span> <span class="variable">tempNode</span> <span class="operator">=</span> rootNode; <span class="comment">// 指针1  </span></span><br><span class="line">    <span class="type">int</span> <span class="variable">begin</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">// 指针2  </span></span><br><span class="line">    <span class="type">int</span> <span class="variable">position</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">// 指针3  </span></span><br><span class="line">    <span class="comment">// 结果  </span></span><br><span class="line">    <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();  </span><br><span class="line">    <span class="keyword">while</span>(position &lt; text.length()) &#123;  </span><br><span class="line">        <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> text.charAt(position);  </span><br><span class="line">  </span><br><span class="line">        <span class="comment">// 跳过符号  </span></span><br><span class="line">        <span class="keyword">if</span>(isSymbol(c)) &#123;  </span><br><span class="line">            <span class="comment">// 若指针1处于根节点，将此符号计入结果，指针2向下走一步  </span></span><br><span class="line">            <span class="keyword">if</span>(tempNode == rootNode) &#123;  </span><br><span class="line">                sb.append(c);  </span><br><span class="line">                begin ++;  </span><br><span class="line">            &#125;  </span><br><span class="line">            <span class="comment">// 无论符号在开头还是中间，指针3都向下走一步  </span></span><br><span class="line">            position ++;  </span><br><span class="line">            <span class="keyword">continue</span>;  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        <span class="comment">// 检查下级节点  </span></span><br><span class="line">        tempNode = tempNode.getSubNode(c);  </span><br><span class="line">        <span class="keyword">if</span>(tempNode == <span class="literal">null</span>) &#123;  </span><br><span class="line">            <span class="comment">// 已begin开头的字符串不是敏感词  </span></span><br><span class="line">            sb.append(text.charAt(begin));  </span><br><span class="line">            <span class="comment">// 进入下个位置  </span></span><br><span class="line">            position = ++begin;  </span><br><span class="line">            <span class="comment">// 重新指向根节点  </span></span><br><span class="line">            tempNode = rootNode;  </span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(tempNode.isEnd()) &#123;  </span><br><span class="line">            <span class="comment">// 发现敏感词，将begin-position字符串替换掉  </span></span><br><span class="line">            sb.append(REPLACEMENT);  </span><br><span class="line">            <span class="comment">// 进入下一个位置  </span></span><br><span class="line">            begin = ++position;  </span><br><span class="line">            tempNode = rootNode;  </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">            <span class="comment">// 继续检查下一个字符  </span></span><br><span class="line">            position ++;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 将最后一批字符计入结果，指针2疑似敏感词，指针3已经到结尾，不是敏感词  </span></span><br><span class="line">    sb.append(text.substring(begin));  </span><br><span class="line">    <span class="keyword">return</span> sb.toString();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="发布帖子"><a href="#发布帖子" class="headerlink" title="发布帖子"></a>发布帖子</h2><p><strong>AJAX：</strong></p>
+<ul>
+<li>Asynchronous JavaScript ans XML</li>
+<li>不需要刷新整个页面，能将增量显示在页面上</li>
+</ul>
+<p>示例：页面上点发送按钮，服务器返回数据</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&lt;script src=<span class="string">&quot;https://code.jquery.com/jquery-3.3.1.min.js&quot;</span> crossorigin=<span class="string">&quot;anonymous&quot;</span>&gt;&lt;/script&gt;  </span><br><span class="line">&lt;script&gt;  </span><br><span class="line">    function <span class="title function_">send</span><span class="params">()</span> &#123;  </span><br><span class="line">        $.post(  </span><br><span class="line">            <span class="string">&quot;/community/alpha/ajax&quot;</span>,  </span><br><span class="line">            &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;gxy&quot;</span>, <span class="string">&quot;age&quot;</span>:<span class="number">23</span>&#125;,  </span><br><span class="line">            function (data) &#123;  </span><br><span class="line">                <span class="comment">// 回调函数，服务器返回给浏览器的对象  </span></span><br><span class="line">                console.log(typeof(data));  </span><br><span class="line">                console.log(data);  </span><br><span class="line">  </span><br><span class="line">                data = $.parseJSON(data);  </span><br><span class="line">                console.log(typeof(data));  </span><br><span class="line">                console.log(data.code);  </span><br><span class="line">                console.log(data.msg);  </span><br><span class="line">            &#125;  </span><br><span class="line">        );  </span><br><span class="line">    &#125;  </span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Dao-层"><a href="#Dao-层" class="headerlink" title="Dao 层"></a>Dao 层</h3><p>增加帖子的方法，并在mybatis mapper中实现数据库语句<br>写完需要进行测试。</p>
+<h3 id="Service-层"><a href="#Service-层" class="headerlink" title="Service 层"></a>Service 层</h3><p>添加帖子时的处理逻辑：</p>
+<ol>
+<li>参数不能为空</li>
+<li>对 HTML 标记进行转义，方法<code>HtmlUtils.htmlEscape()</code></li>
+<li>过滤敏感词</li>
+</ol>
+<h3 id="Controller-层"><a href="#Controller-层" class="headerlink" title="Controller 层"></a>Controller 层</h3><p>页面上只需要传入标题和内容（参数）。<br>Controller 层逻辑：</p>
+<ol>
+<li>判断用户是否登录</li>
+<li>创建一个帖子的对象</li>
+<li>返回 JSON 字符串</li>
+</ol>
+<h3 id="视图层"><a href="#视图层" class="headerlink" title="视图层"></a>视图层</h3><p>实现逻辑：</p>
+<ol>
+<li>没登录时，不显示“我要发布”的按钮</li>
+<li>JS 中获取标题和内容</li>
+<li>发送异步请求</li>
+<li>在异步请求的回调函数中，将提示消息更新到页面</li>
+</ol>
+<h2 id="显示帖子详情"><a href="#显示帖子详情" class="headerlink" title="显示帖子详情"></a>显示帖子详情</h2><h3 id="Dao、Service、Controller-层"><a href="#Dao、Service、Controller-层" class="headerlink" title="Dao、Service、Controller 层"></a>Dao、Service、Controller 层</h3><p>增加查看帖子的方法</p>
+<h3 id="index-html"><a href="#index-html" class="headerlink" title="index.html"></a>index.html</h3><p>在帖子标题上增加访问详情页面的链接</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">th:href</span>=<span class="string">&quot;@&#123;|/discuss/detail/$&#123;map.post.id&#125;|&#125;&quot;</span> <span class="attr">th:utext</span>=<span class="string">&quot;$&#123;map.post.title&#125;&quot;</span>&gt;</span>xxx  </span><br><span class="line"><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="discuss-detail-html"><a href="#discuss-detail-html" class="headerlink" title="discuss-detail.html"></a>discuss-detail.html</h3><ul>
+<li>处理静态资源的访问路径</li>
+<li>复用 <code>index.html</code> 的 <code>header</code> 区域</li>
+<li>显示标题、作者、发布时间、帖子正文等内容</li>
+</ul>
+<h2 id="事务管理"><a href="#事务管理" class="headerlink" title="事务管理"></a>事务管理</h2><p><strong>定义：</strong> 有N步数据库操作序列组成的逻辑执行单元，这系列操作要么全执行，要么全放弃执行<br><strong>事务的特性（ACID）：</strong></p>
+<ul>
+<li>原子性（Atomicity）：事务是最小的执行体</li>
+<li>一致性（Consistency）：事务执行的结果，是数据从一个一致性状态，变为另一个一致性状态</li>
+<li>隔离性（Isolation）：各个事务内部的操作互不干扰</li>
+<li>持久性（Durability）：事务一旦提交，对数据做的改变都要记录到永久存储器中</li>
+</ul>
+<p><strong>事务的隔离性：</strong></p>
+<ul>
+<li>常见的并发异常：<br>  第一类丢失更新（某一个事务的回滚导致另一个事务已更新的数据丢失 ）、第二类丢失更新（某一个事务的提交导致另一个事务已更新的数据丢失）<br>  脏读（某一个事务读取了另一个事务未提交的数据）、不可重复读（某一个事务，对同一个数据前后读取结果不一致）、幻读（某一个事务，对同一个表前后查询到的行数不一致）</li>
+<li>常见的隔离级别<br>  Read Uncommitted：读取未提交的数据<br>  Read Committed：读取已提交的数据<br>  Repeatable Read：可重复读<br>  Serializable：串行化 （会加很多锁，降低执行效率）</li>
+</ul>
+<p><strong>数据库保障事务的实现机制：</strong></p>
+<ul>
+<li>悲观锁（数据库自带）<ul>
+<li>共享锁（S锁）：事务A对某数据加了共享锁后，其他事务职能加共享锁，不能加排他锁</li>
+<li>排他锁（X锁）：事务A对某数据加了排他锁后，其他事务对该数据既不能加共享锁，也不能加排他锁</li>
+</ul>
+</li>
+<li>乐观锁（自定义）<br>  使用版本号、时间戳等<br>  在更新数据钱，检查版本是否发生变化，若变化则取消本次更新，否则就更新数据（版本号+1）</li>
+</ul>
+<p><strong>使用注解管理事务</strong><br><code>@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)</code><br>传播方式 <code>propagation</code> 是一个方法调用另一个事务管理的方法，该用哪一种隔离级别，传播机制就就是用来解决这种问题，常用有三种：</p>
+<ul>
+<li><code>REQUIRED</code>：支持当前事务（或者说外部事务，A调用B，A是当前事务），如果不存在则创建新事务</li>
+<li><code>REQUIRES_NEW</code>：创建一个新事物，并且暂停当前事务</li>
+<li><code>NESTED</code>：如果当前存在事务（外部事务），则嵌套在该事务中执行（但有独立的提交和回滚），否则和REQUIRED一致</li>
+</ul>
+<h2 id="显示评论"><a href="#显示评论" class="headerlink" title="显示评论"></a>显示评论</h2><h3 id="数据层"><a href="#数据层" class="headerlink" title="数据层"></a>数据层</h3><ul>
+<li>根据实体查询一页评论数据</li>
+<li>根据实体查询评论的数量</li>
+</ul>
+<h3 id="业务层"><a href="#业务层" class="headerlink" title="业务层"></a>业务层</h3><ul>
+<li>处理查询评论业务</li>
+<li>处理查询评论数量的业务</li>
+</ul>
+<h3 id="表现层"><a href="#表现层" class="headerlink" title="表现层"></a>表现层</h3><ul>
+<li>显示帖子详情数据时，同时显示该帖子所有的评论数据</li>
+<li>每个评论的回复也要同时查询评论的所有回复数据</li>
+</ul>
+<h2 id="添加评论"><a href="#添加评论" class="headerlink" title="添加评论"></a>添加评论</h2><h3 id="数据层-1"><a href="#数据层-1" class="headerlink" title="数据层"></a>数据层</h3><ul>
+<li>增加评论（<code>CommentMapper</code> 中实现）</li>
+<li>修改评论的数量（<code>discuss_post</code> 表中有个参数是评论数量，<code>DiscussPostMapper</code> 中实现 ）</li>
+</ul>
+<h3 id="业务层-1"><a href="#业务层-1" class="headerlink" title="业务层"></a>业务层</h3><ul>
+<li>处理增加评论业务（核心业务，在这用事务管理，要先判空，再 转义HTML，再过滤敏感词）</li>
+<li>先增加评论，再更新帖子评论的数量</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Isolation.READ_COMMITTED 作用：当前事务只能读取到已提交的数据</span></span><br><span class="line"><span class="meta">@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)</span>  </span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">addComment</span><span class="params">(Comment comment)</span> &#123;  </span><br><span class="line">    <span class="keyword">if</span>(comment == <span class="literal">null</span>) &#123;  </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;参数不能为空！&quot;</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 转义comment  </span></span><br><span class="line">    comment.setContent(HtmlUtils.htmlEscape(comment.getContent()));  </span><br><span class="line">    <span class="comment">// 过滤敏感词  </span></span><br><span class="line">    comment.setContent(sensitiveFilter.filter(comment.getContent()));  </span><br><span class="line">    <span class="type">int</span> <span class="variable">rows</span> <span class="operator">=</span> commentMapper.insertComment(comment);  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 更新帖子评论数量  </span></span><br><span class="line">    <span class="keyword">if</span>(comment.getEntityType() == ENTITY_TYPE_COMMENT) &#123;  </span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> commentMapper.selectCommentsRows(comment.getEntityType(), comment.getEntityId());  </span><br><span class="line">        discussPostService.updateCommentCount(comment.getEntityId(), count);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> rows;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="表现层-1"><a href="#表现层-1" class="headerlink" title="表现层"></a>表现层</h3><ul>
+<li>处理添加评论数据的请求</li>
+<li>设置添加评论的表单</li>
+</ul>
+<h2 id="私信列表"><a href="#私信列表" class="headerlink" title="私信列表"></a>私信列表</h2><p>业务逻辑：</p>
+<ul>
+<li>私信列表<ul>
+<li>查询当前用户的会话列表，每个会话只显示一条最新的私信</li>
+<li>支持分页显示</li>
+</ul>
+</li>
+<li>私信详情<ul>
+<li>查询某个会话所包含的私信</li>
+<li>支持分页显示</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据层-2"><a href="#数据层-2" class="headerlink" title="数据层"></a>数据层</h3><p><code>MessageMapper</code> 有五个方法：<br>查询一页数据、查询数据总行数。点击一个会话进入后也要这两个方法<br>查询未读消息数量（针对某个会话、针对所有会话）。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="operator">/</span><span class="operator">/</span> 对于每个 conversation_id，找到 id 最大的消息（通常代表该会话中最新的消息）。</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">max</span>(id) <span class="keyword">from</span> message </span><br><span class="line"><span class="keyword">where</span> status <span class="operator">!=</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">and</span> from_id <span class="operator">!=</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> conversation_id</span><br><span class="line"></span><br><span class="line"><span class="operator">/</span><span class="operator">/</span> 这个 <span class="keyword">IN</span> 子查询的作用是 找到每个会话中 id 最大的消息（即最新消息），然后从 message 表中查询这些消息的完整信息。</span><br><span class="line"><span class="operator">&lt;</span><span class="keyword">select</span> id<span class="operator">=</span>&quot;selectConversations&quot; resultType<span class="operator">=</span>&quot;Message&quot;<span class="operator">&gt;</span>  </span><br><span class="line">    <span class="keyword">select</span> <span class="operator">&lt;</span>include refid<span class="operator">=</span>&quot;selectField&quot;<span class="operator">&gt;</span><span class="operator">&lt;</span><span class="operator">/</span>include<span class="operator">&gt;</span>  </span><br><span class="line">    <span class="keyword">from</span> message  </span><br><span class="line">    <span class="keyword">where</span> id <span class="keyword">in</span> (  </span><br><span class="line">        <span class="keyword">select</span> <span class="built_in">max</span>(id)  </span><br><span class="line">        <span class="keyword">from</span> message  </span><br><span class="line">        <span class="keyword">where</span> status <span class="operator">!=</span> <span class="number">2</span>  </span><br><span class="line">        <span class="keyword">and</span> from_id <span class="operator">!=</span> <span class="number">1</span>  </span><br><span class="line">        <span class="keyword">and</span> (from_id <span class="operator">=</span> #&#123;userId&#125; <span class="keyword">or</span> to_id <span class="operator">=</span> #&#123;userId&#125;)  </span><br><span class="line">        <span class="keyword">group</span> <span class="keyword">by</span> conversation_id  </span><br><span class="line">    )  </span><br><span class="line">    <span class="keyword">order</span> <span class="keyword">by</span> id <span class="keyword">desc</span>  </span><br><span class="line">    # 分页查询语句  </span><br><span class="line">    limit #&#123;<span class="keyword">offset</span>&#125;, #&#123;limit&#125;  </span><br><span class="line"><span class="operator">&lt;</span><span class="operator">/</span><span class="keyword">select</span><span class="operator">&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="operator">/</span><span class="operator">/</span> 这个<span class="keyword">sql</span>是统计子查询最大id的数量</span><br><span class="line"><span class="operator">&lt;</span><span class="keyword">select</span> id<span class="operator">=</span>&quot;selectConversationCount&quot; resultType<span class="operator">=</span>&quot;int&quot;<span class="operator">&gt;</span>  </span><br><span class="line">    <span class="keyword">select</span> <span class="built_in">count</span>(m.maxid) <span class="keyword">from</span> (  </span><br><span class="line">        <span class="keyword">select</span> <span class="built_in">max</span>(id) <span class="keyword">as</span> maxid  </span><br><span class="line">        <span class="keyword">from</span> message  </span><br><span class="line">        <span class="keyword">where</span> status <span class="operator">!=</span> <span class="number">2</span>  </span><br><span class="line">        <span class="keyword">and</span> from_id <span class="operator">!=</span> <span class="number">1</span>  </span><br><span class="line">        <span class="keyword">and</span> (from_id <span class="operator">=</span> #&#123;userId&#125; <span class="keyword">or</span> to_id <span class="operator">=</span> #&#123;userId&#125;)  </span><br><span class="line">        <span class="keyword">group</span> <span class="keyword">by</span> conversation_id  </span><br><span class="line">    ) <span class="keyword">as</span> m  </span><br><span class="line"><span class="operator">&lt;</span><span class="operator">/</span><span class="keyword">select</span><span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="发送私信"><a href="#发送私信" class="headerlink" title="发送私信"></a>发送私信</h2><ul>
+<li>发送私信<ul>
+<li>采用异步方式发送私信</li>
+<li>发送成功后刷新私信列表</li>
+</ul>
+</li>
+<li>设置已读<ul>
+<li>访问私信详情时，将私信设置为已读状态<br>  在用户打开私信详情页面时，如果有未读消息，就变成已读。</li>
+</ul>
+</li>
+</ul>
+<h2 id="统一处理异常"><a href="#统一处理异常" class="headerlink" title="统一处理异常"></a>统一处理异常</h2><ul>
+<li>SpringBoot 自动处理，将错误提示页面放在<code>/template/error</code> 目录下，文件名为错误码：404、500</li>
+<li>需要记录日志，用到注解<ul>
+<li>@ControllerAdvice：修饰类，全局统一配置。处理异常、绑定数据、绑定参数（修饰方法）<ul>
+<li>处理异常：@ExceptionHandler，优点：统一处理，不用在任何一个 Controller 上处理</li>
+<li>绑定数据：@ModelAttribute</li>
+<li>绑定参数：@DataBinder</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="统一记录日志"><a href="#统一记录日志" class="headerlink" title="统一记录日志"></a>统一记录日志</h2><p>不发生异常，也需要记录日志。也不能用拦截器，因为还要记录数据层、业务层。<br>业务层是专门处理业务的，在业务层中记录日志不专业，记录业务是系统需求，增加了耦合性。<br>使用 AOP 解决。</p>
+<h3 id="AOP-概念"><a href="#AOP-概念" class="headerlink" title="AOP 概念"></a>AOP 概念</h3><p>Aspect Oriented Programing，面向方面（切面）编程，对 OOP 的补充。（概念抽象）<br>通俗理解：系统有很多业务模块，每个业务模块都有相同的需求，如记录日志，</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
+<li><p>为什么要对用户输入的标题进行 HTMl 转义<br> 如果不转义，将用户输入的<code>&lt;h1&gt;&lt;script&gt;alert(&quot;XSS攻击成功！&quot;)&lt;/script&gt;&lt;/h1&gt;</code> 存进数据库中，页面加载时，JS 代码会被执行，弹出弹框。<br> 跳转到钓鱼网站 <code>&lt;a href=&quot;http://phishing.com&quot;&gt;点击这里领奖&lt;/a&gt;</code><br> 攻击者会注入恶意脚本，造成严重的安全漏洞。<br> 正确做法：在 <code>service</code> 层对标题等用户输入的内容进行 HTML 转义，防止安全漏洞。</p>
+</li>
+<li><p>说说评论功能<br> 评论功能主要分为两种：对帖子评论（一级评论） 和 对评论的回复（二级评论）。<br> 用户在帖子详情页发表评论：<br> •	服务器接收评论请求，判断评论类型：<br> •	如果是帖子评论，存入数据库，并更新帖子的评论数量。<br> •	如果是对评论的回复，存入数据库，并记录 target_id 以标记被回复的用户。<br> 数据库设计：<br> • comment 表通过 entity_type 和 entity_id 关联 <strong>帖子或评论</strong>。<br> • target_id 记录被回复用户 ID。<br> 事务管理：<br> @Transactional 保证评论插入和帖子评论数更新是原子操作，防止数据不一致。</p>
+</li>
+<li><p>为了发送私信异步请求，要加上 <code>@ResponseBody</code> 这个注解<br> 在发送私信的异步请求（AJAX 请求）时，通常希望服务器返回一个 <strong>JSON 结构的响应</strong>，而不是一个 HTML 页面，因此需要加上 @ResponseBody。<br> 不加这个注解，默认返回的是页面。</p>
+</li>
+<li><p>为了提交私信时，status 状态是0，但发送者中是已读，接受者中是未读，明明数据库中都是一条数据？<br> 因为数据查询语句逻辑是这样的（发送者不会把刚发送的私信当作是未读私信）：</p>
+ <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="operator">&lt;</span><span class="keyword">select</span> id<span class="operator">=</span>&quot;selectLetterUnreadCount&quot; resultType<span class="operator">=</span>&quot;int&quot;<span class="operator">&gt;</span>  </span><br><span class="line">    <span class="keyword">select</span> <span class="built_in">count</span>(id)  </span><br><span class="line">    <span class="keyword">from</span> message  </span><br><span class="line">    <span class="keyword">where</span> status <span class="operator">=</span> <span class="number">0</span>  </span><br><span class="line">    <span class="keyword">and</span> from_id <span class="operator">!=</span> <span class="number">1</span>  </span><br><span class="line">    <span class="keyword">and</span> to_id <span class="operator">=</span> #&#123;userId&#125;  </span><br><span class="line">    <span class="operator">&lt;</span>if test<span class="operator">=</span>&quot;conversationId != null&quot;<span class="operator">&gt;</span>  </span><br><span class="line">        <span class="keyword">and</span> conversation_id <span class="operator">=</span> #&#123;conversationId&#125;  </span><br><span class="line">    <span class="operator">&lt;</span><span class="operator">/</span>if<span class="operator">&gt;</span>  </span><br><span class="line"><span class="operator">&lt;</span><span class="operator">/</span><span class="keyword">select</span><span class="operator">&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Java项目</category>
+      </categories>
+      <tags>
+        <tag>Java SpringBoot</tag>
+      </tags>
+  </entry>
 </search>
