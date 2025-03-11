@@ -891,4 +891,124 @@
         <tag>Java SpringBoot</tag>
       </tags>
   </entry>
+  <entry>
+    <title>仿牛客论坛项目05-Redis</title>
+    <url>/2025/03/11/%E4%BB%BF%E7%89%9B%E5%AE%A2%E8%AE%BA%E5%9D%9B%E9%A1%B9%E7%9B%AE05-Redis/</url>
+    <content><![CDATA[<p>仿牛客论坛项目05-Redis</p>
+<p>点赞功能、我收到的赞、关注和取消关注、关注列表和粉丝列表、Redis优化</p>
+<span id="more"></span>
+
+<h2 id="Redis-入门"><a href="#Redis-入门" class="headerlink" title="Redis 入门"></a>Redis 入门</h2><ul>
+<li>NoSQL（not only）：关系型数据库之外的数据库</li>
+<li>Redis 是基于键值对的 NoSQL 数据库，key 是 String 类型，值支持多种数据结构：字符串、哈希、列表、集合、有序集合</li>
+<li>Redis 将所有数据都存放在内存，读写性能很强；并将内存中的数据以快照或日志的形式保存到硬盘上，保证数据安全性。</li>
+<li>典型应用场景：缓存、排行榜、计数器（帖子浏览量）、社交网络（点赞）、消息队列。<br>安装方法：<code>brew install redis</code><br>启动 redis 服务器：<code>redis-server</code><br>连接到 redis 服务器：<code>redis-cli</code></li>
+</ul>
+<h2 id="Spring-整合-Redis"><a href="#Spring-整合-Redis" class="headerlink" title="Spring 整合 Redis"></a>Spring 整合 Redis</h2><ul>
+<li>点赞<ul>
+<li>针对帖子、评论点赞</li>
+<li>第一次点赞、第二次点赞取消</li>
+</ul>
+</li>
+<li>首页显示点赞数量<ul>
+<li>统计帖子点赞数量</li>
+</ul>
+</li>
+<li>详情页显示点赞数量<ul>
+<li>统计点赞数量</li>
+<li>显示点赞状态<br>  用 redis 提高性能。<br>  直接在业务层，在redis中存数据</li>
+</ul>
+</li>
+</ul>
+<h2 id="点赞"><a href="#点赞" class="headerlink" title="点赞"></a>点赞</h2><ul>
+<li>点赞<ul>
+<li>对帖子、评论点赞</li>
+<li>第一次点赞、第二次取消点赞</li>
+</ul>
+</li>
+<li>首页点赞数量<ul>
+<li>统计帖子点赞数</li>
+</ul>
+</li>
+<li>详情页点赞数量<ul>
+<li>统计点赞数量</li>
+<li>显示点赞状态<br>  redis中存储格式：<code>like:entity:entityType:entityId -&gt; set(userId)</code><br>  <code>like:user:userId -&gt; int</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="我收到的赞"><a href="#我收到的赞" class="headerlink" title="我收到的赞"></a>我收到的赞</h2><p>重构点赞功能</p>
+<ul>
+<li>以用户为key，记录点赞数量<br>开发个人主页</li>
+<li>以用户为key，查询点赞数量<br>点赞业务中加上维护用户收到的赞，一个业务中有两个更新，要用 redis 的事务操作。<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">like</span><span class="params">(<span class="type">int</span> userId, <span class="type">int</span> entityType, <span class="type">int</span> entityId, <span class="type">int</span> entityUserId)</span> &#123;  </span><br><span class="line"><span class="comment">//        String entityLikeKey = RedisKeyUtil.getEntityLikeKey(entityType, entityId);  </span></span><br><span class="line"><span class="comment">//        System.out.println(entityLikeKey);  </span></span><br><span class="line"><span class="comment">//        // 判断当前用户是否点过赞,userId是否在redis集合里  </span></span><br><span class="line"><span class="comment">//        boolean isMember = redisTemplate.opsForSet().isMember(entityLikeKey, userId);  </span></span><br><span class="line"><span class="comment">//        if (isMember) &#123;  </span></span><br><span class="line"><span class="comment">//            // 如果点过赞，就取消点赞  </span></span><br><span class="line"><span class="comment">//            redisTemplate.opsForSet().remove(entityLikeKey, userId);  </span></span><br><span class="line"><span class="comment">//        &#125; else &#123;  </span></span><br><span class="line"><span class="comment">//            // 如果没点过赞，就点赞  </span></span><br><span class="line"><span class="comment">//            redisTemplate.opsForSet().add(entityLikeKey, userId);  </span></span><br><span class="line"><span class="comment">//        &#125;  </span></span><br><span class="line">        redisTemplate.execute(<span class="keyword">new</span> <span class="title class_">SessionCallback</span>() &#123;  </span><br><span class="line">            <span class="meta">@Override</span>  </span><br><span class="line">            <span class="keyword">public</span> Object <span class="title function_">execute</span><span class="params">(RedisOperations operations)</span> <span class="keyword">throws</span> DataAccessException &#123;  </span><br><span class="line">                <span class="type">String</span> <span class="variable">entityLikeKey</span> <span class="operator">=</span> RedisKeyUtil.getEntityLikeKey(entityType, entityId);  </span><br><span class="line">                <span class="type">String</span> <span class="variable">userLikeKey</span> <span class="operator">=</span> RedisKeyUtil.getUserLikeKey(entityUserId);  </span><br><span class="line">  </span><br><span class="line">                <span class="comment">// 查询不要放在事务里  </span></span><br><span class="line">                <span class="type">boolean</span> <span class="variable">isMember</span> <span class="operator">=</span> operations.opsForSet().isMember(entityLikeKey, userId);  </span><br><span class="line">  </span><br><span class="line">                operations.multi(); <span class="comment">// 开启事务  </span></span><br><span class="line">                <span class="keyword">if</span> (isMember) &#123;  </span><br><span class="line">                    operations.opsForSet().remove(entityLikeKey, userId);  </span><br><span class="line">                    operations.opsForValue().decrement(userLikeKey);  </span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">                    operations.opsForSet().add(entityLikeKey, userId);  </span><br><span class="line">                    operations.opsForValue().increment(userLikeKey);  </span><br><span class="line">                &#125;  </span><br><span class="line">                <span class="keyword">return</span> operations.exec();  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;);  </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="关注、取消关注"><a href="#关注、取消关注" class="headerlink" title="关注、取消关注"></a>关注、取消关注</h2><ul>
+<li>需求<ul>
+<li>实现关注、取消关注</li>
+<li>统计用户关注数、粉丝数</li>
+</ul>
+</li>
+<li>关键<ul>
+<li>关系：A关注B，A是B的粉丝（follower），B是A的关注目标（followee）</li>
+<li>关注的目标可以用用户、帖子、题目，实现时抽象为实体（存在redis）<br>  关注和取消关注是异步请求。（页面不会刷新）<br>  使用redis有序列表zset，新建两个主键：某个用户关注的实体，某个实体拥有的粉丝。<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">follow</span><span class="params">(<span class="type">int</span> userId, <span class="type">int</span> entityType, <span class="type">int</span> entityId)</span> &#123;  </span><br><span class="line">    redisTemplate.execute(<span class="keyword">new</span> <span class="title class_">SessionCallback</span>() &#123;  </span><br><span class="line">        <span class="meta">@Override</span>  </span><br><span class="line">        <span class="keyword">public</span> Object <span class="title function_">execute</span><span class="params">(RedisOperations operations)</span> <span class="keyword">throws</span> DataAccessException &#123;  </span><br><span class="line">            <span class="type">String</span> <span class="variable">followeeKey</span> <span class="operator">=</span> RedisKeyUtil.getPrefixFolloweeKey(userId, entityType);  </span><br><span class="line">            <span class="type">String</span> <span class="variable">followerKey</span> <span class="operator">=</span> RedisKeyUtil.getPrefixFollowerKey(entityType, entityId);  </span><br><span class="line">  </span><br><span class="line">            operations.multi();  </span><br><span class="line">  </span><br><span class="line">            <span class="comment">// 某个用户关注的实体  </span></span><br><span class="line">            operations.opsForZSet().add(followeeKey, entityId, System.currentTimeMillis());  </span><br><span class="line">            <span class="comment">// 某个实体拥有的粉丝  </span></span><br><span class="line">            operations.opsForZSet().add(followerKey, userId, System.currentTimeMillis());  </span><br><span class="line">  </span><br><span class="line">            <span class="keyword">return</span> operations;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p>redis 中存储格式：<code>followee:userId:entityType -&gt; zset(entityId, now)</code><br><code>follower:entityType:entityId -&gt; zset(userId, now)</code></p>
+<h2 id="关注列表、粉丝列表"><a href="#关注列表、粉丝列表" class="headerlink" title="关注列表、粉丝列表"></a>关注列表、粉丝列表</h2><ul>
+<li>业务层<ul>
+<li>查询某个用户关注的人，分页</li>
+<li>查询某个用户的粉丝，分页</li>
+</ul>
+</li>
+<li>表现层<ul>
+<li>查询关注的人、查询粉丝请求</li>
+<li>查询关注的人、查询粉丝模版<br>  查询关注的人，需要分页信息、关注的人列表、当前用户是否关注过这个人<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(path = &quot;/followees/&#123;userId&#125;&quot;, method = RequestMethod.GET)</span>  </span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">getFollowees</span><span class="params">(<span class="meta">@PathVariable(&quot;userId&quot;)</span> <span class="type">int</span> userId, Model model, Page page)</span> &#123;  </span><br><span class="line">    <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> userService.findUserById(userId);  </span><br><span class="line">    <span class="keyword">if</span>(user == <span class="literal">null</span>) &#123;  </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;该用户不存在！&quot;</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">    model.addAttribute(<span class="string">&quot;user&quot;</span>, user);  </span><br><span class="line">    <span class="comment">//分页信息  </span></span><br><span class="line">    page.setLimit(<span class="number">5</span>);  </span><br><span class="line">    page.setPath(<span class="string">&quot;/followees/&quot;</span> + userId);  </span><br><span class="line">    page.setRows((<span class="type">int</span>) followService.findFolloweeCount(userId, ENTITY_TYPE_USER));  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 关注列表  </span></span><br><span class="line">    List&lt;Map&lt;String,Object&gt;&gt; userList = followService.findFollowees(userId, page.getOffset(), page.getLimit());  </span><br><span class="line">    <span class="keyword">if</span>(userList != <span class="literal">null</span>) &#123;  </span><br><span class="line">        <span class="keyword">for</span>(Map&lt;String, Object&gt; map : userList) &#123;  </span><br><span class="line">            <span class="comment">// 判断是否已关注  </span></span><br><span class="line">            <span class="type">User</span> <span class="variable">u</span> <span class="operator">=</span> (User) map.get(<span class="string">&quot;user&quot;</span>);  </span><br><span class="line">            map.put(<span class="string">&quot;hasFollowed&quot;</span>, hasFollowed(u.getId()));  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">    model.addAttribute(<span class="string">&quot;users&quot;</span>, userList);  </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;/site/followee&quot;</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="优化登录模块"><a href="#优化登录模块" class="headerlink" title="优化登录模块"></a>优化登录模块</h2><ul>
+<li>使用 Redis 存储验证码<ul>
+<li>验证码要频繁访问和刷新，对性能要求高</li>
+<li>验证码不需要永久保存，很短时间后失效</li>
+<li>目前存在了 session 中，用户量大时，存储大量验证码会占用内容，影响性能；分布式部署时，不同服务器上的 session 无法共享，导致无法验证。</li>
+</ul>
+</li>
+<li>使用 Redis 存储登录凭证<ul>
+<li>目前登录凭证存在 Mysql 中，每次登录都要查询用户凭证，访问频率很高</li>
+</ul>
+</li>
+<li>使用 Redis 缓存用户信息<ul>
+<li>处理每次请求，都要根据凭证查询用户信息，访问频率高</li>
+</ul>
+</li>
+</ul>
+<p><strong>总结适合用 Redis 存储的数据：</strong></p>
+<ul>
+<li>需要频繁读写，但对一致性要求不高的数据，如：热点数据、排行版、计数器</li>
+<li>需要缓存的数据，如用户信息、文章内容</li>
+<li>需要短时存储的数据，如验证码</li>
+<li>需要实时统计的数据，如点赞数、浏览量、粉丝数<br>Redis 作为缓存 + MySQL 作为持久化存储</li>
+</ul>
+<ol>
+<li><p>验证码使用 redis 存储</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 存入redis  </span></span><br><span class="line"><span class="comment">// 验证码的归属，用cookie保存  </span></span><br><span class="line"><span class="type">String</span> <span class="variable">kapthcaOwner</span> <span class="operator">=</span> CommunityUtil.generateUUID();  </span><br><span class="line"><span class="type">Cookie</span> <span class="variable">cookie</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Cookie</span>(<span class="string">&quot;kaptchaOwner&quot;</span>, kapthcaOwner);  </span><br><span class="line">cookie.setMaxAge(<span class="number">60</span>);  </span><br><span class="line">cookie.setPath(contextPath);  </span><br><span class="line">response.addCookie(cookie);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从redis中取出验证码  </span></span><br><span class="line"><span class="type">String</span> <span class="variable">kaptcha</span> <span class="operator">=</span> <span class="literal">null</span>;  </span><br><span class="line"><span class="keyword">if</span>(StringUtils.isNoneBlank(kaptchaOwner)) &#123;  </span><br><span class="line">    <span class="type">String</span> <span class="variable">redisKey</span> <span class="operator">=</span> RedisKeyUtil.getKaptchaKey(kaptchaOwner);  </span><br><span class="line">    kaptcha = redisTemplate.opsForValue().get(redisKey).toString();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>登录凭证使用 redis 存储<br>登录时存入，登出时删掉</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">redisKey</span> <span class="operator">=</span> RedisKeyUtil.getTicketKey(loginTicket.getTicket());  </span><br><span class="line"><span class="comment">// redis 将对象序列化为JSON格式的字符串  </span></span><br><span class="line">redisTemplate.opsForValue().set(redisKey, loginTicket, expiredSeconds, TimeUnit.SECONDS);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 退出  </span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">logout</span><span class="params">(String ticket)</span> &#123;  </span><br><span class="line">    <span class="comment">// loginTicketMapper.updateStatus(ticket, 1);  </span></span><br><span class="line">    <span class="type">String</span> <span class="variable">redisKey</span> <span class="operator">=</span> RedisKeyUtil.getTicketKey(ticket);  </span><br><span class="line">    <span class="comment">// 将对象的status改为1  </span></span><br><span class="line">    <span class="type">LoginTicket</span> <span class="variable">loginTicket</span> <span class="operator">=</span> (LoginTicket) redisTemplate.opsForValue().get(redisKey);  </span><br><span class="line">    loginTicket.setStatus(<span class="number">1</span>);  </span><br><span class="line">    <span class="comment">// 改完再存进去  </span></span><br><span class="line">    redisTemplate.opsForValue().set(redisKey, loginTicket);  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 根据ticket查询凭证  </span></span><br><span class="line"><span class="keyword">public</span> LoginTicket <span class="title function_">findLoginTicket</span><span class="params">(String ticket)</span> &#123;  </span><br><span class="line">    <span class="comment">// return loginTicketMapper.selectByTicket(ticket);  </span></span><br><span class="line">    <span class="type">String</span> <span class="variable">redisKey</span> <span class="operator">=</span> RedisKeyUtil.getTicketKey(ticket);  </span><br><span class="line">    <span class="keyword">return</span> (LoginTicket) redisTemplate.opsForValue().get(redisKey);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>redis 缓存用户信息<br>调用最多的方法是<code>public User findUserById(int id)</code><br>查询 User 时，先尝试从缓存中取值，能取到就用，取不到就做初始化存入。<br>更改用户信息时，把缓存删除。如果更新缓存，会有并发的问题。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 1. 优先从缓存中取值  </span></span><br><span class="line"><span class="keyword">private</span> User <span class="title function_">getCache</span><span class="params">(<span class="type">int</span> userId)</span> &#123;  </span><br><span class="line">    <span class="type">String</span> <span class="variable">redisKey</span> <span class="operator">=</span> RedisKeyUtil.getUserKey(userId);  </span><br><span class="line">    <span class="keyword">return</span> (User) redisTemplate.opsForValue().get(redisKey);  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">// 2. 取不到时初始化缓存数据  </span></span><br><span class="line"><span class="keyword">private</span> User <span class="title function_">initCache</span><span class="params">(<span class="type">int</span> userId)</span> &#123;  </span><br><span class="line">    <span class="comment">// 从 MySQL 中查到数据  </span></span><br><span class="line">    <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> userMapper.selectById(userId);  </span><br><span class="line">    <span class="type">String</span> <span class="variable">redisKey</span> <span class="operator">=</span> RedisKeyUtil.getUserKey(userId);  </span><br><span class="line">    redisTemplate.opsForValue().set(redisKey, user, <span class="number">3600</span>, TimeUnit.SECONDS);  </span><br><span class="line">    <span class="keyword">return</span> user;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">// 3. 数据变更时，清楚缓存数据  </span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">clearCache</span><span class="params">(<span class="type">int</span> userId)</span> &#123;  </span><br><span class="line">    <span class="type">String</span> <span class="variable">redisKey</span> <span class="operator">=</span> RedisKeyUtil.getUserKey(userId);  </span><br><span class="line">    redisTemplate.delete(redisKey);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
+<li>为什么用 redis<br> 1、Redis是⼀种基于键值对的NoSQL数据库，它⽀持多种数据结构：<br> 字符串（String）、哈希（hashs）、列表（lists）、集合（sets）、有序集合（sorted sets）等<br> 2、Redis将所有的数据都存在内存中，所以它的读写性能⼗分惊⼈。<br> 同时，Redis还可以将内存中的数据以快照或者⽇志的形式保存到硬盘上，以保证数据的安全性。<br> 3、缓存、排⾏榜(热⻔帖⼦)、计数器、社交⽹络(点赞数)、消息队列等。</li>
+<li>如何优化登陆模块？<br> 当⽤户点击刷新验证码时，服务端⾸先给当前需要登陆的游客，设置⼀个随机字符串(kaptchaOwner)，⽤于标识当前这个游客，然后将随机字符串存⼊到cookie中，返回给浏览器，然后服务端的 redis 保存 key:随机字符串,接着⽤户输⼊⽤户名，密码，验证码，再次点击登陆时，服务端会从 cookie 中拿到 kaptchaOwner ,通过它可以从 Redis 中得到正确的验证码，然后与⽤户输⼊的验证码做⽐较，看是否⼀致。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Java项目</category>
+      </categories>
+      <tags>
+        <tag>Java SpringBoot</tag>
+      </tags>
+  </entry>
 </search>
