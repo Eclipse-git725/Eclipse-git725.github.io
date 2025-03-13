@@ -1062,4 +1062,122 @@
         <tag>Java SpringBoot</tag>
       </tags>
   </entry>
+  <entry>
+    <title>仿牛客论坛项目06-Kafka实现系统通知</title>
+    <url>/2025/03/13/%E4%BB%BF%E7%89%9B%E5%AE%A2%E8%AE%BA%E5%9D%9B%E9%A1%B9%E7%9B%AE/%E4%BB%BF%E7%89%9B%E5%AE%A2%E8%AE%BA%E5%9D%9B%E9%A1%B9%E7%9B%AE06-Kafka%E5%AE%9E%E7%8E%B0%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%9F%A5/</url>
+    <content><![CDATA[<p>仿牛客论坛项目06-Kafka实现系统通知</p>
+<p>阻塞队列、spring整合kafka、发送系统通知、显示系统通知</p>
+<span id="more"></span>
+
+<p>解决系统发送通知的功能。</p>
+<h2 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h2><p>kafka 是框架，用阻塞队列也能实现，便于理解 kafka</p>
+<ul>
+<li>BlockingQueue<ul>
+<li>解决线程通信问题</li>
+<li>阻塞方法：put、take</li>
+</ul>
+</li>
+<li>生产者消费者模式。<ul>
+<li>生产者：生产数据的线程</li>
+<li>消费者：使用数据的线程</li>
+<li>BlockingQueue 避免两个线程直接连接</li>
+</ul>
+</li>
+<li>实现类<ul>
+<li>ArrayBlockingQueue</li>
+<li>LinkedBlockingQueue</li>
+<li>PriorityBlockingQueue</li>
+<li>SynchronousQueue</li>
+</ul>
+</li>
+</ul>
+<h2 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h2><ul>
+<li>简介<ul>
+<li>分布式的流媒体平台</li>
+<li>应用：消息系统、日志收集、用户行为追踪、流式处理</li>
+</ul>
+</li>
+<li>特点<ul>
+<li>高吞吐量（适合海量数据，如日志）、消息持久化（存到硬盘）、高可靠性（分布式）、高扩展性（便于增加服务器）</li>
+</ul>
+</li>
+<li>术语<ul>
+<li>Broker（服务器）、Zookeeper（管理Kafka集群）</li>
+<li>Topic（主题）、Partition（对主题的分区，增强并发能力）、Offset（消息在分区中的位置）</li>
+<li>Leader Replica（主副本）、Follower Replica（随从副本）<br>  安装命令：<code>brew install kafka</code><br>  启动zookeeper：<code>brew services start zookeeper    </code>zookeeper-server-start &#x2F;opt&#x2F;homebrew&#x2F;etc&#x2F;kafka&#x2F;zookeeper.properties&#96;</li>
+</ul>
+</li>
+</ul>
+<p>启动kafka服务：<code>brew services start kafka  </code>kafka-server-start &#x2F;opt&#x2F;homebrew&#x2F;etc&#x2F;kafka&#x2F;server.properties&#96;</p>
+<p>停止命令：<code>brew services stop zookeeper</code><br>创建主题：<code>kafka-topics  --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test 查看主题：</code>kafka-topics –list –bootstrap-server localhost:9092<code> 发布消息（生产者）：</code>kafka-console-producer –broker-list localhost:9092 –topic test<code> 订阅消息（消费者）：</code>kafka-console-consumer –bootstrap-server localhost:9092 –topic test –from-beginning&#96;</p>
+<h2 id="Spring-整合-Kafka"><a href="#Spring-整合-Kafka" class="headerlink" title="Spring 整合 Kafka"></a>Spring 整合 Kafka</h2><ul>
+<li>引入依赖<ul>
+<li>spring-kafka</li>
+</ul>
+</li>
+<li>配置 Kafka<ul>
+<li>配置server、consumer</li>
+</ul>
+</li>
+<li>访问 Kafka<ul>
+<li>生产者：<code>kafkaTemplate.send(topic, data)</code></li>
+<li>消费者：注解<code>@KafkaListener(topics=&#123;&quot;test&quot;&#125;)</code> 修饰方法，得到消息</li>
+</ul>
+</li>
+</ul>
+<h2 id="发送系统通知"><a href="#发送系统通知" class="headerlink" title="发送系统通知"></a>发送系统通知</h2><p>发布消息对系统来说很频繁</p>
+<ul>
+<li>触发事件<br>  评论、点赞、关注后，发布通知<br>  定义三类不同的主题，评论、点赞、关注发生后，生产者放到队列中。<br>  异步，生产者、消费者可以同时处理</li>
+<li>处理事件<br>  封装事件对象，开发事件的生产者和消费者</li>
+</ul>
+<ol>
+<li><strong>定义通知消息模型</strong><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Event</span> &#123;  </span><br><span class="line">    <span class="keyword">private</span> String topic;  </span><br><span class="line">    <span class="comment">// 触发事件的用户  </span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> userId;  </span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> entityType;  </span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> entityId;  </span><br><span class="line">    <span class="comment">// 实体的作者  </span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> entityUserId;  </span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, Object&gt; data = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>生产者发送通知消息</strong><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span>  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">EventProducer</span> &#123;  </span><br><span class="line">  </span><br><span class="line">    <span class="meta">@Autowired</span>  </span><br><span class="line">    <span class="keyword">private</span> KafkaTemplate kafkaTemplate;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 处理事件(发送消息)  </span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">fireEvent</span><span class="params">(Event event)</span> &#123;  </span><br><span class="line">        <span class="comment">// 将事件发布到指定的主题  </span></span><br><span class="line">        kafkaTemplate.send(event.getTopic(), JSONObject.toJSONString(event));  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>消费者接收通知消息</strong>：消费者订阅相应的 Kafka topic，接收通知消息，并根据消息类型执行相应的通知操作<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@KafkaListener(topics = &#123;TOPIC_COMMENT, TOPIC_LIKE, TOPIC_FOLLOW&#125;)</span>  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleMessage</span><span class="params">(ConsumerRecord record)</span> &#123;  </span><br><span class="line">    <span class="keyword">if</span>(record == <span class="literal">null</span> || record.value() == <span class="literal">null</span>) &#123;  </span><br><span class="line">        logger.error(<span class="string">&quot;消息内容为空!&quot;</span>);  </span><br><span class="line">        <span class="keyword">return</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="type">Event</span> <span class="variable">event</span> <span class="operator">=</span> JSONObject.parseObject(record.value().toString(), Event.class);  </span><br><span class="line">    <span class="keyword">if</span>(event == <span class="literal">null</span>) &#123;  </span><br><span class="line">        logger.error(<span class="string">&quot;消息格式错误!&quot;</span>);  </span><br><span class="line">        <span class="keyword">return</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 发送站内通知(后台统一发送)  </span></span><br><span class="line">    <span class="type">Message</span> <span class="variable">message</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Message</span>();  </span><br><span class="line">    message.setFromId(SYSTEM_USER_ID);  </span><br><span class="line">    message.setToId(event.getEntityUserId());  </span><br><span class="line">    message.setConversationId(event.getTopic());  </span><br><span class="line">    message.setCreateTime(<span class="keyword">new</span> <span class="title class_">Date</span>());  </span><br><span class="line">  </span><br><span class="line">    Map&lt;String, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();  </span><br><span class="line">    map.put(<span class="string">&quot;userId&quot;</span>, event.getUserId());  </span><br><span class="line">    map.put(<span class="string">&quot;entityType&quot;</span>, event.getEntityType());  </span><br><span class="line">    map.put(<span class="string">&quot;entityId&quot;</span>, event.getEntityId());  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">if</span>(!event.getData().isEmpty()) &#123;  </span><br><span class="line">        <span class="keyword">for</span>(Map.Entry&lt;String, Object&gt; entry : event.getData().entrySet()) &#123;  </span><br><span class="line">            map.put(entry.getKey(), entry.getValue());  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    message.setContent(JSONObject.toJSONString(map));  </span><br><span class="line">    messageService.addMessage(message);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="显示系统通知"><a href="#显示系统通知" class="headerlink" title="显示系统通知"></a>显示系统通知</h2><ul>
+<li>通知列表<ul>
+<li>显示评论、点赞、关注三种类型的通知</li>
+</ul>
+</li>
+<li>通知详情<ul>
+<li>分页显示某一类主题的通知</li>
+</ul>
+</li>
+<li>唯独消息<ul>
+<li>页面头部显示未读消息数（用拦截器实现，每个页面上都有）</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在模板渲染之前，将未读消息的数量传递给模板</span></span><br><span class="line"><span class="meta">@Override</span>  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">postHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception &#123;  </span><br><span class="line">    <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> hostHolder.getUser();  </span><br><span class="line">    <span class="keyword">if</span>(user != <span class="literal">null</span> &amp;&amp; modelAndView != <span class="literal">null</span>) &#123;  </span><br><span class="line">        <span class="type">int</span> <span class="variable">letterUnreadCount</span> <span class="operator">=</span> messageService.findLetterUnreadCount(user.getId(), <span class="literal">null</span>);  </span><br><span class="line">        <span class="type">int</span> <span class="variable">noticeUnreadCount</span> <span class="operator">=</span> messageService.findNoticeUnreadCount(user.getId(), <span class="literal">null</span>);  </span><br><span class="line">        modelAndView.addObject(<span class="string">&quot;allUnreadCount&quot;</span>, letterUnreadCount + noticeUnreadCount);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>视频代码里有不严谨的地方：<br>查询某一类消息的通知，当页面某一类消息为空的时候，页面会报错<br>原来模版里写的 <code>th:if=&quot;$&#123;followNotice.message != null&#125;&quot;</code> 这样当followNotice为空，就获取不到这个属性了<br><code>th:if=&quot;$&#123;followNotice != null and followNotice.message != null&#125;&quot;</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 查询点赞类的通知</span></span><br><span class="line">       message = messageService.findLatestNotice(user.getId(), TOPIC_LIKE);</span><br><span class="line">       messageVO = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">       <span class="keyword">if</span>(message != <span class="literal">null</span>) &#123;</span><br><span class="line">           messageVO.put(<span class="string">&quot;message&quot;</span>, message);</span><br><span class="line">           <span class="type">String</span> <span class="variable">content</span> <span class="operator">=</span> HtmlUtils.htmlUnescape(message.getContent());</span><br><span class="line">           <span class="comment">// &#123;&amp;quot;entityType&amp;quot;:1,&amp;quot;entityId&amp;quot;:234,&amp;quot;postId&amp;quot;:234,&amp;quot;userId&amp;quot;:156&#125;</span></span><br><span class="line">           Map&lt;String, Object&gt; data = JSONObject.parseObject(content, HashMap.class);</span><br><span class="line">           messageVO.put(<span class="string">&quot;user&quot;</span>, userService.findUserById((Integer) data.get(<span class="string">&quot;userId&quot;</span>)));</span><br><span class="line">           messageVO.put(<span class="string">&quot;entityType&quot;</span>, data.get(<span class="string">&quot;entityType&quot;</span>));</span><br><span class="line">           messageVO.put(<span class="string">&quot;entityId&quot;</span>, data.get(<span class="string">&quot;entityId&quot;</span>));</span><br><span class="line">           messageVO.put(<span class="string">&quot;postId&quot;</span>, data.get(<span class="string">&quot;postId&quot;</span>));</span><br><span class="line">           <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> messageService.findNoticeCount(user.getId(), TOPIC_LIKE);</span><br><span class="line">           messageVO.put(<span class="string">&quot;count&quot;</span>, count);</span><br><span class="line">           <span class="type">int</span> <span class="variable">unread</span> <span class="operator">=</span> messageService.findNoticeUnreadCount(user.getId(), TOPIC_LIKE);</span><br><span class="line"></span><br><span class="line">           messageVO.put(<span class="string">&quot;unread&quot;</span>, unread);</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">	<span class="comment">// 当页面某一类消息为空的时候，页面会报错</span></span><br><span class="line">       model.addAttribute(<span class="string">&quot;likeNotice&quot;</span>, messageVO); </span><br></pre></td></tr></table></figure>
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
+<li><p>为什么系统发送通知要用 Kafka 实现<br> 需求：有大量用户操作时，触发大量的通知需求，造成传统数据库负载较高<br> Kafka：而Kafka支持每秒处理数百万条数据，有效处理高并发的通知需求</p>
+</li>
+<li><p>系统发送通知（评论、点赞、关注）如何用 Kafka 实现的</p>
+<ol>
+<li><strong>定义通知消息模型</strong>：封装通知的相关数据（如用户ID、实体类型、消息内容等）。</li>
+<li><strong>生产者发送通知消息</strong>：用户进行点赞、评论或关注时，将事件封装成消息发送到 Kafka。</li>
+<li><strong>消费者接收通知消息</strong>：消费者订阅相应的 Kafka topic，接收通知消息，并根据消息类型执行相应的通知操作。</li>
+<li><strong>通知服务处理通知</strong>：根据消息内容发送通知（如站内信、邮件、短信、推送等）。</li>
+</ol>
+</li>
+<li><p>消费者接收通知消息时，最后还会把消息放到数据库里，在高并发的情况下，数据库的写入操作依然会成为性能瓶颈<br> 可能的解决方法：消息队列+缓存+异步写入数据库</p>
+<ol>
+<li>消费者将消息先存储到 <strong>Redis</strong> 缓存中；</li>
+<li>异步的线程批量将 Redis 中的消息写入数据库。</li>
+</ol>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Java项目</category>
+      </categories>
+      <tags>
+        <tag>Java SpringBoot</tag>
+      </tags>
+  </entry>
 </search>
