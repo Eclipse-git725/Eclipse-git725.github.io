@@ -1219,4 +1219,51 @@
         <category>笔试题</category>
       </categories>
   </entry>
+  <entry>
+    <title>美的20250317笔试</title>
+    <url>/2025/03/19/%E7%AC%94%E8%AF%95%E9%A2%98/%E7%BE%8E%E7%9A%8420250317%E7%AC%94%E8%AF%95/</url>
+    <content><![CDATA[<p>两个算法题限制Java语法，虽然简单，但不熟</p>
+<p>做题地址：<a href="https://oj.niumacode.com/training/37/problems">https://oj.niumacode.com/training/37/problems</a></p>
+<span id="more"></span>
+
+<h1 id="单选"><a href="#单选" class="headerlink" title="单选"></a>单选</h1><ol>
+<li>线程同步关键字<br> <code>synchronized</code>、<code>volatile</code>、<code>ReentrantLock</code>等</li>
+<li>快排思想<br> 快速排序的基本思想是通过选择一个“基准”元素，将数组分为两部分，使得一部分的所有元素都小于基准，另一部分的所有元素都大于基准，然后递归地对这两部分进行排序。</li>
+<li>sleep() 和 wait() 区别<br> <code>sleep()</code><ul>
+<li>定义：<code>sleep()</code>是<code>Thread</code>类的一个静态方法。</li>
+<li>功能：它使当前正在执行的线程暂停执行指定的时间（以毫秒为单位），期间该线程不会释放任何锁，也就是说，如果一个线程调用了<code>sleep()</code>方法，它仍然持有之前获取的所有锁。</li>
+<li>使用场景：当你希望线程暂时停止执行一段时间，而不涉及线程间的协作时可以使用<code>sleep()</code>。例如，在模拟延迟或定时任务中。<br> <code>wait()</code>：</li>
+<li>定义：<code>wait()</code>是<code>Object</code>类的一个实例方法。</li>
+<li>功能：它必须与同步块或同步方法一起使用，并且会释放当前对象的锁。当一个线程调用某个对象的<code>wait()</code>方法时，这个线程会被加入到该对象的等待队列中并进入等待状态，直到另一个线程调用同一个对象的<code>notify()</code>或<code>notifyAll()</code>方法来唤醒它。</li>
+<li>使用场景：主要用于线程之间的协作，比如生产者-消费者问题中，用来协调多个线程对共享资源的访问。</li>
+</ul>
+</li>
+<li>数组和链表区别<br> 数组静态分配内存、链表动态分配内存，数组和链表都分配在堆区</li>
+<li>代码运行结果<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;  </span><br><span class="line">    <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">4</span>;  </span><br><span class="line">    System.out.println(<span class="string">&quot;value值为：&quot;</span> + (i &gt; <span class="number">4</span> ? <span class="number">99.9</span> : <span class="number">9</span>));  <span class="comment">// 输出: value值为：9.0  </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>事务ACID性质</li>
+<li>存储引擎<ol>
+<li>InnoDB用自适应哈希索引（Adaptive Hash Index, AHI）加速</li>
+</ol>
+</li>
+<li>数据库可重复读特点<br> 只有幻读问题</li>
+<li>数据库默认隔离级别<br> 可重复读</li>
+<li>线性链表特点<br>元素在逻辑上顺序，在物理存储上，不是顺序的</li>
+</ol>
+<h1 id="不定向"><a href="#不定向" class="headerlink" title="不定向"></a>不定向</h1><ol>
+<li>Redis 惰性删除+定期删除</li>
+<li>垃圾回收机制特点</li>
+<li>OS内存管理：段表、页表</li>
+<li>List 的 Iterator，打印元素<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (iterator.hasNext()) &#123;</span><br><span class="line">	<span class="type">String</span> <span class="variable">element</span> <span class="operator">=</span> iterator.next();</span><br><span class="line">	System.out.println(element);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>垃圾回收策略<br> CMS收集器是老年代的收集器</li>
+</ol>
+<h1 id="编程题"><a href="#编程题" class="headerlink" title="编程题"></a>编程题</h1><ol>
+<li>不限语言，核心代码模式</li>
+<li>限制Java，核心代码模式</li>
+<li>限制Java，ACM模式</li>
+</ol>
+]]></content>
+      <categories>
+        <category>笔试题</category>
+      </categories>
+  </entry>
 </search>
