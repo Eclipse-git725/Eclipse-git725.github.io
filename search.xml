@@ -1331,4 +1331,85 @@
         <category>面经</category>
       </categories>
   </entry>
+  <entry>
+    <title>众安保险20250327笔试</title>
+    <url>/2025/03/28/%E7%AC%94%E8%AF%95%E9%A2%98/%E4%BC%97%E5%AE%89%E4%BF%9D%E9%99%A920250327%E7%AC%94%E8%AF%95/</url>
+    <content><![CDATA[<p>单选25题，编程2题，开一个摄像头，手机监控。</p>
+<span id="more"></span>
+
+<h1 id="单选题"><a href="#单选题" class="headerlink" title="单选题"></a>单选题</h1><ol>
+<li>后缀表达式求最大值<br> 7 3 8 2 3 x - 6 5 -  符号 符号 +<br> 两个符号处填什么符号，求表达式最大可能的值</li>
+<li>Java集合<br> <code>isEmpty()</code> 和 <code>size==0</code>等价吗<br> <code>Array.asList()</code> 传入数组<code>int[]</code>作为参数，调用get方法，会有indexoutofbound错误吗<br> <code>foreach</code> 中可以使用 <code>remove/add</code>方法吗<br> <code>toMap</code>的value可以为null吗</li>
+<li>设计模式，哪种设计模式是数据驱动的<br> 策略模式，根据数据选择不同的策略</li>
+<li>递归算法的时间复杂度<br> f() {<br> for()<br>     for()<br> f(l, mid)<br> f(mid + 1, r)<br> }</li>
+<li>操作系统：5GB磁盘，簇大小为2kb，用位图法管理空闲空间，存放位图的簇需要多个簇<ol>
+<li>计算磁盘的总簇数<br> 磁盘总大小 &#x3D; 5 GB &#x3D; 5 × 1024 × 1024 KB &#x3D; 5,242,880 KB<br> 簇大小 &#x3D; 2 KB<br> 总簇数 &#x3D; 磁盘总大小 &#x2F; 簇大小 &#x3D; 5,242,880 KB &#x2F; 2 KB &#x3D; 2,621,440 个簇</li>
+<li>计算位图的大小<br> 位图法使用 1 bit 表示 1 个簇 的状态（0 &#x3D; 空闲，1 &#x3D; 已占用）。<br> 位图需要的总 bit 数 &#x3D; 总簇数 &#x3D; 2,621,440 bits<br> 转换为字节（Byte）：<br> 1 Byte &#x3D; 8 bits<br> 位图大小（Bytes）&#x3D; 2,621,440 bits &#x2F; 8 &#x3D; 327,680 Bytes</li>
+<li>计算位图占用的簇数<br> 簇大小 &#x3D; 2 KB &#x3D; 2 × 1024 Bytes &#x3D; 2048 Bytes<br> 位图占用的簇数 &#x3D; 位图大小 &#x2F; 簇大小 &#x3D; 327,680 Bytes &#x2F; 2048 Bytes ≈ 160 个簇</li>
+</ol>
+</li>
+<li>哪个不是Java的标识符（变量名、方法名、类名） a3x  default string $123<br> default是关键字，不能作为标识符</li>
+<li>java类加载机制，选项和父类加载器有关，采用继承方式复用父类加载器吗（错误）<br> 双亲委派模型（Parent Delegation Model）<ul>
+<li>Java 类加载器采用 组合（Composition） 而非 继承（Inheritance） 的方式复用父类加载器。</li>
+<li>每个类加载器（除 Bootstrap 外）都有一个 父类加载器（Parent ClassLoader），但这是通过 内部引用 实现的，而不是继承关系。</li>
+<li>类加载时，子加载器会先委托父加载器加载，父加载器无法完成时才会自己加载。</li>
+</ul>
+</li>
+<li>链栈Stack，栈顶指针为P，节点S，<br>S-&gt;next&#x3D;P P&#x3D;S 是什么操作，是<strong>链栈的入栈（Push）操作</strong></li>
+<li>基数排序<br> 基数排序是一种 <strong>非比较型整数排序算法</strong>，其核心思想是 <strong>按位分配和收集</strong>，从最低位（LSD，Least Significant Digit）或最高位（MSD）开始逐位排序。<br> 按最低位（个位）排序：<ul>
+<li>将所有数字根据个位数字分配到 0~9 的桶中。</li>
+<li>按桶顺序（0→9）依次收集，形成第一次排序结果。</li>
+</ul>
+</li>
+<li>SQL 隔离级别 InnoDB 默认是可重复读</li>
+<li>批处理操作系统的特点<br>成批处理、脱机、多道<br>不是特点：多路属于分时系统的核心特点</li>
+<li>电报交换、报文交换、分组交换时延排序<br><strong>电报交换 &gt; 报文交换 &gt; 分组交换</strong><ul>
+<li><strong>报文交换</strong>介于两者之间，但因效率低下已被分组交换取代。</li>
+<li><strong>最低时延</strong>：分组交换（现代网络首选）。</li>
+<li><strong>最高时延</strong>：电报交换（因连接建立和独占性）。</li>
+</ul>
+</li>
+<li>Java I&#x2F;O 流用哪种设计模式<br>主要采用了 装饰器模式（Decorator Pattern），同时结合了 适配器模式（Adapter Pattern） 和 工厂模式（Factory Pattern） 的部分思想。<br>装饰器模式：在不修改原有类的基础上，通过嵌套包装（装饰）来添加新功能。</li>
+<li>P&#x2F;V 信号量实现互斥初始值设置为1</li>
+<li>Redis 端口号、默认数据库、数据库默认数量、daemonize是守护进程吗<br>端口号6379。默认数据库是0  数据库默认数量是16。daemonize是守护进程</li>
+<li>完全二叉树 第五层6个节点，根节点是第一层，叶子结点数最少多少个</li>
+<li>递归求最大公约数（线段树思想），填代码</li>
+<li>分组交换<br>分组交换三种方式：数据报、存储转发、虚电路<br><strong>数据报</strong>可能出现失序、丢失、重复<br><strong>存储转发</strong> 限制发送数据大小，分组不能超过最大传输单元<br><strong>虚电路</strong> 通信前建立逻辑路径（虚电路），传输后释放。</li>
+<li>SpringBoot 两个类区别<br><code>@Import</code> 修饰类，通常和 <code>@Configuration</code> 一起使用<br><code>@ImportResource</code> 修饰类，加载方式是xml文件</li>
+<li>求子串个数</li>
+<li>Linux 看文件节点信息的命令 ls -i</li>
+<li>Zookeeper 什么情况下会重新选举 leader<br>当 Leader 出现故障或集群状态变化时，会触发 <strong>Leader 重新选举</strong></li>
+<li>Mysql 求select结果<br><code>select count(*) from t where not exist (select * from t where id &gt;= 1002)</code><ul>
+<li>如果 **表 <code>t</code> 中至少有一行 <code>id &gt;= 1002</code>**，则 <code>EXISTS</code> 返回 <code>TRUE</code>，<code>NOT EXISTS</code> 返回 <code>FALSE</code>，最终 <code>COUNT(*)</code> 结果为 <strong>0</strong>。</li>
+<li>如果 **表 <code>t</code> 中没有任何行 <code>id &gt;= 1002</code>**，则 <code>NOT EXISTS</code> 返回 <code>TRUE</code>，最终 <code>COUNT(*)</code> 结果为 <strong>表 <code>t</code> 的总行数</strong>。</li>
+</ul>
+</li>
+<li>🌟（别的笔试题里做过一次）sleep() 和 wait() 区别<br><code>sleep()</code> 不释放锁<ul>
+<li>定义：<code>sleep()</code>是<code>Thread</code>类的一个静态方法。</li>
+<li>功能：它使当前正在执行的线程暂停执行指定的时间（以毫秒为单位），期间该线程不会释放任何锁，也就是说，如果一个线程调用了<code>sleep()</code>方法，它仍然持有之前获取的所有锁。</li>
+<li>使用场景：当你希望线程暂时停止执行一段时间，而不涉及线程间的协作时可以使用<code>sleep()</code>。例如，在模拟延迟或定时任务中。<br><code>wait()</code> 释放锁：</li>
+<li>定义：<code>wait()</code>是<code>Object</code>类的一个实例方法。</li>
+<li>功能：它必须与同步块或同步方法一起使用，并且会释放当前对象的锁。当一个线程调用某个对象的<code>wait()</code>方法时，这个线程会被加入到该对象的等待队列中并进入等待状态，直到另一个线程调用同一个对象的<code>notify()</code>或<code>notifyAll()</code>方法来唤醒它。</li>
+<li>使用场景：主要用于线程之间的协作，比如生产者-消费者问题中，用来协调多个线程对共享资源的访问。</li>
+</ul>
+</li>
+<li>递增有序表求平均查找长度，l1是平均查找成功长度，l2是平均查找不成功长度，求l1-l2<br>l1 &#x3D; (1 + 2 + … + n) &#x2F; n &#x3D; (n + 1) &#x2F; 2;<br>l2 &#x3D; (1 + 2 + .. + n + n) &#x2F; (n + 1) &#x3D; n&#x2F;2 + n &#x2F; (n + 1);</li>
+</ol>
+<h1 id="编程题"><a href="#编程题" class="headerlink" title="编程题"></a>编程题</h1><p>简单，都做出来了</p>
+<ol>
+<li>给定n个数据，每个数据是坐标位置和走的方向，每个人可以向左走和向右走，速度都一样，求多少人会相遇</li>
+<li>有一个nxn的矩形，每次操作能给一个数加一，求最少操作多少次，使矩阵旋转90度、180度、270度都是一样的</li>
+</ol>
+<h1 id="选择题17递归求最大公约数（线段树思想）"><a href="#选择题17递归求最大公约数（线段树思想）" class="headerlink" title="选择题17递归求最大公约数（线段树思想）"></a>选择题17递归求最大公约数（线段树思想）</h1><p>线段树是一种<strong>二叉树数据结构</strong>，用于高效解决<strong>区间查询问题</strong>（如求区间和、最大值、最小值、GCD等）。</p>
+<ul>
+<li><strong>每个节点</strong>代表一个<strong>区间</strong>的信息（如 <code>[l, r]</code> 的 GCD）。</li>
+<li><strong>叶子节点</strong>存储<strong>单个元素</strong>的值。</li>
+<li><strong>非叶子节点</strong>存储<strong>子区间合并后的信息</strong>（如左右子树的 GCD）。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">vector&lt;<span class="type">int</span>&gt; arr;      <span class="comment">// 输入数组</span></span><br><span class="line">vector&lt;<span class="type">int</span>&gt; tree;     <span class="comment">// 线段树</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 计算 GCD（注意处理 0 的情况）</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">gcd</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> b == <span class="number">0</span> ? a : <span class="built_in">gcd</span>(b, a % b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 递归构建线段树</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">build</span><span class="params">(<span class="type">int</span> node, <span class="type">int</span> l, <span class="type">int</span> r)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (l == r) &#123;</span><br><span class="line">        tree[node] = arr[l];</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> mid = (l + r) / <span class="number">2</span>;</span><br><span class="line">    <span class="built_in">build</span>(<span class="number">2</span> * node, l, mid);          <span class="comment">// 左子树</span></span><br><span class="line">    <span class="built_in">build</span>(<span class="number">2</span> * node + <span class="number">1</span>, mid + <span class="number">1</span>, r);   <span class="comment">// 右子树</span></span><br><span class="line">    tree[node] = <span class="built_in">gcd</span>(tree[<span class="number">2</span> * node], tree[<span class="number">2</span> * node + <span class="number">1</span>]);  <span class="comment">// 合并 GCD</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 递归查询区间 [ql, qr] 的 GCD</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">query</span><span class="params">(<span class="type">int</span> node, <span class="type">int</span> l, <span class="type">int</span> r, <span class="type">int</span> ql, <span class="type">int</span> qr)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 当前区间与查询区间无交集</span></span><br><span class="line">    <span class="keyword">if</span> (qr &lt; l || ql &gt; r) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;  <span class="comment">// 中性值（gcd(x, 0) = x）</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 当前区间完全包含在查询区间内</span></span><br><span class="line">    <span class="keyword">if</span> (ql &lt;= l &amp;&amp; r &lt;= qr) &#123;</span><br><span class="line">        <span class="keyword">return</span> tree[node];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> mid = (l + r) / <span class="number">2</span>;</span><br><span class="line">    <span class="comment">// 根据查询区间与 mid 的关系，决定递归方向</span></span><br><span class="line">    <span class="keyword">if</span> (qr &lt;= mid) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">query</span>(<span class="number">2</span> * node, l, mid, ql, qr);  <span class="comment">// 只需查左子树</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ql &gt; mid) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">query</span>(<span class="number">2</span> * node + <span class="number">1</span>, mid + <span class="number">1</span>, r, ql, qr);  <span class="comment">// 只需查右子树</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 查询区间横跨 mid，需合并左右子树的结果</span></span><br><span class="line">        <span class="type">int</span> left_gcd = <span class="built_in">query</span>(<span class="number">2</span> * node, l, mid, ql, mid);</span><br><span class="line">        <span class="type">int</span> right_gcd = <span class="built_in">query</span>(<span class="number">2</span> * node + <span class="number">1</span>, mid + <span class="number">1</span>, r, mid + <span class="number">1</span>, qr);</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">gcd</span>(left_gcd, right_gcd);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化线段树</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> n = arr.<span class="built_in">size</span>();</span><br><span class="line">    tree.<span class="built_in">resize</span>(<span class="number">4</span> * n);  <span class="comment">// 线段树大小为 4n</span></span><br><span class="line">    <span class="built_in">build</span>(<span class="number">1</span>, <span class="number">0</span>, n - <span class="number">1</span>);  <span class="comment">// 根节点从 1 开始</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>笔试题</category>
+      </categories>
+  </entry>
 </search>
