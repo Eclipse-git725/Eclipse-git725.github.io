@@ -1415,35 +1415,61 @@
   <entry>
     <title>腾讯CDG金融科技后台开发一面凉经</title>
     <url>/2025/04/16/%E9%9D%A2%E7%BB%8F/%E8%85%BE%E8%AE%AFCDG%E9%87%91%E8%9E%8D%E7%A7%91%E6%8A%80%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2%E5%87%89%E7%BB%8F/</url>
-    <content><![CDATA[<p>0416第一次面试30min<br>根据简历上写的技术栈一个一个问的，也不问项目（问项目有没有上线，没上线），也没手撕</p>
+    <content><![CDATA[<p>当天做完测评没多久就打电话约面试了。</p>
+<p>0416第一次面试30min<br>根据简历上写的技术栈一个一个问的，也不问项目（问项目有没有上线，没上线），也没手撕</p>
 <span id="more"></span>
 
 <p>自我介绍</p>
 <ol>
-<li><strong>数组和链表的区别，使用场景</strong><br>  底层存储、查询效率、头插效率、扩容、场景（数组频繁访问、链表插入删除频繁）</li>
-<li><strong>树和图的区别</strong><br>  树：一种层次结构的数据结构，由根节点和子节点组成，常用于表示分层关系。<br>  图：由顶点和边组成的数据结构，用于表示对象之间的关系，可以是有向图或无向图。</li>
-<li><strong>深度优先搜索和广度优先搜索的区别，为什么要用dfs和bfs</strong><br>  DFS：从起点出发，沿一条路径尽可能深入（纵向搜索），直到无法继续再回溯。场景：找出所有路径<br>  BFS：按层次逐层扩展（横向搜索），先访问所有相邻节点再深入下一层。使用<strong>队列</strong>实现。场景：最短路、层序遍历</li>
-<li><strong>三次握手，发送的内容里面都有什么</strong></li>
-<li><strong>第三次握手丢了，客户端直接发送数据了，服务端会怎么样</strong><br>  服务端进行超时重传，知道用完重传次数。<br>  客户端发送的数据包ACK为1，就视为对第二次握手的确认，建立连接并处理数据。<br>  若数据包未携带ACK标志位，服务端因处于<code>SYN_RECV</code>状态，会回复<code>RST</code>（复位）包强制关闭连接。</li>
-<li><strong>第三次握手的目的是什么</strong><br>  客户端通过发送ACK包（第三次握手），明确告知服务器已收到其SYN+ACK报文（第二次握手），完成双向通信能力的验证</li>
-<li><strong>序列号怎么生成的，从0开始吗</strong><br>  TCP连接的初始序列号是一个<strong>随机生成的32位整数</strong>，数据传输时，每个字节按顺序编号，序列号按发送的字节数递增。<br>  固定从0开始易被攻击者预测序列号，伪造数据包（如SYN洪泛攻击）。</li>
-<li><strong>TCP数据包里包含哪些，有ACK字段吗，这个ACK和三次握手的有什么不一样</strong><br>  源端口和目标端口、序列号、确认号、控制标志位</li>
-<li><strong>HTTP 和 HTTPS 的区别</strong><br>  安全性、端口号不同、握手不同</li>
-<li><strong>HTTPS 四次握手过程，每次握手发了什么</strong></li>
-<li><strong>发送的数字证书为什么是可靠的，客户端怎么判断是可靠的</strong><br>客户端依赖内置的根CA公钥验证签名链，确保证书由可信机构签发且内容完整</li>
-<li><strong>linux常见命令</strong></li>
-<li><strong>linux文件系统了解吗</strong></li>
-<li><strong>vim打开一个文件的原理</strong><br>系统启动 Vim 进程，将文件名作为参数传递<br>加载 <code>.vimrc</code> 配置文件，初始化命令映射表<br><code>vim</code>打开文件是将文件内容加载到内存缓冲区供用户编辑，编辑操作作用于缓冲区，保存时再将缓冲区内容写回磁盘文件。</li>
-<li><strong>数据库存储引擎有哪些</strong></li>
-<li><strong>InnoDB存储引擎和Mysql的区别</strong><br>MySQL 包含存储引擎。<br>MySQL等数据库管理系统（DBMS）是一个完整的软件系统，负责SQL解析、连接管理、查询优化、事务控制等高层功能。而存储引擎（如InnoDB、MyISAM）是其底层组件，专门负责数据的物理存储、索引管理、事务实现等具体操作。</li>
-<li><strong>索引怎么实现的</strong></li>
-<li><strong>为什么用B+树，不用二叉树</strong></li>
-<li><strong>B+树时间复杂度为什么是O(logN)</strong><br>每次查找从根节点开始，通过二分法定位子节点指针，只需访问h个节点即可到达叶子节点。</li>
-<li><strong>联合索引 (a,b,c) (b,a,c) (c,b,a) 有什么区别</strong><br>联合索引的字段顺序决定了数据的物理排序方式<br>**<code>(a,b,c)</code>**：先按 <code>a</code> 排序，<code>a</code> 相同再按 <code>b</code> 排序，最后按 <code>c</code> 排序。影响索引的 <strong>最左匹配原则</strong> 和查询效率</li>
-<li><strong>联合索引把什么样的字段放在第一个（用户登录状态和uid哪个放第一个）</strong><br>把区分度高的字段放在第一个</li>
-<li><strong>事务隔离级别，可重复读有没有幻读现象，什么情况下出现幻读</strong><br>幻读是指一个事务在两次查询中得到的结果集不同，原因是另一个事务在两次查询之间插入或删除了数据。</li>
-<li><strong>Redis持久化方式，快照怎么实现的</strong><br>第一步是当触发 RDB 持久化时，Redis 会 fork 出一个子进程；<br>第二步是子进程负责将当前内存中的数据完整地写入到一个临时文件中；<br>第三步是在写入完成后，子进程用这个临时文件替换掉旧的 RDB 文件，完成持久化。</li>
-<li><strong>快照怎么保证和上一个快照不冲突（提示有个静态变量，？）</strong></li>
+<li><p><strong>数组和链表的区别，使用场景</strong><br> 底层存储、查询效率、头插效率、扩容、场景（数组频繁访问、链表插入删除频繁）</p>
+</li>
+<li><p><strong>树和图的区别</strong><br> 树：一种层次结构的数据结构，由根节点和子节点组成，常用于表示分层关系。<br> 图：由顶点和边组成的数据结构，用于表示对象之间的关系，可以是有向图或无向图。</p>
+</li>
+<li><p><strong>深度优先搜索和广度优先搜索的区别，为什么要用dfs和bfs</strong><br> DFS：从起点出发，沿一条路径尽可能深入（纵向搜索），直到无法继续再回溯。场景：找出所有路径<br> BFS：按层次逐层扩展（横向搜索），先访问所有相邻节点再深入下一层。使用<strong>队列</strong>实现。场景：最短路、层序遍历</p>
+</li>
+<li><p><strong>三次握手，发送的内容里面都有什么</strong></p>
+</li>
+<li><p><strong>第三次握手丢了，客户端直接发送数据了，服务端会怎么样</strong><br> 服务端进行超时重传，直到用完重传次数。<br> 客户端发送的数据包ACK为1，就视为对第二次握手的确认，建立连接并处理数据。<br> 若数据包未携带ACK标志位，服务端因处于<code>SYN_RECV</code>状态，会回复<code>RST</code>（复位）包强制关闭连接。</p>
+</li>
+<li><p><strong>第三次握手的目的是什么</strong><br> 客户端通过发送ACK包（第三次握手），明确告知服务器已收到其SYN+ACK报文（第二次握手），完成双向通信能力的验证</p>
+</li>
+<li><p><strong>序列号怎么生成的，从0开始吗</strong><br> TCP连接的初始序列号是一个<strong>随机生成的32位整数</strong>，数据传输时，每个字节按顺序编号，序列号按发送的字节数递增。<br> 固定从0开始易被攻击者预测序列号，伪造数据包（如SYN洪泛攻击）。</p>
+</li>
+<li><p><strong>TCP数据包里包含哪些，有ACK字段吗，这个ACK和三次握手的有什么不一样</strong><br> 源端口和目标端口、序列号、确认号、控制标志位</p>
+</li>
+<li><p><strong>HTTP 和 HTTPS 的区别</strong><br> 安全性、端口号不同、握手不同</p>
+</li>
+<li><p><strong>HTTPS 四次握手过程，每次握手发了什么</strong></p>
+</li>
+<li><p><strong>发送的数字证书为什么是可靠的，客户端怎么判断是可靠的</strong><br> 客户端依赖内置的根CA公钥验证签名链，确保证书由可信机构签发且内容完整</p>
+<p> <a href="https://javabetter.cn/sidebar/sanfene/network.html#_21-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%80%8E%E4%B9%88%E5%8E%BB%E6%A0%A1%E9%AA%8C%E8%AF%81%E4%B9%A6%E7%9A%84%E5%90%88%E6%B3%95%E6%80%A7">_21-客户端怎么去校验证书的合法性</a></p>
+</li>
+<li><p><strong>linux常见命令</strong></p>
+</li>
+<li><p><strong>linux文件系统了解吗</strong></p>
+</li>
+<li><p><strong>vim打开一个文件的原理</strong><br> 系统启动 Vim 进程，将文件名作为参数传递<br> 加载 <code>.vimrc</code> 配置文件，初始化命令映射表<br> <code>vim</code>打开文件是将文件内容加载到内存缓冲区供用户编辑，编辑操作作用于缓冲区，保存时再将缓冲区内容写回磁盘文件。</p>
+</li>
+<li><p><strong>数据库存储引擎有哪些</strong></p>
+</li>
+<li><p><strong>InnoDB存储引擎和Mysql的区别</strong><br> MySQL 包含存储引擎。<br> MySQL等数据库管理系统（DBMS）是一个完整的软件系统，负责SQL解析、连接管理、查询优化、事务控制等高层功能。而存储引擎（如InnoDB、MyISAM）是其底层组件，专门负责数据的物理存储、索引管理、事务实现等具体操作。</p>
+</li>
+<li><p><strong>索引怎么实现的</strong></p>
+</li>
+<li><p><strong>为什么用B+树，不用二叉树</strong></p>
+</li>
+<li><p><strong>B+树时间复杂度为什么是O(logN)</strong><br> 每次查找从根节点开始，通过二分法定位子节点指针，只需访问h个节点即可到达叶子节点。</p>
+</li>
+<li><p><strong>联合索引 (a,b,c) (b,a,c) (c,b,a) 有什么区别</strong><br> 联合索引的字段顺序决定了数据的物理排序方式<br> **<code>(a,b,c)</code>**：先按 <code>a</code> 排序，<code>a</code> 相同再按 <code>b</code> 排序，最后按 <code>c</code> 排序。影响索引的 <strong>最左匹配原则</strong> 和查询效率</p>
+</li>
+<li><p><strong>联合索引把什么样的字段放在第一个（用户登录状态和uid哪个放第一个）</strong><br> 把区分度高的字段放在第一个</p>
+</li>
+<li><p><strong>事务隔离级别，可重复读有没有幻读现象，什么情况下出现幻读</strong><br> 幻读是指一个事务在两次查询中得到的结果集不同，原因是另一个事务在两次查询之间插入或删除了数据。</p>
+</li>
+<li><p><strong>Redis持久化方式，快照怎么实现的</strong><br> 第一步是当触发 RDB 持久化时，Redis 会 fork 出一个子进程；<br> 第二步是子进程负责将当前内存中的数据完整地写入到一个临时文件中；<br> 第三步是在写入完成后，子进程用这个临时文件替换掉旧的 RDB 文件，完成持久化。</p>
+</li>
+<li><p><strong>快照怎么保证和上一个快照不冲突（提示有个静态变量，？）</strong></p>
+</li>
 </ol>
 <p>反问<br>秒挂的</p>
 ]]></content>
