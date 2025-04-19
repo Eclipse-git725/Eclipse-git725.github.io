@@ -1507,4 +1507,43 @@
         <category>面经</category>
       </categories>
   </entry>
+  <entry>
+    <title>得物20250419笔试</title>
+    <url>/2025/04/19/%E7%AC%94%E8%AF%95%E9%A2%98/%E5%BE%97%E7%89%A920250419%E7%AC%94%E8%AF%95/</url>
+    <content><![CDATA[<p>单选20道40分，编程题3道60分，测评20道2分<br>2h，编程题限制用Java写</p>
+<span id="more"></span>
+
+<h1 id="单选题"><a href="#单选题" class="headerlink" title="单选题"></a>单选题</h1><ol>
+<li>陷阱和中断<br> 中断由外部硬件触发，陷阱由程序主动调用或出现异常或系统调用触发<br> 线程切换更多由中断触发</li>
+<li>哈希表平均查找长度<br> 平均查找长度 &#x3D; （所有关键字查找长度之后）&#x2F; 关键字数量</li>
+<li>给一棵二叉树，用DFS遍历，求栈大小最小多少能完成DFS</li>
+<li>数据库主键<br> 主键不能为空值</li>
+<li>volatile 关键字<br> 不是线程安全的，不保证原子性</li>
+<li>LRU，缺页几次，大小为4页，1 3 2 4 5 3 1 2</li>
+<li>代码运行结果<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">Integer</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">100</span>;  </span><br><span class="line"><span class="type">Integer</span> <span class="variable">b</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Integer</span>(<span class="number">100</span>);  </span><br><span class="line">System.out.println(a == b); <span class="comment">// false  </span></span><br><span class="line">System.out.println(b == <span class="number">100</span>); <span class="comment">// true 自动拆箱比较的是100==100</span></span><br></pre></td></tr></table></figure></li>
+<li>ArrayList 和 LinkedList区别</li>
+<li>语法分析，终结符和非终结符</li>
+<li>deque程序调用哪个方法会编译错误<br>get，不支持随机访问</li>
+<li>继承和抽象代码运行结果</li>
+<li>订单系统，失效就取消订单，哪个设计模式适合这个流程</li>
+<li>HashSet 和 TreeSet<br>TreeSet 不能存入NUll值，TreeSet 存的是有序值，NULL无法和其他值比较</li>
+<li>堆排序</li>
+<li>IP 协议（网络层）</li>
+<li>ABCDEF 按顺序进展，不能连续出栈3次，什么顺序是错误的<br>CFEDBA</li>
+<li>数据库什么情况会数据泄漏<br>权限设置不当</li>
+<li>IP组播<br>IP组播使用D类地址（224.0.0.0~239.255.255.255）作为目标地址。</li>
+<li>面向对象的设计准则</li>
+<li>sql语句，一个竞赛表（学号、姓名、分数）一个晋级表（排名，学号），查询为晋级学生的学号姓名<br>NOT IN、NOT EXIST、LEFT JOIN、RIGHT JOIN<br>左连接是保留左表所有记录，即使右表中没有匹配</li>
+</ol>
+<h1 id="编程题"><a href="#编程题" class="headerlink" title="编程题"></a>编程题</h1><p> 都写出来了，Java的输入不太熟</p>
+<ol>
+<li>给定一个数，构造一个三行三列的行列式，值等于这个数</li>
+<li>对一个数组，可以执行无数次操作，最少执行多少次，让数组变成都是0，操作：选一些元素，减少 2^k 次方。</li>
+<li>n行m列字符矩阵，q次询问，每次询问输入a,b,c，向左移位a次，b行c列的字符是什么。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>笔试题</category>
+      </categories>
+  </entry>
 </search>
