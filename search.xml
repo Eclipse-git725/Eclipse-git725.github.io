@@ -1533,7 +1533,7 @@
 <li>数据库什么情况会数据泄漏<br>权限设置不当</li>
 <li>IP组播<br>IP组播使用D类地址（224.0.0.0~239.255.255.255）作为目标地址。</li>
 <li>面向对象的设计准则</li>
-<li>sql语句，一个竞赛表（学号、姓名、分数）一个晋级表（排名，学号），查询为晋级学生的学号姓名<br>NOT IN、NOT EXIST、LEFT JOIN、RIGHT JOIN<br>左连接是保留左表所有记录，即使右表中没有匹配</li>
+<li>sql语句，一个竞赛表（学号、姓名、分数）一个晋级表（排名，学号），查询未晋级学生的学号姓名<br>NOT IN、NOT EXIST、LEFT JOIN、RIGHT JOIN<br>左连接是保留左表所有记录，即使右表中没有匹配</li>
 </ol>
 <h1 id="编程题"><a href="#编程题" class="headerlink" title="编程题"></a>编程题</h1><p> 都写出来了，Java的输入不太熟</p>
 <ol>
