@@ -1546,4 +1546,41 @@
         <category>笔试题</category>
       </categories>
   </entry>
+  <entry>
+    <title>饿了么20250419笔试</title>
+    <url>/2025/04/20/%E7%AC%94%E8%AF%95%E9%A2%98/%E9%A5%BF%E4%BA%86%E4%B9%8820250419%E7%AC%94%E8%AF%95/</url>
+    <content><![CDATA[<p>单选8题24分、不定项7题21分、编程题3道55分</p>
+<p>好难，A了1.2道QAQ，一周末做四个笔试，脑子都不转了</p>
+<span id="more"></span>
+
+<h1 id="单选"><a href="#单选" class="headerlink" title="单选"></a>单选</h1><ol>
+<li>sql题，xxx count(4) 和 xxx count(7) 的执行结果<br> <code>count(*)、count(常量）</code> 都是统计所有行数<br> <code>count(列名)</code> 统计该列不为空的行数</li>
+<li>图形推理</li>
+<li>陷阱和中断（陷阱是同步的，中断是异步的）</li>
+<li>树转成二叉树，后续遍历的结果<br> 转换方法：左孩子-右兄弟</li>
+<li>常识题</li>
+<li>IP 数据报（不包含窗口字段）</li>
+<li>linux 中计算文件单词个数的命令<br> wc【选项】文件名<br> -w （word）统计单词数<br> -l 统计行数<br> -c 统计字节数</li>
+<li>日志记录系统，生成新日志是，告知所有关联该日志的开发者，用什么设计模式（观察者模式）</li>
+</ol>
+<h1 id="不定项"><a href="#不定项" class="headerlink" title="不定项"></a>不定项</h1><ol>
+<li>TCP 流量控制和拥塞控制<br> 发送窗口大小 &#x3D; min(拥塞窗口, 接收方窗口)<br> 拥塞窗口是动态变化的<br> 流量控制是端到端的，拥塞控制是全局的</li>
+<li>Linux命令<br> cat本身是查看命令，可以利用重定向创建文件</li>
+<li>建造者模式（将对象的构建步骤拆解）</li>
+<li>不是原地排序的算法<br> 归并和基数（基数排序要用到桶，先按个位排序，再收集；按十位排序再收集；最后一次收集就是有序的）</li>
+<li>块设备和字符设备<br> 块设备传输数据块，速度快，可寻址（硬盘、SSD）<br> 字符串传输字符，速度慢，一般顺序访问（键盘鼠标）</li>
+<li>入栈顺序、出栈顺序</li>
+<li>索引失效的场景</li>
+</ol>
+<h1 id="编程题"><a href="#编程题" class="headerlink" title="编程题"></a>编程题</h1><p>A了1.2道QAQ，还是得物的简单</p>
+<ol>
+<li>模拟，有a,b,c三个数组，a中任意下标元素ai可以转换成b中的ci下标的元素，求一个式子最小</li>
+<li>输入数字字符串，求所有子序列的分数，合法子序列为最后一位是偶数，并且无前缀0，以8为结尾的子序列2分，其余子序列1分。</li>
+<li>求x和y的最小公倍数，g(x,y)是最小公倍数从低位到高位遇到的第一个非零数字和最后位之间0的个数，1&lt;&#x3D;i&lt;&#x3D;j&lt;&#x3D;n，求g(ai,aj)的总和</li>
+</ol>
+]]></content>
+      <categories>
+        <category>笔试题</category>
+      </categories>
+  </entry>
 </search>
