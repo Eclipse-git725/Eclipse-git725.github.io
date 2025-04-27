@@ -1674,4 +1674,145 @@
         <category>面经</category>
       </categories>
   </entry>
+  <entry>
+    <title>蚂蚁20250424笔试</title>
+    <url>/2025/04/27/%E7%AC%94%E8%AF%95%E9%A2%98/%E8%9A%82%E8%9A%8120250424%E7%AC%94%E8%AF%95/</url>
+    <content><![CDATA[<p>基础单选7个21分，基础多选4个12分，Java单选2个6分，Java多选2个6分<br>编程题3个55分</p>
+<span id="more"></span>
+
+<h1 id="基础单选"><a href="#基础单选" class="headerlink" title="基础单选"></a>基础单选</h1><ol>
+<li>DFS序列</li>
+<li>一个软件支持各种支付方法，支付方式可以添加或删除，使用哪个设计模式<br> 策略模式</li>
+<li>如何减少数据传输量（压缩、缓存、去除冗余）</li>
+<li>Linux文件权限<br> u&#x3D;rw g &#x3D; r o&#x3D; xxx.txt 含义是<br> 所有者（u）：读写权限（rw）。<br> 所属组（g）：只读权限（r）。<br> 其他用户（o）：无权限（o&#x3D;未指定权限，默认为无权限）。</li>
+<li>h&#x3D;9，255个叶子节点的完全二叉树，节点总数可能有多少个（510）</li>
+<li>存储管理系统（数据库系统、文件系统）</li>
+<li>动态分区存储100MB，使用最坏适配（Worst Fit）策略，最大空闲分区大小为<br> 分配过程：分配15 25 释放 25 分配 10 8 22<br> 最坏适配策略始终选择<strong>当前最大的空闲分区</strong>进行分配<br> 最大空闲分区大小为20MB</li>
+</ol>
+<h1 id="基础多选"><a href="#基础多选" class="headerlink" title="基础多选"></a>基础多选</h1><ol>
+<li>出栈顺序</li>
+<li>数据库隔离级别</li>
+<li>哪个设计模式不是行为模式<br> <strong>行为型模式</strong>主要关注对象间的交互和职责分配（如策略模式、观察者模式等），而<strong>创建型模式</strong>和<strong>结构型模式</strong>不属于行为模式<ul>
+<li><strong>创建型模式</strong>（如单例模式、工厂模式）：解决对象创建问题，与行为无关</li>
+<li><strong>结构型模式</strong>（如适配器模式、代理模式）：处理类或对象的组合结构，而非行为交互</li>
+</ul>
+</li>
+<li>HTTP2.0特征<br> 二进制分帧、多路复用、Header压缩、服务端主动推送到客户端</li>
+</ol>
+<h1 id="Java单选"><a href="#Java单选" class="headerlink" title="Java单选"></a>Java单选</h1><ol>
+<li>代码运行结果<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;  </span><br><span class="line">    Map&lt;String, String&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();  </span><br><span class="line">    map.put(<span class="string">&quot;one&quot;</span>, <span class="string">&quot;1&quot;</span>);  </span><br><span class="line">    map.put(<span class="string">&quot;two&quot;</span>, <span class="string">&quot;2&quot;</span>);  </span><br><span class="line">    map.put(<span class="string">&quot;three&quot;</span>, <span class="string">&quot;3&quot;</span>);  </span><br><span class="line">	<span class="comment">// two 222</span></span><br><span class="line">    map.merge(<span class="string">&quot;two&quot;</span>, <span class="string">&quot;22&quot;</span>, (oldvalue, newvalue) -&gt; oldvalue + newvalue);  </span><br><span class="line">    System.out.println(map);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>代码运行结果<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span>[] arr1 = <span class="keyword">new</span> <span class="title class_">int</span>[]&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;  </span><br><span class="line"><span class="type">int</span>[] arr2 = <span class="keyword">new</span> <span class="title class_">int</span>[]&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;  </span><br><span class="line">System.out.println(arr1 == arr2); <span class="comment">// false  </span></span><br><span class="line">System.out.println(Arrays.equals(arr1, arr2)); <span class="comment">// true  </span></span><br><span class="line">System.out.println(Arrays.hashCode(arr1) == Arrays.hashCode(arr2)); <span class="comment">// true</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="Java多选"><a href="#Java多选" class="headerlink" title="Java多选"></a>Java多选</h1><ol>
+<li>共享锁和独占锁<br> ReadWriteLock 分离了读锁和写锁，并非完全使用独占锁实现<br> ReentrantLock 是独占锁，一个资源只能被一个线程使用，其他线程必须等待</li>
+<li>异常处理<br> 异常分为编译异常和运行异常<br> try-catch用于捕获异常<br> throw抛出一个异常对象<br> 编译异常必须显示捕获，不然无法通过编译</li>
+</ol>
+<h1 id="编程题"><a href="#编程题" class="headerlink" title="编程题"></a>编程题</h1><ol>
+<li>模拟（10分）100%</li>
+<li>n长的数组，q次查询，每次查询输入2，求数组和；输入1 v，将数组的每个数和v比较，大于v的数变成v。0 &lt;&#x3D; n, q &lt;&#x3D; 200000（20分）40%<br> 线段树</li>
+<li>输入数字，数字每一位重排之后，满足每位数之和为质数的个数（25分）33%<br> 使用next_permutation超时了，用阶乘</li>
+</ol>
+]]></content>
+      <categories>
+        <category>笔试题</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>oppo 02025426笔试</title>
+    <url>/2025/04/27/%E7%AC%94%E8%AF%95%E9%A2%98/oppo-02025426%E7%AC%94%E8%AF%95/</url>
+    <content><![CDATA[<p>单选20题40分，编程3题60分</p>
+<span id="more"></span>
+
+<h1 id="单选"><a href="#单选" class="headerlink" title="单选"></a>单选</h1><ol>
+<li>代码运行结果<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;  </span><br><span class="line">    HashMap&lt;String, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();  </span><br><span class="line">    map.put(<span class="string">&quot;A&quot;</span>, <span class="number">1</span>);  </span><br><span class="line">    map.put(<span class="string">&quot;B&quot;</span>, <span class="number">2</span>);  </span><br><span class="line">    map.put(<span class="string">&quot;C&quot;</span>, <span class="number">3</span>);  </span><br><span class="line">    <span class="keyword">for</span>(String key : map.keySet()) &#123;  </span><br><span class="line">        map.put(key, map.get(key) + <span class="number">1</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">for</span>(String key : map.keySet()) &#123;  </span><br><span class="line">    <span class="comment">// A 2 B 3 C 4</span></span><br><span class="line">        System.out.println(key + <span class="string">&quot;: &quot;</span> + map.get(key));  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>linux查看文件后10个字符的命令<br> tail -c 10 文件名 或者 cat xxx.txt | tail -c 10</li>
+<li>mG大小的数组排序，存储空间只有mG大小，哪个排序算法会出错（哪个排序算法需要额外的空间）<br> 归并排序、基数排序需要额外空间</li>
+<li>代码运行结果<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyException</span> <span class="keyword">extends</span> <span class="title class_">Exception</span>&#123;  </span><br><span class="line">      </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Me</span> &#123;  </span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">drink</span><span class="params">()</span>&#123;&#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MySon</span> <span class="keyword">extends</span> <span class="title class_">Me</span> &#123;  </span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">eat</span><span class="params">()</span> <span class="keyword">throws</span> MyException &#123;&#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+子类重写方法时，抛出的异常<strong>不能比父类更宽泛</strong><br>父类方法无异常声明时，子类重写方法<strong>不能新增编译时异常</strong></li>
+<li>HTTP不适合实时聊天应用的原因<br> 效率低，每次通信都要三次握手，协议开销大</li>
+<li>29个节点的无向连通图，至少多少条边（28）</li>
+<li>c++代码运行结果<br> 代码含义是，清楚最低位1，输出9999，一共有8个1<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">compute</span><span class="params">(<span class="type">int</span> p)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> num = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (p) &#123;</span><br><span class="line">        num++;          <span class="comment">// 统计1的个数</span></span><br><span class="line">        p = p &amp; (p - <span class="number">1</span>); <span class="comment">// 清除最低位的1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>分页32位，页号18位，那么最大页长多少（2^14）</li>
+<li>ArrayList 和 LinkedList<br> LinkedList 底层是双向链表</li>
+<li>代码运行结果</li>
+<li>资源被永久移动的状态码是（301，302是临时移动资源）</li>
+<li>HTTPS中验证服务器身份的是（数字证书）</li>
+<li>Linux磁盘挂载</li>
+<li>Mysql<br>主键唯一且不为空<br>delete删除表数据，不删除表结构<br>TRUNCATE 清除所有表数据<br>视图不存储数据，但用于更新</li>
+<li>求时间空间复杂度</li>
+<li>二叉树，深度为i的节点值为i，高度为6，节点总数N为多少</li>
+<li>new 和 malloc的区别<br>new一个对象自动调用一次构造<br><code>new[]</code> 多个对象，每个对象自动调用一次构造<br>malloc 使用free释放内存，并不是用delete<br>new分配的内存用delete释放</li>
+<li>c++ 内联函数<br>inline 函数在编译时被展开<br>类中的成员函数会自动转成内联函数</li>
+<li>顺序、链式、索引、散列存文件有什么特点</li>
+<li>关系型数据库每张表几个主键（一个）</li>
+</ol>
+<h1 id="编程题"><a href="#编程题" class="headerlink" title="编程题"></a>编程题</h1><p>不知道为什么和网上的题不一样</p>
+<ol>
+<li>n长度的数组代表河流，每个位置0为空，1代表有石头，可以踩在石头上过河，求要到达河对面的最长一步最短为多少（15分）<br> 模拟，看最大一步需要跨多大</li>
+<li>n行n列的01方阵，要求进行一些操作使A方阵和B方阵相等，一次操作能选择A一行或一列反转（0变成1，1变成0），最少几次能做到A等于B，若A不能变成B返回-1（1&lt;&#x3D;n&lt;&#x3D;4）（20分）<br> 数据范围小，枚举，每行每列有两种选择，翻转或不翻转，翻转的顺序不影响结果</li>
+<li>有两个n长度的数组a和b，a、b之间的距离为：0- i下标对(ai-bi)^2求和。一次操作能选择a或b中的一个元素加一或减一，最多能操作K次，求距离最小缩小到多少（0&lt;&#x3D;ai,bi,K&lt;&#x3D;1e9 0&lt;&#x3D;n&lt;&#x3D;1e5）（25分）</li>
+</ol>
+]]></content>
+      <categories>
+        <category>笔试题</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>美团20250426笔试</title>
+    <url>/2025/04/27/%E7%AC%94%E8%AF%95%E9%A2%98/%E7%BE%8E%E5%9B%A220250426%E7%AC%94%E8%AF%95/</url>
+    <content><![CDATA[<p>单选10题30分（有6题大模型相关的选择），编程题70分</p>
+<span id="more"></span>
+
+<h1 id="单选"><a href="#单选" class="headerlink" title="单选"></a>单选</h1><ol>
+<li>根据前序、中序获得后序序列</li>
+<li>曼彻斯特编码和归零编码<br> 曼彻斯特编码：从低到高跳变表示“1”，从高到低跳变表示“0”<br> 归零编码：每个比特周期内，信号电平必须归零</li>
+<li>60MB空间，动态分区存储，使用最先匹配算法，求最小空闲分区是多大<br> 分配过程：分配10MB，30MB 释放10MB，分配5MB<br> 最先匹配是从起始地址找第一个空闲分区</li>
+<li>折半查找最坏第i次查成功元素最多为：<br> 第i次查找意味着元素在树的第i层上，最多有2^(i-1)个</li>
+</ol>
+<h1 id="编程"><a href="#编程" class="headerlink" title="编程"></a>编程</h1><p>A2道</p>
+<ol>
+<li>她有n个行李物品，每个行李物品用小写字母表示。 现在规定每种行李物品携带不能超过个，求小美最多可以带多少个行李物品。</li>
+<li>找规律推理，根据题目意思打印了几个值，找到规律后再写的<br> 题目：<a href="https://niumacode.com/problem/P1600">https://niumacode.com/problem/P1600</a><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;  </span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> <span class="number">15</span>;  </span><br><span class="line">        <span class="type">long</span>[] pow = <span class="keyword">new</span> <span class="title class_">long</span>[] &#123;<span class="number">1</span>, <span class="number">2</span>,<span class="number">4</span>,<span class="number">8</span>,<span class="number">16</span>,<span class="number">32</span>,<span class="number">64</span>,<span class="number">128</span>,<span class="number">256</span>,<span class="number">512</span>,<span class="number">1024</span>,<span class="number">2048</span>,<span class="number">4096</span>,<span class="number">8192</span>,<span class="number">16384</span>,<span class="number">32768</span>,<span class="number">65536</span>,<span class="number">131072</span>,<span class="number">262144</span>,<span class="number">524288</span>,<span class="number">1048576</span>,<span class="number">2097152</span>,<span class="number">4194304</span>,<span class="number">8388608</span>,<span class="number">16777216</span>,<span class="number">33554432</span>,<span class="number">67108864</span>,<span class="number">134217728</span>,<span class="number">268435456</span>,<span class="number">536870912</span>,<span class="number">1073741824</span>&#125;;  </span><br><span class="line">        <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;  </span><br><span class="line">        <span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> n;  </span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;  </span><br><span class="line">        <span class="keyword">while</span>(x != <span class="number">0</span>) &#123;  </span><br><span class="line">            count ++;  </span><br><span class="line">            x /= <span class="number">2</span>;  </span><br><span class="line">        &#125;  </span><br><span class="line">        System.out.println(count - <span class="number">1</span>);  </span><br><span class="line">        <span class="type">int</span> <span class="variable">y</span> <span class="operator">=</span> n - (<span class="type">int</span>)Math.pow(<span class="number">2</span>, count - <span class="number">1</span>);  </span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; count - <span class="number">1</span>; i ++ ) &#123;  </span><br><span class="line">            sum += (<span class="type">long</span>)pow[i] * (pow[i + <span class="number">1</span>] - <span class="number">1</span>);  </span><br><span class="line">        &#125;  </span><br><span class="line">        sum += (<span class="type">long</span>)(y + <span class="number">1</span>) * ((<span class="type">long</span>)(pow[count] - <span class="number">1</span>));  </span><br><span class="line">  </span><br><span class="line">        System.out.println(sum);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><a href="https://niumacode.com/problem/P1601">https://niumacode.com/problem/P1601</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>笔试题</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>虾皮20250423笔试</title>
+    <url>/2025/04/27/%E7%AC%94%E8%AF%95%E9%A2%98/%E8%99%BE%E7%9A%AE20250423%E7%AC%94%E8%AF%95/</url>
+    <content><![CDATA[<p>单选10个30分，多选5个15分（多选不得分，少选得1分），编程题3个55分<br>编程是核心代码模式，但编译没有任何提示。</p>
+<span id="more"></span>
+
+<h1 id="单选"><a href="#单选" class="headerlink" title="单选"></a>单选</h1><ol>
+<li>写时复制Copy on write 特征</li>
+<li>192.168.10.0&#x2F;22 包含主机数<br> 1022</li>
+<li>折半查找 1 2 5 7 12 17 31 45 63 76 79 95 找45 分别要找哪些数字<br> 17 63 31 45</li>
+<li>设计模式<br> 生产者消费者使用观察者模式<br> 拦截器使用的是</li>
+<li>RPC</li>
+<li>状态码<br> 404请求的资源不存在，403服务器拒绝请求</li>
+<li>Linux inode中不记录<br> 不记录文件内容，只包含指向文件数据块的指针</li>
+<li>x86，RISC-V，ARM架构<br> x86使用CISC<br> RISC-V，ARM架构使用RISC</li>
+<li>sql语句要查询处于登录状态的用户，按userID 和 日期排序，数据库可能触发filesort，怎么建索引来避免<br> Filesort是MySQL中一种排序操作机制，当查询无法利用索引完成排序时，MySQL会将结果集放入内存或临时文件中进行排序。</li>
+<li>微服务架构，观测性不包括什么<br>一般包含 日志、指标、分布式追踪，不包含配置管理</li>
+</ol>
+<h1 id="多选"><a href="#多选" class="headerlink" title="多选"></a>多选</h1><ol>
+<li>linux命令中查找文件是否包含字符串特定字符的命令<br> grep awk</li>
+<li>TCP大量储量TIME_WAIT状态怎么解决<br> 最有效的方法<br> 允许端口TIME_WAIT状态下被重用<br> 负载均衡器减少单个服务器压力</li>
+<li>单元测试、基准测试和模糊测试<br> 单元测试覆盖所有路径，尽量独立，不依赖外部<br> 基准测试模拟生产环境中运行<br> 模糊测试结果应包含在详细日志</li>
+<li>垃圾回收机制<br> 不能完全解决OOM问题<br> 自动管理内存<br> 回收期间不完全暂停应用执行<br> 分代回收基于大多数对象在短时间变得不可达</li>
+<li>哈希表<br> loadfactor不是越小越好，一般选0.75<br> 查找、删除最坏到达O(n)<br> 哈希函数选择应该使键值均匀分布，减少冲突</li>
+</ol>
+<h1 id="编程题"><a href="#编程题" class="headerlink" title="编程题"></a>编程题</h1><ol>
+<li>数组划分成4个等和子集（25）91%<br> 回溯</li>
+<li>排序（15）100%</li>
+<li>树的层序遍历（15）100%</li>
+</ol>
+]]></content>
+      <categories>
+        <category>笔试题</category>
+      </categories>
+  </entry>
 </search>
