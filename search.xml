@@ -1910,4 +1910,41 @@
         <category>面经</category>
       </categories>
   </entry>
+  <entry>
+    <title>淘天20250506笔试</title>
+    <url>/2025/05/07/%E7%AC%94%E8%AF%95%E9%A2%98/%E6%B7%98%E5%A4%A920250506%E7%AC%94%E8%AF%95/</url>
+    <content><![CDATA[<p>1h40min </p>
+<span id="more"></span>
+
+<h1 id="单选多选学习"><a href="#单选多选学习" class="headerlink" title="单选多选学习"></a>单选多选学习</h1><ol>
+<li>volatile<br> 不保证原子性，如count++的场景，不能保证线程安全</li>
+<li>&#x3D;&#x3D; 能比较String的内容吗<br> 这样创建，内容都存在常量池中，&#x3D;&#x3D; 是相同的<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">str1</span> <span class="operator">=</span> <span class="string">&quot;hello&quot;</span>;</span><br><span class="line"><span class="type">String</span> <span class="variable">str2</span> <span class="operator">=</span> <span class="string">&quot;hello&quot;</span>;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li><code>String</code>实现了<code>Serializable</code>接口，允许字符串对象被序列化。</li>
+<li><code>String</code>实现了<code>Comparable&lt;String&gt;</code>接口，这允许字符串根据其内容进行排序。</li>
+</ul>
+<ol start="3">
+<li>final修饰类，表示不能被继承</li>
+<li>堆排序第二次排序的结果是<ul>
+<li>第一次排序后，<strong>最大的元素被放到数组末尾</strong>；</li>
+<li>第二次排序后，<strong>次大的元素被放到倒数第二个位置</strong>；</li>
+</ul>
+</li>
+<li>唯一索引能否有null值<br> MySQL中唯一索引允许单个 <code>NULL</code> 值出现？</li>
+<li>组合线程</li>
+<li>DNS不能提高网络速度</li>
+<li>线程池大量短期异步任务用哪个线程池 <strong>CachedThreadPool</strong></li>
+<li>图形化应用程序，画布上撤销和重画用什么设计模式（命令模式）</li>
+</ol>
+<h1 id="编程题3题"><a href="#编程题3题" class="headerlink" title="编程题3题"></a>编程题3题</h1><ol>
+<li>回溯，给定一些数（n&lt;&#x3D;20, ai&lt;&#x3D;100）每个数可以选和不选，如果选的数是完全平方数就是完美数组，完美数组有哪些（20分）</li>
+<li>数组染色15分，构造1-n个数，如果任意两个下标满足i!&#x3D;j 并且 gcd(i,j)!&#x3D;1，那么这两个下标的数不能相同，给定n，问最少用多少个数（15分）</li>
+<li>字符串从0开始的所有前缀，每个前缀排序一下，问排序后第k个前缀是什么（20分）</li>
+</ol>
+]]></content>
+      <categories>
+        <category>笔试题</category>
+      </categories>
+  </entry>
 </search>
