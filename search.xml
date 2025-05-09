@@ -1978,4 +1978,31 @@
         <tag>数据库</tag>
       </tags>
   </entry>
+  <entry>
+    <title>美团核心本地商业一面</title>
+    <url>/2025/05/09/%E9%9D%A2%E7%BB%8F/%E7%BE%8E%E5%9B%A2%E6%A0%B8%E5%BF%83%E6%9C%AC%E5%9C%B0%E5%95%86%E4%B8%9A%E4%B8%80%E9%9D%A2/</url>
+    <content><![CDATA[<p>2025.05.09 30min<br>部门：核心本地商业-业务研发平台<br>八股+手撕，问了一个项目问题，也没问大模型</p>
+<span id="more"></span>
+
+<p>面试官先介绍部门，酒店业务<br>自我介绍<br>八股:</p>
+<ol>
+<li>集合有什么接口和实现类</li>
+<li>Java内存模型</li>
+<li>垃圾回收怎么实现的</li>
+<li>在开发中用到哪些集合</li>
+<li>动态规划解决的是什么问题</li>
+<li>BFS 和 DFS 用在什么场景</li>
+<li>git的常用命令</li>
+<li>http和https的区别</li>
+<li>生产者消费者模式的应用场景</li>
+<li>Redis持久化方式</li>
+<li>SpringMVC流程</li>
+<li>项目中怎么用Redis优化的</li>
+</ol>
+<p>手撕：<br>最长回文子序列<br>合并两个有序链表<br>单例模式</p>
+]]></content>
+      <categories>
+        <category>面经</category>
+      </categories>
+  </entry>
 </search>
