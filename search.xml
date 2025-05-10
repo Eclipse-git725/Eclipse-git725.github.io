@@ -1652,46 +1652,6 @@
       </categories>
   </entry>
   <entry>
-    <title>oppo 02025426笔试</title>
-    <url>/2025/04/27/%E7%AC%94%E8%AF%95%E9%A2%98/oppo-02025426%E7%AC%94%E8%AF%95/</url>
-    <content><![CDATA[<p>单选20题40分，编程3题60分</p>
-<span id="more"></span>
-
-<h1 id="单选"><a href="#单选" class="headerlink" title="单选"></a>单选</h1><ol>
-<li>代码运行结果<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;  </span><br><span class="line">    HashMap&lt;String, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();  </span><br><span class="line">    map.put(<span class="string">&quot;A&quot;</span>, <span class="number">1</span>);  </span><br><span class="line">    map.put(<span class="string">&quot;B&quot;</span>, <span class="number">2</span>);  </span><br><span class="line">    map.put(<span class="string">&quot;C&quot;</span>, <span class="number">3</span>);  </span><br><span class="line">    <span class="keyword">for</span>(String key : map.keySet()) &#123;  </span><br><span class="line">        map.put(key, map.get(key) + <span class="number">1</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">for</span>(String key : map.keySet()) &#123;  </span><br><span class="line">    <span class="comment">// A 2 B 3 C 4</span></span><br><span class="line">        System.out.println(key + <span class="string">&quot;: &quot;</span> + map.get(key));  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>linux查看文件后10个字符的命令<br> tail -c 10 文件名 或者 cat xxx.txt | tail -c 10</li>
-<li>mG大小的数组排序，存储空间只有mG大小，哪个排序算法会出错（哪个排序算法需要额外的空间）<br> 归并排序、基数排序需要额外空间</li>
-<li>代码运行结果<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyException</span> <span class="keyword">extends</span> <span class="title class_">Exception</span>&#123;  </span><br><span class="line">      </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Me</span> &#123;  </span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">drink</span><span class="params">()</span>&#123;&#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MySon</span> <span class="keyword">extends</span> <span class="title class_">Me</span> &#123;  </span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">eat</span><span class="params">()</span> <span class="keyword">throws</span> MyException &#123;&#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-子类重写方法时，抛出的异常<strong>不能比父类更宽泛</strong><br>父类方法无异常声明时，子类重写方法<strong>不能新增编译时异常</strong></li>
-<li>HTTP不适合实时聊天应用的原因<br> 效率低，每次通信都要三次握手，协议开销大</li>
-<li>29个节点的无向连通图，至少多少条边（28）</li>
-<li>c++代码运行结果<br> 代码含义是，清楚最低位1，输出9999，一共有8个1<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">compute</span><span class="params">(<span class="type">int</span> p)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> num = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (p) &#123;</span><br><span class="line">        num++;          <span class="comment">// 统计1的个数</span></span><br><span class="line">        p = p &amp; (p - <span class="number">1</span>); <span class="comment">// 清除最低位的1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>分页32位，页号18位，那么最大页长多少（2^14）</li>
-<li>ArrayList 和 LinkedList<br> LinkedList 底层是双向链表</li>
-<li>代码运行结果</li>
-<li>资源被永久移动的状态码是（301，302是临时移动资源）</li>
-<li>HTTPS中验证服务器身份的是（数字证书）</li>
-<li>Linux磁盘挂载</li>
-<li>Mysql<br>主键唯一且不为空<br>delete删除表数据，不删除表结构<br>TRUNCATE 清除所有表数据<br>视图不存储数据，但用于更新</li>
-<li>求时间空间复杂度</li>
-<li>二叉树，深度为i的节点值为i，高度为6，节点总数N为多少</li>
-<li>new 和 malloc的区别<br>new一个对象自动调用一次构造<br><code>new[]</code> 多个对象，每个对象自动调用一次构造<br>malloc 使用free释放内存，并不是用delete<br>new分配的内存用delete释放</li>
-<li>c++ 内联函数<br>inline 函数在编译时被展开<br>类中的成员函数会自动转成内联函数</li>
-<li>顺序、链式、索引、散列存文件有什么特点</li>
-<li>关系型数据库每张表几个主键（一个）</li>
-</ol>
-<h1 id="编程题"><a href="#编程题" class="headerlink" title="编程题"></a>编程题</h1><p>C卷的题目</p>
-<ol>
-<li>n长度的数组代表河流，每个位置0为空，1代表有石头，可以踩在石头上过河，求要到达河对面的最长一步最短为多少（15分）<br> 模拟，看最大一步需要跨多大</li>
-<li>n行n列的01方阵，要求进行一些操作使A方阵和B方阵相等，一次操作能选择A一行或一列反转（0变成1，1变成0），最少几次能做到A等于B，若A不能变成B返回-1（1&lt;&#x3D;n&lt;&#x3D;4）（20分）<br> 数据范围小，枚举，每行每列有两种选择，翻转或不翻转，翻转的顺序不影响结果</li>
-<li>有两个n长度的数组a和b，a、b之间的距离为：0- i下标对(ai-bi)^2求和。一次操作能选择a或b中的一个元素加一或减一，最多能操作K次，求距离最小缩小到多少（0&lt;&#x3D;ai,bi,K&lt;&#x3D;1e9 0&lt;&#x3D;n&lt;&#x3D;1e5）（25分）</li>
-</ol>
-]]></content>
-      <categories>
-        <category>笔试题</category>
-      </categories>
-  </entry>
-  <entry>
     <title>美团20250426笔试</title>
     <url>/2025/04/27/%E7%AC%94%E8%AF%95%E9%A2%98/%E7%BE%8E%E5%9B%A220250426%E7%AC%94%E8%AF%95/</url>
     <content><![CDATA[<p>单选10题30分（有6题大模型相关的选择），编程题70分</p>
@@ -2032,6 +1992,46 @@
 ]]></content>
       <categories>
         <category>面经</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>oppo 2025426笔试</title>
+    <url>/2025/04/27/%E7%AC%94%E8%AF%95%E9%A2%98/oppo%202025426%E7%AC%94%E8%AF%95/</url>
+    <content><![CDATA[<p>单选20题40分，编程3题60分</p>
+<span id="more"></span>
+
+<h1 id="单选"><a href="#单选" class="headerlink" title="单选"></a>单选</h1><ol>
+<li>代码运行结果<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;  </span><br><span class="line">    HashMap&lt;String, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();  </span><br><span class="line">    map.put(<span class="string">&quot;A&quot;</span>, <span class="number">1</span>);  </span><br><span class="line">    map.put(<span class="string">&quot;B&quot;</span>, <span class="number">2</span>);  </span><br><span class="line">    map.put(<span class="string">&quot;C&quot;</span>, <span class="number">3</span>);  </span><br><span class="line">    <span class="keyword">for</span>(String key : map.keySet()) &#123;  </span><br><span class="line">        map.put(key, map.get(key) + <span class="number">1</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">for</span>(String key : map.keySet()) &#123;  </span><br><span class="line">    <span class="comment">// A 2 B 3 C 4</span></span><br><span class="line">        System.out.println(key + <span class="string">&quot;: &quot;</span> + map.get(key));  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>linux查看文件后10个字符的命令<br> tail -c 10 文件名 或者 cat xxx.txt | tail -c 10</li>
+<li>mG大小的数组排序，存储空间只有mG大小，哪个排序算法会出错（哪个排序算法需要额外的空间）<br> 归并排序、基数排序需要额外空间</li>
+<li>代码运行结果<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyException</span> <span class="keyword">extends</span> <span class="title class_">Exception</span>&#123;  </span><br><span class="line">      </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Me</span> &#123;  </span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">drink</span><span class="params">()</span>&#123;&#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MySon</span> <span class="keyword">extends</span> <span class="title class_">Me</span> &#123;  </span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">eat</span><span class="params">()</span> <span class="keyword">throws</span> MyException &#123;&#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+子类重写方法时，抛出的异常<strong>不能比父类更宽泛</strong><br>父类方法无异常声明时，子类重写方法<strong>不能新增编译时异常</strong></li>
+<li>HTTP不适合实时聊天应用的原因<br> 效率低，每次通信都要三次握手，协议开销大</li>
+<li>29个节点的无向连通图，至少多少条边（28）</li>
+<li>c++代码运行结果<br> 代码含义是，清楚最低位1，输出9999，一共有8个1<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">compute</span><span class="params">(<span class="type">int</span> p)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> num = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (p) &#123;</span><br><span class="line">        num++;          <span class="comment">// 统计1的个数</span></span><br><span class="line">        p = p &amp; (p - <span class="number">1</span>); <span class="comment">// 清除最低位的1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>分页32位，页号18位，那么最大页长多少（2^14）</li>
+<li>ArrayList 和 LinkedList<br> LinkedList 底层是双向链表</li>
+<li>代码运行结果</li>
+<li>资源被永久移动的状态码是（301，302是临时移动资源）</li>
+<li>HTTPS中验证服务器身份的是（数字证书）</li>
+<li>Linux磁盘挂载</li>
+<li>Mysql<br>主键唯一且不为空<br>delete删除表数据，不删除表结构<br>TRUNCATE 清除所有表数据<br>视图不存储数据，但用于更新</li>
+<li>求时间空间复杂度</li>
+<li>二叉树，深度为i的节点值为i，高度为6，节点总数N为多少</li>
+<li>new 和 malloc的区别<br>new一个对象自动调用一次构造<br><code>new[]</code> 多个对象，每个对象自动调用一次构造<br>malloc 使用free释放内存，并不是用delete<br>new分配的内存用delete释放</li>
+<li>c++ 内联函数<br>inline 函数在编译时被展开<br>类中的成员函数会自动转成内联函数</li>
+<li>顺序、链式、索引、散列存文件有什么特点</li>
+<li>关系型数据库每张表几个主键（一个）</li>
+</ol>
+<h1 id="编程题"><a href="#编程题" class="headerlink" title="编程题"></a>编程题</h1><p>C卷的题目</p>
+<ol>
+<li>n长度的数组代表河流，每个位置0为空，1代表有石头，可以踩在石头上过河，求要到达河对面的最长一步最短为多少（15分）<br> 模拟，看最大一步需要跨多大</li>
+<li>n行n列的01方阵，要求进行一些操作使A方阵和B方阵相等，一次操作能选择A一行或一列反转（0变成1，1变成0），最少几次能做到A等于B，若A不能变成B返回-1（1&lt;&#x3D;n&lt;&#x3D;4）（20分）<br> 数据范围小，枚举，每行每列有两种选择，翻转或不翻转，翻转的顺序不影响结果</li>
+<li>有两个n长度的数组a和b，a、b之间的距离为：0- i下标对(ai-bi)^2求和。一次操作能选择a或b中的一个元素加一或减一，最多能操作K次，求距离最小缩小到多少（0&lt;&#x3D;ai,bi,K&lt;&#x3D;1e9 0&lt;&#x3D;n&lt;&#x3D;1e5）（25分）</li>
+</ol>
+]]></content>
+      <categories>
+        <category>笔试题</category>
       </categories>
   </entry>
 </search>
