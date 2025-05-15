@@ -2133,6 +2133,8 @@
     <title>京东物流后端一面</title>
     <url>/2025/05/15/%E9%9D%A2%E7%BB%8F/%E4%BA%AC%E4%B8%9C%E7%89%A9%E6%B5%81%E5%90%8E%E7%AB%AF%E4%B8%80%E9%9D%A2/</url>
     <content><![CDATA[<p>2025.5.13 20多分钟（京东零售一面挂了，被物流捞了）<br>体验很好，不会追问到不会，面试官会顺着我说的接着说。<br>不过面试中问了很多大模型相关的开放性问题，回答的不太好。<br>还有DDD领域驱动设计，后悔没看。</p>
+<p>————</p>
+<p>后续：15号约二面了，把京东的技术文档全看一遍！</p>
 <span id="more"></span>
 <p>自我介绍</p>
 <ol>
@@ -2210,7 +2212,7 @@
   <entry>
     <title>阿里国际后端一面</title>
     <url>/2025/05/15/%E9%9D%A2%E7%BB%8F/%E9%98%BF%E9%87%8C%E5%9B%BD%E9%99%85%E5%90%8E%E7%AB%AF%E4%B8%80%E9%9D%A2/</url>
-    <content><![CDATA[<p>2025.5.14 40min<br>面试官介绍部门非常详细，lazada东南亚最大电商平台<br>主要是结合项目问八股，也项目中某些细节的具体实现，和数据库表的设计<br>面试官很好，在问的过程中，一边在记录面评，面试中学到了很多。<br>虽然也有些没答上来，或者没答到位，但是比阿里云的体验好多了。</p>
+    <content><![CDATA[<p>2025.5.14 40min<br>面试官介绍部门非常详细，lazada东南亚最大电商平台<br>主要是结合项目问八股，也有项目中某些细节的具体实现，和数据库表的设计<br>面试官很好，在问的过程中，一边在记录面评，面试中学到了很多。<br>虽然也有些没答上来，或者没答到位，但是比阿里云的体验好多了。</p>
 <span id="more"></span>
 <p>面试官先介绍实习招聘的流程，说Bravo102实习生招聘是统一面试的，最后拿到offer，会让同学自己选择想去的部门，双向选择。<br>第一个没让自我介绍的公司。</p>
 <ol>
@@ -2254,6 +2256,93 @@
 ]]></content>
       <categories>
         <category>面经</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>好未来202506515笔试</title>
+    <url>/2025/05/15/%E7%AC%94%E8%AF%95%E9%A2%98/%E5%A5%BD%E6%9C%AA%E6%9D%A5202506515%E7%AC%94%E8%AF%95/</url>
+    <content><![CDATA[<p>在规定时间内做完就行，编程题最简单的一次，一共30min写完</p>
+<span id="more"></span>
+
+<h1 id="单选"><a href="#单选" class="headerlink" title="单选"></a>单选</h1><ol>
+<li>程序运行结果</li>
+</ol>
+<ul>
+<li><p><code>val</code> 是 <strong>实例变量</strong>。</p>
+</li>
+<li><p>实例变量没有“重写”机制，只有“隐藏”。</p>
+</li>
+<li><p>编译器根据引用类型（<code>Base</code>）决定访问哪个变量。</p>
+</li>
+<li><p>所以即使实际对象是 <code>Sub</code>，但因为 <code>who</code> 是 <code>Base</code> 类型的引用，所以访问的是 <code>Base.val</code> → <strong>0</strong>。</p>
+</li>
+<li><p><code>staticval</code> 是 <strong>静态变量</strong>。</p>
+</li>
+<li><p>静态变量属于类，而不是对象。</p>
+</li>
+<li><p>访问静态变量也是在 <strong>编译时</strong> 根据引用类型决定。</p>
+</li>
+<li><p>所以即使对象是 <code>Sub</code>，但 <code>who</code> 是 <code>Base</code> 类型引用，访问的是 <code>Base.staticval</code> → <strong>0</strong>。</p>
+</li>
+<li><p><code>staticMethod()</code> 是一个 <strong>静态方法</strong>。</p>
+</li>
+<li><p>静态方法属于类，不是对象，不能被重写。</p>
+</li>
+<li><p>静态方法的调用在 <strong>编译时</strong> 就确定了，取决于引用类型。</p>
+</li>
+<li><p>因为 <code>who</code> 是 <code>Base</code> 类型的引用，所以调用的是 <code>Base.staticMethod()</code>。</p>
+</li>
+<li><p><code>method()</code> 是一个 <strong>非静态方法</strong>，并且在 <code>Sub</code> 中被重写了。</p>
+</li>
+<li><p>非静态方法是 <strong>运行时动态绑定</strong> 的。</p>
+</li>
+<li><p>运行时发现 <code>who</code> 实际指向的是 <code>Sub</code> 对象，所以调用的是 <code>Sub.method()</code>。</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">haoweilai</span> &#123;  </span><br><span class="line">    <span class="type">Base</span> <span class="variable">who</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Sub</span>();  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;  </span><br><span class="line">        <span class="type">haoweilai</span> <span class="variable">test</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">haoweilai</span>();  </span><br><span class="line">        System.out.println(test.who.val); <span class="comment">// 0  </span></span><br><span class="line">        System.out.println(test.who.staticval); <span class="comment">// 0  </span></span><br><span class="line">        test.who.staticMethod(); <span class="comment">// Base staticMethod  </span></span><br><span class="line">        test.who.method(); <span class="comment">// Sub method  </span></span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span>&#123;  </span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> <span class="number">0</span>;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">staticval</span> <span class="operator">=</span> <span class="number">0</span>;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">staticMethod</span><span class="params">()</span> &#123;  </span><br><span class="line">        System.out.println(<span class="string">&quot;Base staticMethod&quot;</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">method</span><span class="params">()</span> &#123;  </span><br><span class="line">        System.out.println(<span class="string">&quot;Base method&quot;</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Sub</span> <span class="keyword">extends</span> <span class="title class_">Base</span> &#123;  </span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="variable">val</span> <span class="operator">=</span> <span class="number">1</span>;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">staticval</span> <span class="operator">=</span> <span class="number">1</span>;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">staticMethod</span><span class="params">()</span> &#123;  </span><br><span class="line">        System.out.println(<span class="string">&quot;Sub staticMethod&quot;</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">method</span><span class="params">()</span> &#123;  </span><br><span class="line">        System.out.println(<span class="string">&quot;Sub method&quot;</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>SQL平均工资最高部门名称和平均工资<br>不用offset，因为offset是跳过结果集中的行，limit是限制返回的个数<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    d.department_name,</span><br><span class="line">    <span class="built_in">AVG</span>(s.amount) <span class="keyword">AS</span> avg_salary</span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    Employee e</span><br><span class="line"><span class="keyword">JOIN</span> </span><br><span class="line">    Department d <span class="keyword">ON</span> e.department_id <span class="operator">=</span> d.department_id</span><br><span class="line"><span class="keyword">JOIN</span> </span><br><span class="line">    Salary s <span class="keyword">ON</span> e.employee_id <span class="operator">=</span> s.employee_id</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> </span><br><span class="line">    d.department_name</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> </span><br><span class="line">    avg_salary <span class="keyword">DESC</span>  <span class="comment">-- 按照平均工资降序排列，以获取最高平均工资的部门</span></span><br><span class="line">LIMIT <span class="number">1</span>;  <span class="comment">-- 只取最高平均工资的那一行</span></span><br></pre></td></tr></table></figure></li>
+<li>B+比B树最大优势是什么（更少IO）</li>
+<li>LRU采用什么结构（双向链表+哈希）</li>
+<li>程序运行结果</li>
+<li>ZGC哪个JAVA版本提出的<br> <strong>JDK 11</strong>中作为实验性特性引入，从JDK15开始正式支持</li>
+<li><code>int[] x = new int[10]</code> 执行完后哪个是可能的<br> <code>x[9] = 0</code></li>
+<li>数据库范式，非主属性，直接依赖于候选键，无传递依赖，是哪个范式<br> 无传递依赖是第三范式<br> BCNF：消除在3NF中仍可能存在的某些冗余情况和更新异常</li>
+</ol>
+<h1 id="不定项"><a href="#不定项" class="headerlink" title="不定项"></a>不定项</h1><ol>
+<li>子类方法覆盖父类方法的原则<ul>
+<li>子类方法不能比父类方法抛出更多的编译时异常</li>
+<li>子类方法的访问权限 <strong>不能比父类更严格</strong>，父类是public，子类不能是public</li>
+<li>子类只能重写父类非私有、非 final、非 static 方法</li>
+<li>子类不能重写父类static方法，都定义static方法，子类会隐藏父类，即在调用这些静态方法时，编译器根据引用类型（即变量声明的类型）来决定调用哪个版本的方法，而不是根据对象的实际类型。</li>
+<li>父类是抽象类（abstract class）时，子类也可以声明为抽象类，并可以选择性地实现部分抽象方法，将剩余的抽象方法留给更下层的子类继续实现。</li>
+</ul>
+</li>
+<li>索引<br> 聚簇索引决定数据在磁盘上的存储顺序</li>
+<li>堆排序<ul>
+<li>堆排序是基于比较的排序。</li>
+<li>堆排序不是稳定的排序算法。</li>
+<li>堆排序的最坏时间复杂度为O(n log n)。</li>
+<li>堆排序可以通过大根堆或小根堆来实现，分别用于升序和降序排序。</li>
+</ul>
+</li>
+<li>哪些方法可以显示创建对象<ul>
+<li><strong><code>new</code></strong> 是最直接、最常用的对象创建方式。</li>
+<li><strong><code>clone()</code></strong> 方法适用于已有对象的浅复制或深复制，但要求类实现<code>Cloneable</code>接口。</li>
+<li><strong>反序列化</strong> 从流中恢复对象状态，适用于对象持久化场景，但要求类实现<code>Serializable</code>接口。</li>
+<li><strong>反射</strong> 提供了强大的动态创建对象的能力，常用于框架或工具库中。</li>
+<li><strong>JVM加载类</strong> 可能伴随静态初始化过程中对象的创建，但这更多是作为一种副作用而非主要创建手段。</li>
+</ul>
+</li>
+<li>会创建新线程的写法<br> Thread、Runnable、Callable和Future</li>
+</ol>
+<h1 id="编程题"><a href="#编程题" class="headerlink" title="编程题"></a>编程题</h1><ol>
+<li>不重复的元素之和</li>
+<li>数组中找两个数之和为目标值的两个下标</li>
+</ol>
+]]></content>
+      <categories>
+        <category>笔试题</category>
       </categories>
   </entry>
 </search>
