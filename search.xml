@@ -2189,22 +2189,22 @@
 <li>问我平时多个网站会使用同一个密码吗，平时密码会保存下来吗</li>
 <li>如何校验密码</li>
 <li>密码攻击方式有哪些</li>
-<li>撞库攻击是什么，了解其他网站如何防范撞库攻击吗</li>
+<li>撞库攻击是什么，了解其他网站如何防范撞库攻击吗<br>  检测异常登录行为，如地理位置变化、短时间内多次不同IP地址的尝试等，识别并拦截可疑活动<br>  要求用户提供除了密码之外的第二种形式的身份验证，例如短信验证码、电子邮件确认码或者使用身份验证应用程序生成的一次性密码。</li>
 <li>用户输入账号密码登录的具体流程</li>
 <li>短信验证码登录，具体怎么实现的</li>
 <li>去重怎么实现的（说Set不行，必须要说HashSet）</li>
 <li>问HashSet的底层原理，冲突怎么解决</li>
 <li>HashMap怎么判断内容是相同的</li>
 <li>哈希表链表转成红黑树要实现什么（绕很久都没答到点子上，最后说要实现Comparator接口）</li>
-<li>说了一个场景求函数的调用次数，一段代码<code>static int count = 0; count ++</code> 会有什么问题</li>
+<li>说了一个场景求函数的调用次数，一段代码<code>static int count = 0; count ++</code> 会有什么问题<br>会有线程安全问题，count++不是原子性的</li>
 <li>count ++ 字节码是怎么写的</li>
 <li>不是线程安全的，那么函数调用1000次，count最后的结果比1000大还是小</li>
 <li>说使用Synchronized还不行，要说synchronized(this)，这边还说错了一点，面试官直接指出错误</li>
 <li>不是线程安全的，解决方法是什么，追问了好几种</li>
-<li>AtomicInteger怎么实现的</li>
+<li>AtomicInteger怎么实现的<br>AtomicInteger 是基于 volatile 和 CAS 实现的，底层依赖于 Unsafe 类。核心方法包括 getAndIncrement、compareAndSet 等。</li>
 <li>Get和Post请求的区别</li>
 <li>Get、Post请求报文的结构是什么，都有哪些参数</li>
-<li>网页上打开pdf，有时是预览，有时是下载，怎么实现（说请求头中的某个参数，这么说也不行，要说出具体的字段）</li>
+<li>网页上打开pdf，有时是预览，有时是下载，怎么实现（说请求头中的某个参数，这么说也不行，要说出具体的字段）<br><code>Content-Disposition</code>为<code>inline</code>表示直接在页面预览<br><code>Content-Disposition</code>设置为<code>attachmen</code>表示这是一个附件，由浏览器下载</li>
 </ol>
 <p>反问（他是做安全登录之类的，还说知道的内容不够深入，其中几个问题还有明显错误）</p>
 ]]></content>
